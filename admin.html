@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GemX | Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <h2>GemX Admin</h2>
+            <nav>
+                <ul>
+                    <li><a href="#statistics" class="active">System Statistics</a></li>
+                    <li><a href="#users">Active Users</a></li>
+                    <li><a href="#support">Customer Service</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1>Dashboard Overview</h1>
+            </header>
+
+            <section id="statistics" class="stats-grid">
+                <article class="stat-card courses-card">
+                    <h3>Total Courses Created</h3>
+                    <p id="total-courses-count">0</p>
+                    <small>Published by Lecturers</small>
+                </article>
+
+                <article class="stat-card enrollments-card">
+                    <h3>Total Student Enrollments</h3>
+                    <p id="total-enrollments-count">0</p>
+                    <small>Across all active courses</small>
+                </article>
+
+                <article class="stat-card users-card">
+                    <h3>Currently Active Users</h3>
+                    <p id="active-users-count">0</p>
+                    <small>Real-time online students</small>
+                </article>
+            </section>
+        </main>
+    </div>
+    <script src="admin.js"></script>
+</body>
+
+</html>

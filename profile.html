@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GemX | Student Profile</title>
+    <link rel="stylesheet" href="profile.css">
+</head>
+
+<body>
+    <main class="profile-container">
+        <header class="profile-header">
+            <div class="avatar-placeholder">👤</div>
+            <div class="user-info">
+                <h1 id="displayUsername">StudentName</h1>
+                <p id="displayEmail">student@mail.apu.edu.my</p>
+            </div>
+        </header>
+
+        <nav class="profile-tabs">
+            <button class="tab-btn active" data-target="overview-tab">Learning Overview</button>
+            <button class="tab-btn" data-target="settings-tab">Edit Profile</button>
+        </nav>
+
+        <section id="overview-tab" class="tab-content active">
+            <h2>Your Progress</h2>
+
+            <div class="level-container">
+                <div class="level-header">
+                    <span class="current-level">Level 5: Scholar</span>
+                    <span class="xp-to-next">4,500 / 5,000 XP</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 90%;"></div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon streak-icon">🔥</div>
+                    <div class="stat-info">
+                        <h3>Streak Days</h3>
+                        <p>12 Days</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon gem-icon">💎</div>
+                    <div class="stat-info">
+                        <h3>Total GEMs</h3>
+                        <p>1,250</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon quiz-icon">📝</div>
+                    <div class="stat-info">
+                        <h3>Quizzes Passed</h3>
+                        <p>8</p>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-content-block">
+                <h3>Your Badges</h3>
+                <div class="achievements-grid">
+                    <div class="badge-card unlocked">
+                        <div class="badge-icon">🚀</div>
+                        <h4>Fast Starter</h4>
+                        <p>Finished the first module</p>
+                    </div>
+
+                    <div class="badge-card unlocked">
+                        <div class="badge-icon">🔥</div>
+                        <h4>Streak Master</h4>
+                        <p>7-day learning streak</p>
+                    </div>
+
+                    <div class="badge-card locked">
+                        <div class="badge-icon">🏆</div>
+                        <h4>Top 10%</h4>
+                        <p>Reach the top leaderboard</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-content-block">
+                <h3>Recent Activity</h3>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-icon complete">✅</div>
+                        <div class="activity-details">
+                            <h4>Passed Quiz: Fundamentals</h4>
+                            <small>2 hours ago • +50 XP</small>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon access">📖</div>
+                        <div class="activity-details">
+                            <h4>Accessed Course: Web Design</h4>
+                            <small>Yesterday • In Progress</small>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon milestone">⭐</div>
+                        <div class="activity-details">
+                            <h4>Leveled Up! Reached Level 5</h4>
+                            <small>3 days ago</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="stat-card">
+                <h3>XP / GEM</h3>
+                <p>4,500 💎</p>
+            </div>
+            <div class="stat-card">
+                <h3>Quizzes Passed</h3>
+                <p>8 📝</p>
+            </div>
+            </div>
+        </section>
+
+        <section id="settings-tab" class="tab-content">
+            <h2>Profile Settings</h2>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="usernameInput">Username</label>
+                    <input type="text" id="usernameInput" value="StudentName" required>
+                </div>
+                <div class="form-group">
+                    <label for="emailInput">Email Address</label>
+                    <input type="email" id="emailInput" value="student@mail.apu.edu.my" required>
+                </div>
+                <div class="form-group">
+                    <label for="passwordInput">New Password</label>
+                    <input type="password" id="passwordInput" placeholder="Leave blank to keep current">
+                </div>
+                <button type="submit" class="save-btn">Save Changes</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="profile.js"></script>
+</body>
+
+</html>
