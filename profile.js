@@ -30,4 +30,40 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Profile staged for Firebase update!");
     });
   }
+  
+
+  // --- AVATAR CUSTOMIZER LOGIC ---
+  const headerAvatarBg = document.getElementById("mainHeaderAvatar");
+  const headerAvatarFace = document.getElementById("mainHeaderFace");
+  const previewBg = document.getElementById("layer-bg");
+  const previewFace = document.getElementById("layer-face");
+
+  // 1. Change Background Color
+  document.querySelectorAll(".color-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const newColor = this.getAttribute("data-val");
+      // Update customizer box
+      previewBg.style.backgroundColor = newColor;
+      // Update header avatar instantly
+      headerAvatarBg.style.backgroundColor = newColor;
+    });
+  });
+
+  // 2. Change Emoji Expression
+  document.querySelectorAll(".asset-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const newEmoji = this.textContent; // Grabs the emoji from the button
+      // Update customizer box
+      previewFace.textContent = newEmoji;
+      // Update header avatar instantly
+      headerAvatarFace.textContent = newEmoji;
+
+      // Add a quick visual "pop" animation to the preview box
+      const previewBox = document.getElementById("avatarPreviewBox");
+      previewBox.style.transform = "scale(1.05)";
+      setTimeout(() => {
+        previewBox.style.transform = "scale(1)";
+      }, 150);
+    });
+  });
 });
