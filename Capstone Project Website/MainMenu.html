@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Menu- Game Areas</title>
+    <link rel="stylesheet" href="MenuStyle.css">
+</head>
+<body>
+
+    <audio id="bgMusic" autoplay loop>
+        <source src="assets/bg-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <canvas id="stars"></canvas>
+
+    <h1 class="title">G3MX - IT Learning World</h1>
+
+    <div class="island-container">
+
+        <div class="island" onclick="enterChapter(1)">
+
+            <div class="island-top"></div>
+            <div class="island-bottom"></div>
+            <div class="energy-ring"></div>
+
+            <img src="assets/computer1.png" class="computer c1">
+            <img src="assets/computer2.png" class="computer c2">
+            <img src="assets/server.png" class="computer c3">
+
+            <div class="island-text">
+                <h2>Chapter 1</h2>
+                <p>Introduction to IT</p>
+            </div>
+
+        </div>
+
+        <div class="island" onclick="enterChapter(2)">
+
+            <div class="island-top"></div>
+            <div class="island-bottom"></div>
+            <div class="energy-ring"></div>
+
+            <img src="assets/network.png" class="computer c1">
+            <img src="assets/router.png" class="computer c2">
+            <img src="assets/server.png" class="computer c3">
+
+            <div class="island-text">
+                <h2>Chapter 2</h2>
+                <p>Networking Fundamentals</p>
+            </div>
+
+        </div>
+
+        <div class="island" onclick="enterChapter(3)">
+
+            <div class="island-top"></div>
+            <div class="island-bottom"></div>
+            <div class="energy-ring"></div>
+
+            <img src="assets/database.png" class="computer c1">
+            <img src="assets/code.png" class="computer c2">
+            <img src="assets/server.png" class="computer c3">
+
+            <div class="island-text">
+                <h2>Chapter 3</h2>
+                <p>Database Systems</p>
+            </div>
+
+        </div>
+
+        <div class="island locked" onclick="shakeLocked(this)">
+
+            <div class="island-top"></div>
+            <div class="island-bottom"></div>
+
+            <!-- Real Chain Image X -->
+            <img src="" height="50px" width="50px" class="chain chain1">
+            <img src="" height="50px" width="50px" class="chain chain2">
+
+            <div class="island-text">
+                <h2>Coming Soon...</h2>
+                <p>Future Chapter</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="fog"></div>
+
+    <script src="MenuStuff.js"></script>
+</body>
+</html>
