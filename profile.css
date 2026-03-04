@@ -1,311 +1,457 @@
+/* --- CORE KEEPER THEME VARIABLES --- */
 :root {
-  background: linear-gradient(#152331);
-  --card-bg: #ffffff;
-  --primary-blue: #3498db;
-  --text-dark: #2c3e50;
-  --text-light: #7f8c8d;
+  --ck-bg-deep: #120e0d; /* Deep cave darkness */
+  --ck-panel-bg: #2a2220; /* Dirt/Stone background */
+  --ck-border-light: #52443f; /* Highlighted edge */
+  --ck-border-dark: #0f0c0b; /* Shadowed edge */
+  --ck-slot-bg: #1c1615; /* Inventory slot background */
+
+  --ck-text-main: #e8dee0; /* Parchment white */
+  --ck-text-dim: #94817a; /* Dimmed stone text */
+
+  --ck-copper: #c2653e; /* Buttons / Accents */
+  --ck-copper-hover: #d97b52;
+  --ck-gold: #dfa632; /* Level / Achievements */
+  --ck-crystal-glow: #38d9a9; /* Core / GEM glow */
 }
 
+/* --- GLOBAL STYLES --- */
 body {
-  background-color: var(--bg-color);
-  font-family: sans-serif;
-  color: var(--text-dark);
+  background-color: var(--ck-bg-deep); /* Fallback color if image fails load */
+
+  /* --- CORE KEEPER BACKGROUND SETUP --- */
+  /* We layer two backgrounds. The top one is a dark gradient to create a 'vignette' effect. 
+     The bottom one is your pixel art image. */
+  background-image: 
+    /* Layer 1 (Top): Dark radial gradient to focus attention on the center */
+    radial-gradient(
+      circle at center,
+      rgba(18, 14, 13, 0.4) 0%,
+      rgba(18, 14, 13, 0.95) 85%
+    ),
+    /* Layer 2 (Bottom): Your seamless pixel art texture. REPLACE 'core-keeper-bg.png' with your file name! */
+    url("assets/core-keeper-bg.png");
+
+  /* This makes a small texture tile repeatedly across the screen */
+  background-repeat: repeat;
+
+  /* Keeps pixel art crisp */
+  image-rendering: pixelated;
+  /* ------------------------------------ */
+
+  font-family: "VT323", monospace;
+  color: var(--ck-text-main);
   display: flex;
   justify-content: center;
+  align-items: flex-start; /* Aligns panel to top in case of scrolling */
   padding: 2rem;
+  min-height: 100vh; /* Ensures background covers the whole screen height */
 }
 
+/* --- MAIN PANEL (Like a Crafting Station) --- */
 .profile-container {
-  background: var(--card-bg);
+  background: var(--ck-panel-bg);
   width: 100%;
   max-width: 800px;
-  border-radius: 12px;
   padding: 2rem;
 
-  /* Gamified Border and Shadow */
-  border: 5px solid black;
-  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15); /* A soft blue-tinted glow */
+  /* Chunky, pixelated border effect */
+  border: 4px solid var(--ck-border-dark);
+  border-top-color: var(--ck-border-light);
+  border-left-color: var(--ck-border-light);
+  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.6);
+  image-rendering: pixelated;
 }
 
-/* Header Styles */
+h1,
+h2,
+h3,
+h4 {
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0px #000;
+  margin-bottom: 0.5rem;
+}
+
+/* --- HEADER & AVATAR --- */
 .profile-header {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 4px dashed var(--ck-border-dark);
 }
 
 .avatar-placeholder {
-  font-size: 4rem;
-  background: #ecf0f1;
-  border-radius: 50%;
-  padding: 1rem;
+  width: 90px;
+  height: 90px;
+  background-color: var(--ck-slot-bg) !important; /* Overrides inline style */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Looks like an item slot */
+  border: 4px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+  box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.8);
 }
 
-/* Tab Navigation */
+.header-emoji {
+  font-size: 50px;
+  filter: drop-shadow(2px 2px 0px #000); /* Pixel shadow on emoji */
+}
+
+.user-info h1 {
+  font-size: 2.5rem;
+  color: var(--ck-gold);
+}
+
+.user-info p {
+  font-size: 1.2rem;
+  color: var(--ck-text-dim);
+}
+
+/* --- TABS (Like stone tablets) --- */
 .profile-tabs {
   display: flex;
   gap: 1rem;
-  border-bottom: 2px solid #ecf0f1;
   margin-bottom: 2rem;
 }
 
 .tab-btn {
-  background: none;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-size: 1.1rem;
-  color: var(--text-light);
+  background: var(--ck-slot-bg);
+  border: 4px solid var(--ck-border-dark);
+  color: var(--ck-text-dim);
+  padding: 0.5rem 1.5rem;
+  font-family: "VT323", monospace;
+  font-size: 1.5rem;
+  text-transform: uppercase;
   cursor: pointer;
-  border-bottom: 3px solid transparent;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
 }
 
 .tab-btn.active {
-  color: var(--primary-blue);
-  border-bottom: 3px solid var(--primary-blue);
-  font-weight: bold;
+  background: var(--ck-panel-bg);
+  color: var(--ck-crystal-glow);
+  border-top-color: var(--ck-crystal-glow);
+  border-left-color: var(--ck-crystal-glow);
+  text-shadow: 0 0 8px rgba(56, 217, 169, 0.5);
 }
 
-/* Tab Content Logic */
 .tab-content {
-  display: none; /* Hide all content by default */
+  display: none;
 }
-
 .tab-content.active {
-  display: block; /* Show only the active content */
+  display: block;
 }
 
-/* Basic Grid for Stats */
-/* --- Level Progress Bar --- */
+/* --- PROGRESS BAR (Health/Mana Bar style) --- */
 .level-container {
-  background: var(--card-bg);
+  background: var(--ck-slot-bg);
   padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 1.5rem;
-  border: 1px solid #ecf0f1;
-}
-
-.level-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.8rem;
+  margin-bottom: 2rem;
+  border: 4px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
 }
 
 .current-level {
-  color: var(--primary-blue);
-  font-size: 1.2rem;
-  font-weight: bold;
+  color: var(--ck-gold);
+  font-size: 1.5rem;
 }
 
 .xp-to-next {
-  color: var(--text-light);
-  font-size: 0.9rem;
-  font-weight: bold;
+  color: var(--ck-text-dim);
+  font-size: 1.2rem;
 }
 
 .progress-bar-bg {
   width: 100%;
-  height: 12px;
-  background: #ecf0f1;
-  border-radius: 6px;
-  overflow: hidden;
+  height: 24px;
+  background: #000;
+  border: 4px solid var(--ck-border-dark);
+  margin-top: 10px;
 }
 
 .progress-bar-fill {
   height: 100%;
-  /* A sleek blue-to-green gradient for the fill */
-  background: linear-gradient(90deg, #3498db, #2ecc71);
-  border-radius: 6px;
-  transition: width 1s ease-in-out; /* Smooth animation when loading */
+  background: linear-gradient(90deg, #1b7355, var(--ck-crystal-glow));
+  box-shadow:
+    inset 0 4px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.3); /* Chunky 3D fill */
 }
 
-/* --- Updated Stats Grid --- */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-}
-
-.stat-card {
-  background: var(--card-bg);
-  padding: 1.2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid #ecf0f1;
-  display: flex; /* Aligns icon and text horizontally */
-  align-items: center;
-  gap: 1rem;
-  transition: transform 0.2s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-3px); /* Slight hover lift */
-}
-
-.stat-icon {
-  font-size: 1.8rem;
-  background: var(--bg-color);
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-}
-
-/* Optional: Slight color tints for the icon backgrounds */
-.streak-icon {
-  background: #ffeaa7;
-}
-.gem-icon {
-  background: #81ecec;
-}
-.quiz-icon {
-  background: #fab1a0;
-}
-
-.stat-info h3 {
-  font-size: 0.85rem;
-  color: var(--text-light);
-  margin-bottom: 0.2rem;
-}
-
-.stat-info p {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--text-dark);
-  margin: 0;
-}
-
-/* Form Styles */
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.save-btn {
-  background: var(--primary-blue);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-/* Layout Spacing for Content Blocks */
-.profile-content-block {
-  margin-top: 2.5rem;
-}
-
-.profile-content-block h3 {
-  margin-bottom: 1rem;
-  color: var(--text-dark);
-  border-bottom: 2px solid #ecf0f1;
-  padding-bottom: 0.5rem;
-}
-
-/* Achievements Grid */
+/* --- STAT CARDS & BADGES (Inventory Slots) --- */
+.stats-grid,
 .achievements-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
+.stat-card,
+.badge-card,
+.activity-item {
+  background: var(--ck-slot-bg);
+  padding: 1rem;
+  border: 4px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+  box-shadow:
+    inset 4px 4px 10px rgba(0, 0, 0, 0.5),
+    4px 4px 0px rgba(0, 0, 0, 0.4);
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* --- STAT ICONS (Recessed Inventory Slots) --- */
+.stat-icon {
+  font-size: 2.5rem;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Deep hole background */
+  background: var(--ck-bg-deep);
+
+  /* Chunky inner border to look cut into the stone */
+  border: 4px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+
+  /* Inset shadow creates the depth */
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.8);
+
+  /* Makes the emoji/image look like a pixel art item floating inside */
+  filter: drop-shadow(2px 2px 0px #000);
+}
+
+/* Specific glowing ore effects inside the slots */
+.streak-icon {
+  /* Copper/Fire glow */
+  box-shadow:
+    inset 0 0 15px rgba(223, 107, 32, 0.4),
+    inset 4px 4px 8px rgba(0, 0, 0, 0.8);
+}
+.gem-icon {
+  /* Octarine/Crystal glow */
+  box-shadow:
+    inset 0 0 15px rgba(56, 217, 169, 0.4),
+    inset 4px 4px 8px rgba(0, 0, 0, 0.8);
+}
+.quiz-icon {
+  /* Gold glow */
+  box-shadow:
+    inset 0 0 15px rgba(223, 166, 50, 0.4),
+    inset 4px 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* --- BADGES (Ancient Relic Pedestals) --- */
 .badge-card {
-  background: #f8f9fa;
-  border: 2px solid transparent;
-  border-radius: 12px;
-  padding: 1.5rem 1rem;
+  position: relative;
+  background: var(--ck-panel-bg);
+  border: 4px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
   text-align: center;
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color 0.2s ease;
+  z-index: 1;
 }
 
-/* Gamified Hover Effect */
 .badge-card.unlocked:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(52, 152, 219, 0.2);
-  border-color: var(--primary-blue);
+  transform: translateY(-4px);
+  /* Glow effect when hovering over a rare item */
+  box-shadow: 0 0 20px rgba(223, 166, 50, 0.2);
+  border-color: var(--ck-gold);
   cursor: pointer;
 }
 
 .badge-icon {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+  font-size: 3.5rem;
+  margin: 0 auto 1rem auto;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* The glowing spotlight pedestal the item sits on */
+  background: radial-gradient(
+    circle at center,
+    rgba(223, 166, 50, 0.2) 0%,
+    transparent 60%
+  );
+  border-bottom: 4px solid var(--ck-border-dark);
+  border-radius: 50%;
+
+  /* 8-bit shadow and hovering animation */
+  filter: drop-shadow(3px 3px 0px #000);
+  animation: floatItem 3s ease-in-out infinite;
 }
 
-.badge-card h4 {
-  margin-bottom: 0.5rem;
-  color: var(--text-dark);
-  font-size: 1.1rem;
+/* Makes the relics slowly bob up and down */
+@keyframes floatItem {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
-.badge-card p {
-  font-size: 0.85rem;
-  color: var(--text-light);
+/* Locked badges look like stone/shadow */
+.badge-card.locked .badge-icon {
+  filter: grayscale(100%) brightness(0.2) drop-shadow(2px 2px 0px #000);
+  background: none;
+  border-bottom: none;
+  animation: none;
 }
 
-/* Locked State Styling */
-.badge-card.locked {
-  opacity: 0.5;
-  filter: grayscale(100%);
-  background: #e9ecef;
+/* --- ACTIVITY ICONS (Mini Item Drops) --- */
+.activity-icon {
+  font-size: 1.5rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ck-bg-deep);
+
+  /* Mini inventory slot border */
+  border: 3px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+
+  filter: drop-shadow(2px 2px 0px #000);
 }
 
-/* Recent Activity List */
-.activity-list {
-  list-style: none;
-  padding: 0;
+.activity-item:hover .activity-icon {
+  /* Highlights the slot when hovering the activity row */
+  border-color: var(--ck-text-main);
 }
 
-.activity-item {
+/* --- CUSTOMIZER & FORMS --- */
+.avatar-customizer-container {
+  display: flex;
+  gap: 2rem;
+  background: var(--ck-slot-bg);
+  padding: 1.5rem;
+  border: 4px solid var(--ck-border-dark);
+  margin-bottom: 2rem;
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  border: 4px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+  background: #000;
+}
+
+.avatar-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.color-btn,
+.asset-btn {
+  width: 50px;
+  height: 50px;
+  background: var(--ck-panel-bg);
+  border: 4px solid var(--ck-border-dark);
+  border-top-color: var(--ck-border-light);
+  border-left-color: var(--ck-border-light);
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+.color-btn:active,
+.asset-btn:active {
+  border-top-color: var(--ck-border-dark);
+  border-left-color: var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+}
+
+.form-group label {
+  font-size: 1.5rem;
+  color: var(--ck-gold);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 1rem;
+  background: var(--ck-slot-bg);
+  border: 4px solid var(--ck-border-dark);
+  color: var(--ck-text-main);
+  font-family: "VT323", monospace;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+.save-btn {
+  background: var(--ck-copper);
+  color: white;
+  font-family: "VT323", monospace;
+  font-size: 1.8rem;
+  padding: 1rem 2rem;
+  border: 4px solid var(--ck-border-dark);
+  border-top-color: #e58255;
+  border-left-color: #e58255;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0px #000;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
+}
+
+.save-btn:active {
+  transform: translateY(4px) translateX(4px);
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
+  border-top-color: var(--ck-border-dark);
+  border-left-color: var(--ck-border-dark);
+}
+
+/* --- TOAST NOTIFICATION --- */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--ck-panel-bg);
+  border: 4px solid var(--ck-crystal-glow);
+  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8);
+  padding: 1rem 2rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: var(--card-bg);
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 0.8rem;
-  border: 1px solid #ecf0f1;
-  transition: background-color 0.2s ease;
-}
-
-.activity-item:hover {
-  background-color: #f8f9fa;
-}
-
-.activity-icon {
+  z-index: 1000;
   font-size: 1.5rem;
-  background: #ecf0f1;
-  padding: 0.5rem;
-  border-radius: 50%;
-  min-width: 45px;
-  text-align: center;
+  transform: translateY(150px);
+  opacity: 0;
+  transition: all 0.3s ease;
 }
 
-.activity-details h4 {
-  margin: 0 0 0.2rem 0;
-  font-size: 1rem;
-  color: var(--text-dark);
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
 }
-
-.activity-details small {
-  color: var(--text-light);
-  font-weight: 500;
+.toast.hidden {
+  display: none;
 }

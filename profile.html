@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GemX | Student Profile</title>
     <link rel="stylesheet" href="profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <main class="profile-container">
         <header class="profile-header">
-            <div class="avatar-placeholder">👤</div>
+            <div class="avatar-placeholder" id="mainHeaderAvatar" style="background-color: #3498db;">
+                <div class="header-emoji" id="mainHeaderFace">😊</div>
+            </div>
             <div class="user-info">
                 <h1 id="displayUsername">StudentName</h1>
                 <p id="displayEmail">student@mail.apu.edu.my</p>
@@ -22,6 +25,7 @@
             <button class="tab-btn active" data-target="overview-tab">Learning Overview</button>
             <button class="tab-btn" data-target="settings-tab">Edit Profile</button>
         </nav>
+
 
         <section id="overview-tab" class="tab-content active">
             <h2>Your Progress</h2>
@@ -101,6 +105,7 @@
                             <small>Yesterday • In Progress</small>
                         </div>
                     </li>
+
                     <li class="activity-item">
                         <div class="activity-icon milestone">⭐</div>
                         <div class="activity-details">
@@ -122,23 +127,65 @@
         </section>
 
         <section id="settings-tab" class="tab-content">
-            <h2>Profile Settings</h2>
+            <h2>Edit Profile</h2>
+
             <form id="editProfileForm">
+
                 <div class="form-group">
-                    <label for="usernameInput">Username</label>
+                    <label>Avatar Customization</label>
+                    <div class="avatar-customizer-container">
+                        <div class="avatar-preview" id="avatarPreviewBox">
+                            <div class="avatar-layer bg-layer" id="layer-bg" style="background-color: #3498db;"></div>
+                            <div class="avatar-layer emoji-layer" id="layer-face">😊</div>
+                        </div>
+
+                        <div class="customization-controls">
+                            <div class="control-group">
+                                <h3>Background Color</h3>
+                                <div class="options-grid">
+                                    <button type="button" class="color-btn" data-val="#3498db"
+                                        style="background: #3498db;"></button>
+                                    <button type="button" class="color-btn" data-val="#e74c3c"
+                                        style="background: #e74c3c;"></button>
+                                    <button type="button" class="color-btn" data-val="#2ecc71"
+                                        style="background: #2ecc71;"></button>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <h3>Expression</h3>
+                                <div class="options-grid">
+                                    <button type="button" class="asset-btn">😊</button>
+                                    <button type="button" class="asset-btn">😎</button>
+                                    <button type="button" class="asset-btn">🤔</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="margin: 2rem 0; border: 1px solid #ecf0f1;">
+
+                <div class="form-group">
+                    <label for="usernameInput">Display Name</label>
                     <input type="text" id="usernameInput" value="StudentName" required>
                 </div>
                 <div class="form-group">
                     <label for="emailInput">Email Address</label>
-                    <input type="email" id="emailInput" value="student@mail.apu.edu.my" required>
+                    <input type="email" id="emailInput" value="student@mail.apu.edu.my" disabled>
                 </div>
                 <div class="form-group">
                     <label for="passwordInput">New Password</label>
                     <input type="password" id="passwordInput" placeholder="Leave blank to keep current">
                 </div>
+
                 <button type="submit" class="save-btn">Save Changes</button>
             </form>
         </section>
+
+        <div id="toastNotification" class="toast hidden">
+            <span class="toast-icon">✨</span>
+            <span class="toast-message">Profile Saved Successfully!</span>
+        </div>
     </main>
 
     <script src="profile.js"></script>
