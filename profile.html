@@ -12,8 +12,11 @@
 <body>
     <main class="profile-container">
         <header class="profile-header">
-            <div class="avatar-placeholder" id="mainHeaderAvatar" style="background-color: #3498db;">
-                <div class="header-emoji" id="mainHeaderFace">😊</div>
+            <div class="avatar-placeholder" id="mainHeaderAvatar"
+                style="background-color: #3498db; position: relative; overflow: hidden;">
+                <div class="header-emoji" id="mainHeaderFace" style="display: none;">😊</div>
+                <img id="header-custom" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;"
+                    alt="Custom Avatar">
             </div>
             <div class="user-info">
                 <h1 id="displayUsername">StudentName</h1>
@@ -26,10 +29,8 @@
             <button class="tab-btn" data-target="settings-tab">Edit Profile</button>
         </nav>
 
-
         <section id="overview-tab" class="tab-content active">
             <h2>Your Progress</h2>
-
             <div class="level-container">
                 <div class="level-header">
                     <span class="current-level">Level 5: Scholar</span>
@@ -48,7 +49,6 @@
                         <p>12 Days</p>
                     </div>
                 </div>
-
                 <div class="stat-card">
                     <div class="stat-icon gem-icon">💎</div>
                     <div class="stat-info">
@@ -56,7 +56,6 @@
                         <p>1,250</p>
                     </div>
                 </div>
-
                 <div class="stat-card">
                     <div class="stat-icon quiz-icon">📝</div>
                     <div class="stat-info">
@@ -65,21 +64,20 @@
                     </div>
                 </div>
             </div>
+
             <div class="profile-content-block">
-                <h3>Your Badges</h3>
+                <h2>Your Badges</h2>
                 <div class="achievements-grid">
                     <div class="badge-card unlocked">
                         <div class="badge-icon">🚀</div>
                         <h4>Fast Starter</h4>
                         <p>Finished the first module</p>
                     </div>
-
                     <div class="badge-card unlocked">
                         <div class="badge-icon">🔥</div>
                         <h4>Streak Master</h4>
                         <p>7-day learning streak</p>
                     </div>
-
                     <div class="badge-card locked">
                         <div class="badge-icon">🏆</div>
                         <h4>Top 10%</h4>
@@ -89,7 +87,7 @@
             </div>
 
             <div class="profile-content-block">
-                <h3>Recent Activity</h3>
+                <h2>Recent Activity</h2>
                 <ul class="activity-list">
                     <li class="activity-item">
                         <div class="activity-icon complete">✅</div>
@@ -105,7 +103,6 @@
                             <small>Yesterday • In Progress</small>
                         </div>
                     </li>
-
                     <li class="activity-item">
                         <div class="activity-icon milestone">⭐</div>
                         <div class="activity-details">
@@ -115,63 +112,33 @@
                     </li>
                 </ul>
             </div>
-            <div class="stat-card">
-                <h3>XP / GEM</h3>
-                <p>4,500 💎</p>
-            </div>
-            <div class="stat-card">
-                <h3>Quizzes Passed</h3>
-                <p>8 📝</p>
-            </div>
-            </div>
         </section>
 
         <section id="settings-tab" class="tab-content">
             <h2>Edit Profile</h2>
-
             <form id="editProfileForm">
-
                 <div class="form-group">
-                    <label>Avatar Customization</label>
-                    <div class="avatar-customizer-container">
-                        <div class="avatar-preview" id="avatarPreviewBox">
-                            <div class="avatar-layer bg-layer" id="layer-bg" style="background-color: #3498db;"></div>
-                            <div class="avatar-layer emoji-layer" id="layer-face">😊</div>
-                        </div>
-
-                        <div class="customization-controls">
-                            <div class="control-group">
-                                <h3>Background Color</h3>
-                                <div class="options-grid">
-                                    <button type="button" class="color-btn" data-val="#3498db"
-                                        style="background: #3498db;"></button>
-                                    <button type="button" class="color-btn" data-val="#e74c3c"
-                                        style="background: #e74c3c;"></button>
-                                    <button type="button" class="color-btn" data-val="#2ecc71"
-                                        style="background: #2ecc71;"></button>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <h3>Expression</h3>
-                                <div class="options-grid">
-                                    <button type="button" class="asset-btn">😊</button>
-                                    <button type="button" class="asset-btn">😎</button>
-                                    <button type="button" class="asset-btn">🤔</button>
-                                </div>
-                            </div>
-                        </div>
+                    <label>Profile Picture</label>
+                    <div class="avatar-preview-container" style="text-align: center; margin-bottom: 1rem;">
+                        <img id="profileImagePreview" src="https://placehold.co/150x150?text=No+Image"
+                            style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #3498db;">
                     </div>
+
+                    <input type="file" id="imageUploadInput" accept="image/png, image/jpeg"
+                        style="display: block; margin: 0 auto;">
+                    <small style="display: block; text-align: center; margin-top: 5px; color: #7f8c8d;">Max file size:
+                        1MB</small>
                 </div>
 
                 <hr style="margin: 2rem 0; border: 1px solid #ecf0f1;">
 
                 <div class="form-group">
                     <label for="usernameInput">Display Name</label>
-                    <input type="text" id="usernameInput" value="StudentName" required>
+                    <input type="text" id="usernameInput" placeholder="example123" required>
                 </div>
                 <div class="form-group">
                     <label for="emailInput">Email Address</label>
-                    <input type="email" id="emailInput" value="student@mail.apu.edu.my" disabled>
+                    <input type="email" id="emailInput" placeholder="example123@gmail.com" required>
                 </div>
                 <div class="form-group">
                     <label for="passwordInput">New Password</label>
@@ -188,6 +155,8 @@
         </div>
     </main>
 
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="profile.js"></script>
 </body>
 

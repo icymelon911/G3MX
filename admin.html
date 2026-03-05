@@ -4,50 +4,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GemX | Admin Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <title>GemX | Guild Master Dashboard</title>
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="dashboard-wrapper">
-        <aside class="sidebar">
-            <h2>GemX Admin</h2>
-            <nav>
-                <ul>
-                    <li><a href="#statistics" class="active">System Statistics</a></li>
-                    <li><a href="#users">Active Users</a></li>
-                    <li><a href="#support">Customer Service</a></li>
-                </ul>
-            </nav>
-        </aside>
+    <main class="admin-container">
 
-        <main class="main-content">
-            <header>
-                <h1>Dashboard Overview</h1>
-            </header>
+        <header class="admin-header">
+            <div>
+                <h1>GEMX Admin Dashboard</h1>
+                <p>System Overview & Student Roster</p>
+            </div>
+            <button class="action-btn">Generate Report</button>
+        </header>
 
-            <section id="statistics" class="stats-grid">
-                <article class="stat-card courses-card">
-                    <h3>Total Courses Created</h3>
-                    <p id="total-courses-count">0</p>
-                    <small>Published by Lecturers</small>
-                </article>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="box-shadow: inset 0 0 15px rgba(56, 217, 169, 0.4);">👥</div>
+                <div class="stat-info">
+                    <h3>Active Students</h3>
+                    <p id="totalStudents">42</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="box-shadow: inset 0 0 15px rgba(223, 166, 50, 0.4);">📝</div>
+                <div class="stat-info">
+                    <h3>Quizzes Completed</h3>
+                    <p id="totalQuizzes">128</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="box-shadow: inset 0 0 15px rgba(223, 107, 32, 0.4);">🔥</div>
+                <div class="stat-info">
+                    <h3>Highest Streak</h3>
+                    <p id="highestStreak">14 Days</p>
+                </div>
+            </div>
+        </div>
 
-                <article class="stat-card enrollments-card">
-                    <h3>Total Student Enrollments</h3>
-                    <p id="total-enrollments-count">0</p>
-                    <small>Across all active courses</small>
-                </article>
+        <section class="roster-section">
+            <h2>Student Roster</h2>
+            <div class="table-wrapper">
+                <table class="retro-table" id="studentTable">
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Student Name</th>
+                            <th>Level</th>
+                            <th>Total GEMs</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="mini-avatar-wrapper">
+                                    <img class="mini-photo" src="https://placehold.co/50x50/1c1615/94817a?text=IMG"
+                                        alt="User">
+                                </div>
+                            </td>
+                            <td class="player-name">Edison_Hacker</td>
+                            <td class="player-level">Level 5</td>
+                            <td class="player-gems">1,250 💎</td>
+                            <td>
+                                <button class="sm-btn award-btn">Grant XP</button>
+                                <button class="sm-btn view-btn">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-                <article class="stat-card users-card">
-                    <h3>Currently Active Users</h3>
-                    <p id="active-users-count">0</p>
-                    <small>Real-time online students</small>
-                </article>
-            </section>
-        </main>
-    </div>
-    <script src="admin.js"></script>
+    </main>
 </body>
 
 </html>

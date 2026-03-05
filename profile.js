@@ -1,69 +1,139 @@
+// --- 1. FIREBASE CONFIGURATION ---
+const firebaseConfig = {
+  apiKey: "AIzaSyDxLu8HGi27suKE3UsONs_LecE5XXhm7SA",
+  authDomain: "g3mx-b6b1b.firebaseapp.com",
+  projectId: "g3mx-b6b1b",
+  databaseURL:
+    "https://g3mx-b6b1b-default-rtdb.asia-southeast1.firebasedatabase.app",
+  messagingSenderId: "942145798920",
+  appId: "1:942145798920:web:30d8af7f59c539bba9e2bd",
+  measurementId: "G-0Y9JLM6LHM",
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
 document.addEventListener("DOMContentLoaded", () => {
+  // --- TAB NAVIGATION LOGIC ---
   const tabButtons = document.querySelectorAll(".tab-btn");
   const tabContents = document.querySelectorAll(".tab-content");
 
   tabButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      // 1. Remove 'active' class from all buttons and content sections
       tabButtons.forEach((btn) => btn.classList.remove("active"));
       tabContents.forEach((content) => content.classList.remove("active"));
 
-      // 2. Add 'active' class to the clicked button
       button.classList.add("active");
-
-      // 3. Find the matching content section using the data-target attribute and show it
       const targetId = button.getAttribute("data-target");
       document.getElementById(targetId).classList.add("active");
     });
   });
 
-  // Form Submission Logic (from earlier)
+  // --- AVATAR CUSTOMIZER LOGIC ---
   const profileForm = document.getElementById("editProfileForm");
-  if (profileForm) {
-    profileForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      // Grab inputs
-      const updatedUsername = document.getElementById("usernameInput").value;
-      // Update UI immediately (Optimistic UI update)
-      document.getElementById("displayUsername").textContent = updatedUsername;
+  const imageUploadInput = document.getElementById("imageUploadInput");
+  const profileImagePreview = document.getElementById("profileImagePreview");
 
-      alert("Profile staged for Firebase update!");
+  // --- 1. PREVIEW THE IMAGE WHEN SELECTED ---
+  let base64ImageString = ""; // This will hold our image text
+
+  imageUploadInput.addEventListener("change", function (event) {
+    const file = event.target.files[0];
+
+    if (file) {
+      // Prevent huge files from crashing the database
+      if (file.size > 1048576) {
+        // 1MB limit
+        alert("File is too large! Please choose an image under 1MB.");
+        imageUploadInput.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        base64ImageString = e.target.result; // This is the magic text string!
+        profileImagePreview.src = base64ImageString; // Show the preview
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // --- 2. SAVE TO FIREBASE REALTIME DATABASE ---
+  if (profileForm) {
+    profileForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const saveBtn = document.querySelector(".save-btn");
+      saveBtn.textContent = "SAVING...";
+
+      const updatedUsername = document.getElementById("usernameInput").value;
+      const email = document.getElementById("emailInput").value;
+      const studentId = "student_123";
+      const dbRef = database.ref(`users/${studentId}/profileData`);
+
+      try {
+        // Save everything, including the image string, directly to the database!
+        await dbRef.set({
+          displayName: updatedUsername,
+          email: email,
+          profileImageUrl: base64ImageString,
+        });
+
+        document.getElementById("displayUsername").textContent =
+          updatedUsername;
+
+        // If there's an image, update the header thumbnail too
+        if (base64ImageString) {
+          document.getElementById("header-custom").src = base64ImageString;
+          document.getElementById("header-custom").style.display = "block";
+        }
+
+        alert("Profile and Image Saved Successfully!");
+      } catch (error) {
+        console.error("Error saving to Firebase:", error);
+        alert("Failed to save. Check the console.");
+      } finally {
+        saveBtn.textContent = "Save Changes";
+      }
     });
   }
-  
 
-  // --- AVATAR CUSTOMIZER LOGIC ---
-  const headerAvatarBg = document.getElementById("mainHeaderAvatar");
-  const headerAvatarFace = document.getElementById("mainHeaderFace");
-  const previewBg = document.getElementById("layer-bg");
-  const previewFace = document.getElementById("layer-face");
+  // --- FETCH PROFILE DATA ON PAGE LOAD ---
+  function loadProfileData() {
+    const studentId = "student_123";
+    const dbRef = database.ref(`users/${studentId}/profileData`);
 
-  // 1. Change Background Color
-  document.querySelectorAll(".color-btn").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const newColor = this.getAttribute("data-val");
-      // Update customizer box
-      previewBg.style.backgroundColor = newColor;
-      // Update header avatar instantly
-      headerAvatarBg.style.backgroundColor = newColor;
+    console.log("Fetching profile data...");
+
+    dbRef.get().then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        console.log("Data loaded successfully!", data);
+
+        // Restore Text Fields
+        if (data.displayName) {
+          document.getElementById("displayUsername").textContent =
+            data.displayName;
+          document.getElementById("usernameInput").value = data.displayName;
+        }
+        if (data.email) {
+          document.getElementById("displayEmail").textContent = data.email;
+          document.getElementById("emailInput").value = data.email;
+        }
+
+        if (data.profileImageUrl) {
+          document.getElementById("profileImagePreview").src =
+            data.profileImageUrl;
+          document.getElementById("header-custom").src = data.profileImageUrl;
+          document.getElementById("header-custom").style.display = "block";
+
+          // Keep the string in memory in case they save again without picking a new image
+          base64ImageString = data.profileImageUrl;
+        }
+      }
     });
-  });
+  }
 
-  // 2. Change Emoji Expression
-  document.querySelectorAll(".asset-btn").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const newEmoji = this.textContent; // Grabs the emoji from the button
-      // Update customizer box
-      previewFace.textContent = newEmoji;
-      // Update header avatar instantly
-      headerAvatarFace.textContent = newEmoji;
-
-      // Add a quick visual "pop" animation to the preview box
-      const previewBox = document.getElementById("avatarPreviewBox");
-      previewBox.style.transform = "scale(1.05)";
-      setTimeout(() => {
-        previewBox.style.transform = "scale(1)";
-      }, 150);
-    });
-  });
+  // Trigger data fetch immediately when page loads
+  loadProfileData();
 });
