@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G3MX- Main Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="G3MXMain.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+
+    <div class="pixel-ui">
+
+    <div class="galaxy"></div>
+    <canvas id="stars"></canvas>
+
+    <audio id="bgmusic" autoplay loop>
+        <source src="space-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <header>
+
+        <h1 class="logo">G3MX</h1>
+        <div class="top-buttons">
+            <button class="menu-btn logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+
+    </header>
+
+
+    <div class="side-left">
+
+        <div class="side-item">
+            <img src="shop.png" height="50px" class="pixel-icon">
+            <p>Shop</p>
+        </div>
+
+        <div class="side-item">
+            <img src="Trophy.png" height="50px" class="pixel-icon">
+            <p>Leaderboard</p>
+        </div>
+
+        <div class="side-item">
+            <img src="Profile.jpg" height="50px" class="pixel-icon">
+        <p>Profile</p>
+    </div>
+
+    </div>
+
+    </div>
+
+    <div class="planet-container">
+
+        <div class="planet it-planet" id="itPlanet">
+
+        <div class="planet-atmosphere"></div>
+
+        <div class="planet-surface"></div>
+
+        <div class="planet-clouds"></div>
+
+            <div class="planet-light"></div>
+            <div class="planet-shadow"></div>
+
+            <div class="orbit-items">
+                <span class="item">💻</span>
+                <span class="item">🖥️</span>
+                <span class="item">💾</span>
+            </div>
+
+            <span class="planet-text">IT World</span>
+
+            <div class="ring"></div>
+
+        </div>
+
+        <div class="planet forest">
+
+            <div class="planet-atmosphere"></div>
+
+            <div class="planet-surface"></div>
+
+            <div class="planet-clouds"></div>
+
+                <div class="planet-light"></div>
+                <div class="planet-shadow"></div>
+
+                <div class="orbit-items">
+                    <span class="item">🌳</span>
+                    <span class="item">🌲</span>
+                    <span class="item">🌿</span>
+                </div>
+
+                <span class="planet-text">Coming Soon...</span>
+
+                <div class="ring"></div>
+
+            </div>
+
+        <div class="planet desert">
+
+            <div class="planet-atmosphere"></div>
+
+            <div class="planet-surface"></div>
+
+            <div class="planet-clouds"></div>
+
+                <div class="planet-light"></div>
+                <div class="planet-shadow"></div>
+
+                <div class="orbit-items">
+                <span class="item">🌵</span>
+                <span class="item">🏜️</span>
+                <span class="item">🏺</span>
+            </div>
+
+            <span class="planet-text">Coming Soon...</span>
+
+            <div class="ring"></div>
+
+        </div>
+
+        <div class="planet stone">
+
+            <div class="planet-atmosphere"></div>
+
+            <div class="planet-surface"></div>
+
+            <div class="planet-clouds"></div>
+
+                <div class="planet-light"></div>
+                <div class="planet-shadow"></div>
+
+                <div class="orbit-items">
+                <span class="item">🏰</span>
+                <span class="item">🗿</span>
+                <span class="item">⚔️</span>
+            </div>
+
+        <span class="planet-text">Coming Soon...</span>
+
+        <div class="ring"></div>
+
+        </div>
+
+    </div>
+
+    <div id="screenFade"></div>
+
+    <div id="comingSoonPopup">
+
+        <div class="popup-box">
+
+            <button id="closePopup">✖</button>
+
+            <p>
+            The making of this course is still under progress,<br>
+            please check again later...
+            </p>
+
+            <button id="popupOk">OK</button>
+
+        </div>
+
+    </div>
+
+    <script src="G3MXMain.js"></script>
+
+</body>
+</html>

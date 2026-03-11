@@ -264,3 +264,40 @@ body {
     border-radius: 90%;
     margin-top: 75px;
 }
+
+.backArrow{
+position:absolute;
+top:25px;
+left:25px;
+font-size:34px;
+cursor:pointer;
+color:white;
+transition:0.3s;
+z-index:999;
+
+text-shadow:
+0 0 10px #00ffff,
+0 0 20px #00ffff;
+}
+
+.backArrow:hover{
+transform:scale(1.25);
+color:#33cfff;
+}
+
+#screenFade{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+opacity:0;
+pointer-events:none;
+transition:opacity 1s;
+z-index:9999;
+}
+
+#screenFade.active{
+opacity:1;
+}

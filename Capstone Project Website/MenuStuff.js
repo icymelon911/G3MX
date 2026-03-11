@@ -61,3 +61,16 @@ function shakeLocked(element) {
 
     element.classList.add("shake");
 }
+
+const back = document.getElementById("backBtn");
+const fade = document.getElementById("screenFade");
+
+back.addEventListener("click", () => {
+
+fade.classList.add("active");
+
+setTimeout(()=>{
+window.location.href = "G3MXMain.html";
+},1000);
+
+});
