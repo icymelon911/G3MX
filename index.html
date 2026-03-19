@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G3MX - Knowledge Exists in Games</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <h1>G3MX</h1>
+        <div class="nav-links">
+            <a href="login.html">Login</a>
+            <a href="signup.html">Sign Up</a>
+        </div>
+    </div>
+
+    <section class="scroll-story" id="scroll-story">
+        <div class="story-sticky">
+            <div class="scene scene-0" data-scene="0">
+                <div class="scene-overlay intro-overlay"></div>
+                <div class="scene-content intro-copy">
+                    <img src="images/Knight_fisrt.png" alt="Knight" class="intro-knight">
+                    <a href="login.html" class="hero-play-link">Play Now</a>
+                </div>
+            </div>
+
+            <div class="scene scene-1" data-scene="1">
+                <div class="scene-bg" style="background-image:url('images/castle2.jpg')"></div>
+                <div class="scene-overlay"></div>
+                <div class="scene-content hero-copy">
+                    <h1>KNOWLEDGE EXISTS IN GAMES</h1>
+                    <p>
+                        Enter the G3MX universe where every lesson becomes a mission,
+                        every challenge earns XP, and every player levels up.
+                    </p>
+                </div>
+            </div>
+
+            <div class="scene scene-2" id="scene-arena" data-scene="2">
+                <div class="scene-bg" style="background-image:url('images/castle.jpg')"></div>
+                <div class="scene-overlay"></div>
+                <div class="scene-content section-copy">
+                    <h2>Enter the Learning Arena</h2>
+                    <p>
+                        In G3MX, learning is no longer passive. Complete missions, defeat quiz bosses,
+                        unlock new chapters, and dominate the leaderboard.
+                    </p>
+                </div>
+            </div>
+
+            <div class="scene scene-3" id="scene-mechanics" data-scene="3">
+                <div class="scene-bg" style="background-image:url('images/forest2.jpg')"></div>
+                <div class="scene-overlay"></div>
+                <div class="scene-content section-copy">
+                    <h2>Game Mechanics</h2>
+                    <div class="features story-features">
+                        <div class="feature-card">
+                            <img src="images/Exp.png" alt="EXP System" class="card-icon">
+                            <h3>XP System</h3>
+                            <p>Gain experience points for every mission completed.</p>
+                        </div>
+                        <div class="feature-card">
+                            <img src="images/Level_Progression.png" alt="Level Progression" class="card-icon">
+                            <h3>Level Progression</h3>
+                            <p>Advance through knowledge ranks and unlock new worlds.</p>
+                        </div>
+                        <div class="feature-card">
+                            <img src="images/Quizzes.png" alt="Quizzes" class="card-icon">
+                            <h3>Boss Quizzes</h3>
+                            <p>Face epic end-of-chapter challenges.</p>
+                        </div>
+                        <div class="feature-card">
+                            <img src="images/Leaderboard.png" alt="Leaderboard" class="card-icon">
+                            <h3>Leaderboard</h3>
+                            <p>Compete globally and prove your mastery.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scroll-indicator">SCROLL DOWN</div>
+        </div>
+    </section>
+
+    <section class="demo-scroll-section" id="demo-scroll-section">
+        <div class="demo-sticky">
+            <div class="demo-layout">
+                <div class="demo-copy" id="demo-copy">
+                    <p class="demo-kicker">LIVE PREVIEW</p>
+                    <h2>Game Demo Experience</h2>
+                    <p>
+                        Watch how G3MX looks in action through an immersive in-screen preview.
+                        Scroll down to move closer into the gameplay footage.
+                    </p>
+                </div>
+
+                <div class="computer-stage" id="computer-stage">
+                    <div class="computer-video-mask" id="computer-video-mask">
+                        <video id="demo-video" class="demo-video" src="media/Test_Video.mp4" muted playsinline preload="metadata"></video>
+                    </div>
+                    <img src="images/Computer.png" alt="Computer frame" class="computer-frame" id="computer-frame">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        © 2026 G3MX | The Future of Gamified Learning
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

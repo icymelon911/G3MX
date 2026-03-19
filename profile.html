@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GemX | Student Profile</title>
     <link rel="stylesheet" href="profile.css">
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+15&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -33,11 +33,11 @@
             <h2>Your Progress</h2>
             <div class="level-container">
                 <div class="level-header">
-                    <span class="current-level">Level 5: Scholar</span>
-                    <span class="xp-to-next">4,500 / 5,000 XP</span>
+                    <span class="current-level" id="userLevel">Level 1: Novice</span>
+                    <span class="xp-to-next" id="userXp">0 / 1000 XP</span>
                 </div>
                 <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: 90%;"></div>
+                    <div class="progress-bar-fill" id="userXpBar" style="width: 0%;"></div>
                 </div>
             </div>
 
@@ -46,21 +46,21 @@
                     <div class="stat-icon streak-icon">🔥</div>
                     <div class="stat-info">
                         <h3>Streak Days</h3>
-                        <p>12 Days</p>
+                        <p id="userStreak">0 Days</p>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon gem-icon">💎</div>
                     <div class="stat-info">
                         <h3>Total GEMs</h3>
-                        <p>1,250</p>
+                        <p id="userGems">0</p>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon quiz-icon">📝</div>
+                    <div class="stat-icon quiz-icon"><img src="images/Leaderboard.png"></div>
                     <div class="stat-info">
-                        <h3>Quizzes Passed</h3>
-                        <p>8</p>
+                        <h3>Leaderboard Rank</h3>
+                        <p id="userRank">Unranked</p>
                     </div>
                 </div>
             </div>
@@ -68,17 +68,19 @@
             <div class="profile-content-block">
                 <h2>Your Badges</h2>
                 <div class="achievements-grid">
-                    <div class="badge-card unlocked">
+                    <div id="badge-fast-starter" class="badge-card locked">
                         <div class="badge-icon">🚀</div>
                         <h4>Fast Starter</h4>
                         <p>Finished the first module</p>
                     </div>
-                    <div class="badge-card unlocked">
+
+                    <div id="badge-streak-master" class="badge-card locked">
                         <div class="badge-icon">🔥</div>
                         <h4>Streak Master</h4>
                         <p>7-day learning streak</p>
                     </div>
-                    <div class="badge-card locked">
+
+                    <div id="badge-top-10" class="badge-card locked">
                         <div class="badge-icon">🏆</div>
                         <h4>Top 10%</h4>
                         <p>Reach the top leaderboard</p>
@@ -147,6 +149,10 @@
 
                 <button type="submit" class="save-btn">Save Changes</button>
             </form>
+            <hr style="margin: 2rem 0; border: 1px solid var(--ck-border-dark);">
+            <div style="text-align: center;">
+                <button id="logoutBtn" class="action-btn">Log Out</button>
+            </div>
         </section>
 
         <div id="toastNotification" class="toast hidden">
@@ -157,6 +163,8 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
     <script src="profile.js"></script>
 </body>
 
