@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>G3MX - Create Account</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="auth-scene auth-scene-right">
+        <img src="images/goblin.png" alt="Goblin" class="auth-character wobble-character auth-goblin">
+        <img src="images/knight.png" alt="Knight" class="auth-character wobble-character auth-knight">
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-box">
+            <h2>Initialize Your Learning Profile</h2>
+            <p class="auth-desc">
+                Create your G3MX account and begin transforming passive
+                learning into an interactive, mission-based experience.
+            </p>
+            <form id="signupForm">
+                <input type="text" id="signupUsername" placeholder="Username" required>
+                <input type="email" id="signupEmail" placeholder="Email Address" required>
+                <input type="password" id="signupPassword" placeholder="Password" required>
+                <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
+                <p class="avatar-title">Choose Your Class</p>
+                <button class="btn" type="submit">Create Player Account</button>
+            </form>
+            <a class="auth-link" onclick="location.href='login.html'">Already Have an Account? Login</a>
+            <a class="auth-link" onclick="location.href='index.html'">Back to Landing Page</a>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>G3MX - System Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="auth-scene auth-scene-left">
+        <img src="images/goblin.png" alt="Goblin" class="auth-character wobble-character auth-goblin">
+        <img src="images/knight.png" alt="Knight" class="auth-character wobble-character auth-knight">
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-box">
+            <h2>Access G3MX System</h2>
+            <p class="auth-desc">
+                Enter the gamified learning environment and continue your
+                journey towards higher engagement, motivation, and achievement.
+            </p>
+            <form id="loginForm">
+                <input type="text" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button class="btn" type="submit">Enter LEARNING</button>
+            </form>
+            <a class="auth-link" onclick="location.href='signup.html'">New to G3MX? Create Account</a>
+            <a class="auth-link" onclick="location.href='index.html'">Back to Landing Page</a>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
