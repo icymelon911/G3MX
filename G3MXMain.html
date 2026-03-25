@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G3MX- Main Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="G3MXMain.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="pixel-ui">
+
+        <div class="galaxy"></div>
+        <canvas id="stars"></canvas>
+
+        <audio id="bgmusic" autoplay loop>
+            <source src="space-music.mp3" type="audio/mpeg">
+        </audio>
+
+        <header>
+
+            <h1 class="logo">G3MX</h1>
+            <div class="top-buttons">
+
+                <div class="gem-box">
+                    <span class="gem-label">GEMS</span>
+                    <!-- 🔧 FIREBASE: Replace with real data from users/{uid}/profileData/stats/gems -->
+                    <span class="gem-count" id="userGemCount">0</span>
+                    <img src="images/gem.png" class="gem-icon" alt="Gem">
+                </div>
+
+                <button class="menu-btn logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+
+        </header>
+
+
+        <div class="side-left">
+
+            <button class="side-item">Shop</button>
+
+            <button class="side-item">Leaderboard</button>
+
+            <button class="side-item" onclick="window.location.href='profile.html'">Profile</button>
+
+        </div>
+
+    </div>
+
+    <div class="planet-container">
+
+        <div class="planet it-planet" id="itPlanet">
+
+            <div class="planet-atmosphere"></div>
+
+            <div class="planet-surface"></div>
+
+            <div class="planet-clouds"></div>
+
+            <div class="planet-light"></div>
+            <div class="planet-shadow"></div>
+
+            <div class="orbit-items">
+                <span class="item"></span>
+                <span class="item"></span>
+                <span class="item"></span>
+            </div>
+
+            <span class="planet-text">IT World</span>
+
+            <div class="ring"></div>
+
+        </div>
+
+        <div class="planet forest">
+
+            <div class="planet-atmosphere"></div>
+
+            <div class="planet-surface"></div>
+
+            <div class="planet-clouds"></div>
+
+            <div class="planet-light"></div>
+            <div class="planet-shadow"></div>
+
+            <div class="orbit-items">
+                <span class="item"></span>
+                <span class="item"></span>
+                <span class="item"></span>
+            </div>
+
+            <span class="planet-text">Medical World <br>
+                (Coming Soon...)</span>
+
+            <div class="ring"></div>
+
+        </div>
+
+        <div class="planet business">
+
+            <div class="planet-atmosphere"></div>
+
+            <div class="planet-surface"></div>
+
+            <div class="planet-clouds"></div>
+
+            <div class="planet-light"></div>
+            <div class="planet-shadow"></div>
+
+            <div class="orbit-items">
+                <span class="item"></span>
+                <span class="item"></span>
+                <span class="item"></span>
+            </div>
+
+            <span class="planet-text">Business World <br>
+                (Coming Soon...)</span>
+
+            <div class="ring"></div>
+
+        </div>
+
+        <div class="planet stone">
+
+            <div class="planet-atmosphere"></div>
+
+            <div class="planet-surface"></div>
+
+            <div class="planet-clouds"></div>
+
+            <div class="planet-light"></div>
+            <div class="planet-shadow"></div>
+
+            <div class="orbit-items">
+                <span class="item"></span>
+                <span class="item"></span>
+                <span class="item"></span>
+            </div>
+
+            <span class="planet-text">Engineering World <br>
+                (Coming Soon...)</span>
+
+            <div class="ring"></div>
+
+        </div>
+
+    </div>
+
+    <div id="screenFade"></div>
+
+    <div id="comingSoonPopup">
+
+        <div class="popup-box">
+
+            <button id="closePopup">✖</button>
+
+            <p>
+                The making of this course is still under progress,<br>
+                please check again later...
+            </p>
+
+            <button id="popupOk">OK</button>
+
+        </div>
+
+    </div>
+
+    <div id="logoutPopup">
+
+        <div class="popup-box logout-box">
+
+            <button id="closeLogout">✖</button>
+
+            <p>Are you sure you want to Log Out?</p>
+
+            <div class="logout-actions">
+                <button id="confirmLogout">Yes, Log Out</button>
+                <button id="cancelLogout">No, I'm staying</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    <script src="G3MXMain.js"></script>
+
+</body>
+
+</html>

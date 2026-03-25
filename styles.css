@@ -572,6 +572,36 @@ h4 {
     color: #bfefff;
 }
 
+.password-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.password-wrapper input {
+    margin-bottom: 0;
+    padding-right: 48px;
+}
+
+.eye-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #9fefff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    line-height: 1;
+    transition: text-shadow 0.2s ease;
+}
+
+.eye-toggle:hover {
+    text-shadow: 0 0 10px rgba(0, 234, 255, 0.6);
+}
+
 .auth-link {
     display: block;
     margin-top: 18px;

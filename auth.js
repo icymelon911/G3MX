@@ -12,6 +12,66 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const database = firebase.database();
 
+// --- DAILY LOGIN STREAK LOGIC ---
+function getTodayDateString() {
+  const now = new Date();
+  // Convert to UTC+8
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const malaysiaTime = new Date(utc + 8 * 3600000);
+  const year = malaysiaTime.getFullYear();
+  const month = String(malaysiaTime.getMonth() + 1).padStart(2, "0");
+  const day = String(malaysiaTime.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+// Check if dateA is exactly one day before dateB (both YYYY-MM-DD strings)
+function isYesterday(dateA, dateB) {
+  const a = new Date(dateA + "T00:00:00+08:00");
+  const b = new Date(dateB + "T00:00:00+08:00");
+  const diffMs = b - a;
+  return diffMs === 86400000; // exactly 24 hours
+}
+
+async function recordDailyLogin(uid) {
+  const today = getTodayDateString();
+  const streakRef = database.ref(`users/${uid}/streakData`);
+  const statsStreakRef = database.ref(`users/${uid}/profileData/stats/streak`);
+
+  try {
+    const snapshot = await streakRef.once("value");
+    const data = snapshot.val() || {};
+    const lastLogin = data.lastLoginDate || null;
+    let currentStreak = data.currentStreak || 0;
+
+    if (lastLogin === today) {
+      // Already logged in today — nothing to do
+      console.log("Streak: Already logged in today. Current streak:", currentStreak);
+      return;
+    }
+
+    if (lastLogin && isYesterday(lastLogin, today)) {
+      // Consecutive day — increment streak
+      currentStreak += 1;
+      console.log("Streak continued! New streak:", currentStreak);
+    } else {
+      // First login ever OR streak broken — reset to 1
+      currentStreak = 1;
+      console.log("Streak reset to 1.");
+    }
+
+    // Save streak data
+    await streakRef.set({
+      lastLoginDate: today,
+      currentStreak: currentStreak,
+    });
+
+    // Mirror to profileData/stats so the profile page can read it
+    await statsStreakRef.set(currentStreak);
+  } catch (error) {
+    console.error("Error recording daily login streak:", error);
+  }
+}
+
 // --- SIGN UP LOGIC ---
 const signupForm = document.getElementById("signupForm");
 if (signupForm) {
@@ -44,10 +104,10 @@ if (signupForm) {
 
       if (snapshot.exists()) {
         alert("❌ This Hero Name has already been claimed by another player!");
-        return; 
+        return;
       }
 
-  
+
       const userCredential = await auth.createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
 
@@ -67,8 +127,11 @@ if (signupForm) {
         rank: "Unranked",
       });
 
+      // Record first daily login on signup (starts streak at 1)
+      await recordDailyLogin(user.uid);
+
       alert("✅ Character created! Welcome to G3MX.");
-      window.location.href = "profile.html"; // #MAINMENU.html ian need to chg
+      window.location.href = "G3MXMain.html"; // #MAINMENU.html ian need to chg
 
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
@@ -95,6 +158,9 @@ if (loginForm) {
       );
       const user = userCredential.user;
 
+      // Record daily login streak
+      await recordDailyLogin(user.uid);
+
       const snapshot = await database
         .ref(`users/${user.uid}/profileData/role`)
         .once("value");
@@ -105,7 +171,7 @@ if (loginForm) {
         window.location.href = "admin.html";
       } else {
         console.log("Student recognized. Rerouting to Game...");
-        window.location.href = "profile.html"; // #MAINMENU.html ian need to chg
+        window.location.href = "G3MXMain.html"; // #MAINMENU.html ian need to chg
       }
     } catch (error) {
       alert("Login failed: " + error.message);

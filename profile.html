@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GemX | Student Profile</title>
     <link rel="stylesheet" href="profile.css">
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+15&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Pixelify+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
+    <a href="G3MXMain.html" class="back-btn" title="Back">Back</a>
     <main class="profile-container">
         <header class="profile-header">
             <div class="avatar-placeholder" id="mainHeaderAvatar"
@@ -27,7 +29,7 @@
         <nav class="profile-tabs">
             <button class="tab-btn active" data-target="overview-tab">Learning Overview</button>
             <button class="tab-btn" data-target="settings-tab">Edit Profile</button>
-        </nav>
+        </nav>  
 
         <section id="overview-tab" class="tab-content active">
             <h2>Your Progress</h2>
@@ -50,7 +52,7 @@
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon gem-icon">💎</div>
+                    <div class="stat-icon gem-icon"><img src="images/Gem.png" style="width: 70%; height: 70%;"></div>
                     <div class="stat-info">
                         <h3>Total GEMs</h3>
                         <p id="userGems">0</p>
@@ -66,6 +68,30 @@
             </div>
 
             <div class="profile-content-block">
+                <h2>Streak Milestones</h2>
+                <div class="streak-milestones">
+                    <div class="streak-track">
+                        <div class="streak-track-fill" id="streakTrackFill"></div>
+                    </div>
+                    <div class="milestone locked" id="milestone-1" data-day="1">
+                        <div class="milestone-icon">⚡</div>
+                        <div class="milestone-label">Day 1</div>
+                        <div class="milestone-reward">First Spark</div>
+                    </div>
+                    <div class="milestone locked" id="milestone-5" data-day="5">
+                        <div class="milestone-icon">🔥</div>
+                        <div class="milestone-label">Day 5</div>
+                        <div class="milestone-reward">Blazing Trail</div>
+                    </div>
+                    <div class="milestone locked" id="milestone-10" data-day="10">
+                        <div class="milestone-icon">🌟</div>
+                        <div class="milestone-label">Day 10</div>
+                        <div class="milestone-reward">Legendary</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="profile-content-block">
                 <h2>Your Badges</h2>
                 <div class="achievements-grid">
                     <div id="badge-fast-starter" class="badge-card locked">
@@ -86,9 +112,9 @@
                         <p>Reach the top leaderboard</p>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="profile-content-block">
+            <!-- <div class="profile-content-block">
                 <h2>Recent Activity</h2>
                 <ul class="activity-list">
                     <li class="activity-item">
@@ -113,6 +139,46 @@
                         </div>
                     </li>
                 </ul>
+            </div> -->
+
+            <div class="profile-content-block">
+                <h2>Player Analytics</h2>
+                <div class="charts-grid">
+                    <!-- 90-Day Activity Heatmap -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3 class="chart-title"><span id="heatmapTitle">90-Day</span> Activity</h3>
+                            <div class="heatmap-filters">
+                                <button class="heatmap-filter-btn" data-days="7">7D</button>
+                                <button class="heatmap-filter-btn" data-days="30">1M</button>
+                                <button class="heatmap-filter-btn active" data-days="90">3M</button>
+                            </div>
+                        </div>
+                        <div class="heatmap-legend">
+                            <span class="legend-label">Less</span>
+                            <span class="legend-cell" data-tier="0"></span>
+                            <span class="legend-cell" data-tier="1"></span>
+                            <span class="legend-cell" data-tier="2"></span>
+                            <span class="legend-cell" data-tier="3"></span>
+                            <span class="legend-cell" data-tier="4"></span>
+                            <span class="legend-label">More</span>
+                        </div>
+                        <div class="heatmap-wrapper">
+                            <div class="heatmap-days">
+                                <span>Mon</span><span>Tue</span><span>Wed</span>
+                                <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                            </div>
+                            <div class="heatmap-grid" id="heatmapGrid"></div>
+                        </div>
+                    </div>
+                    <!-- Skill Radar Chart -->
+                    <div class="chart-card">
+                        <h3 class="chart-title">Skill Proficiency</h3>
+                        <div class="radar-container">
+                            <canvas id="skillRadarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -165,6 +231,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="profile.js"></script>
 </body>
 
