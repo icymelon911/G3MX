@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Menu- Game Areas</title>
+    <link rel="stylesheet" href="MenuStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <audio id="bgMusic" autoplay loop>
+        <source src="assets/bg-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <canvas id="stars"></canvas>
+
+    <h1 class="title">G3MX - IT Learning World</h1>
+
+    <button class="back-btn" title="Back" onclick="window.location.href='G3MXMain.html'">Back</button>
+
+    <div id="screenFade"></div>
+
+    <div class="island-container">
+
+        <div class="island desert" onclick="enterChapter(1)">
+            <img src="images/desert_island.png" class="island-img">
+
+            <div class="island-text">
+                <h2>Chapter 1</h2>
+                <p>Data Types</p>
+            </div>
+        </div>
+
+        <div class="island forest" onclick="enterChapter(2)">
+            <img src="images/forest_island.png" class="island-img">
+
+            <div class="island-text">
+                <h2>Chapter 2</h2>
+                <p>Loops & If Else</p>
+            </div>
+        </div>
+
+        <div class="island cave" onclick="enterChapter(3)">
+            <img src="images/cave_island.png" class="island-img">
+
+            <div class="island-text">
+                <h2>Chapter 3</h2>
+                <p>???</p>
+            </div>
+        </div>
+
+        <div class="island castle" onclick="enterChapter(4)">
+            <img src="images/castle_island.png" class="island-img">
+
+            <div class="island-text">
+                <h2>Chapter 4</h2>
+                <p>???</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="fog"></div>
+
+    <script src="MenuStuff.js"></script>
+</body>
+
+</html>
