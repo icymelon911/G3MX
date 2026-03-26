@@ -1,15 +1,5 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyDxLu8HGi27suKE3UsONs_LecE5XXhm7SA",
-    authDomain: "g3mx-b6b1b.firebaseapp.com",
-    projectId: "g3mx-b6b1b",
-    databaseURL: "https://g3mx-b6b1b-default-rtdb.asia-southeast1.firebasedatabase.app",
-    messagingSenderId: "942145798920",
-    appId: "1:942145798920:web:30d8af7f59c539bba9e2bd",
-    measurementId: "G-0Y9JLM6LHM"
-};
-
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const db = firebase.firestore();
 const auth = firebase.auth();
 
 // ==========================================
@@ -18,19 +8,21 @@ const auth = firebase.auth();
 auth.onAuthStateChanged((user) => {
     if (user) {
         // They are logged in! Check if they have the Admin Key
-        database.ref(`users/${user.uid}/profileData/role`).once('value').then((snapshot) => {
-            if (snapshot.val() === "admin") {
+        db.collection("users").doc(user.uid).get().then((docSnap) => {
+            const data = docSnap.exists ? docSnap.data() : {};
+            const role = data.profileData ? data.profileData.role : null;
+            if (role === "admin") {
                 console.log("Admin Access Granted.");
                 loadStudentRoster();
             } else {
                 // They are a student trying to sneak in!
                 alert("Access Denied: Admin Only!");
-                window.location.href = "profile.html"; 
+                window.location.href = "profile.html";
             }
         });
     } else {
         // Not logged in at all
-        window.location.href = "login.html"; 
+        window.location.href = "login.html";
     }
 });
 
@@ -40,32 +32,30 @@ auth.onAuthStateChanged((user) => {
 function loadStudentRoster() {
     const tableBody = document.querySelector("#studentTable tbody");
     const totalStudentsText = document.getElementById("totalStudents");
-    
+
     // Show a loading message
     tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>Loading Roster...</td></tr>";
 
-    // Fetch the entire 'users' folder from Firebase
-    database.ref('users').on('value', (snapshot) => {
+    // Fetch the entire 'users' collection from Firestore
+    db.collection("users").onSnapshot((querySnapshot) => {
         tableBody.innerHTML = ""; // Clear the table
         let studentCount = 0;
 
-        if (snapshot.exists()) {
-            const users = snapshot.val();
-
-            // Loop through every single user ID in the database
-            for (const uid in users) {
-                const userData = users[uid];
+        if (!querySnapshot.empty) {
+            querySnapshot.forEach((docSnap) => {
+                const uid = docSnap.id;
+                const userData = docSnap.data();
                 const profile = userData.profileData || {};
-                const stats = profile.stats || { level: 1, gems: 0 }; 
+                const stats = profile.stats || { level: 1, gems: 0 };
 
                 // Skip drawing this row if the user is an Admin
-                if (profile.role === "admin") continue;
+                if (profile.role === "admin") return;
 
                 studentCount++;
 
                 // 1. Check for custom avatar, otherwise use default placeholder
                 const avatarSrc = profile.profileImageUrl || "https://placehold.co/50x50/1c1615/94817a?text=IMG";
-                
+
                 // 2. Check for equipped frame and draw it if it exists
                 let frameHTML = "";
                 if (profile.equippedFrame && profile.equippedFrame !== "none") {
@@ -90,7 +80,7 @@ function loadStudentRoster() {
                     </td>
                 `;
                 tableBody.appendChild(tr);
-            }
+            });
         } else {
             tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>No students found.</td></tr>";
         }
@@ -105,14 +95,15 @@ function loadStudentRoster() {
 // ==========================================
 // We make this global (window.grantXP) so the HTML button can click it
 window.grantXP = function(uid) {
-    const xpRef = database.ref(`users/${uid}/profileData/stats/xp`);
-    
-    xpRef.once('value').then((snapshot) => {
-        let currentXP = snapshot.val() || 0;
-        let newXP = currentXP + 100; // Give them 100 XP!
-        
-        // Save the new XP back to Firebase
-        xpRef.set(newXP).then(() => {
+    const userRef = db.collection("users").doc(uid);
+
+    userRef.get().then((docSnap) => {
+        const data = docSnap.exists ? docSnap.data() : {};
+        const currentXP = (data.profileData && data.profileData.stats) ? (data.profileData.stats.xp || 0) : 0;
+        const newXP = currentXP + 100; // Give them 100 XP!
+
+        // Save the new XP back to Firestore
+        userRef.update({ "profileData.stats.xp": newXP }).then(() => {
             alert("100 XP Granted to student!");
         });
     });

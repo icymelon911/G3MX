@@ -1,16 +1,6 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyDxLu8HGi27suKE3UsONs_LecE5XXhm7SA",
-  authDomain: "g3mx-b6b1b.firebaseapp.com",
-  projectId: "g3mx-b6b1b",
-  databaseURL:
-    "https://g3mx-b6b1b-default-rtdb.asia-southeast1.firebasedatabase.app",
-  messagingSenderId: "942145798920",
-  appId: "1:942145798920:web:30d8af7f59c539bba9e2bd",
-};
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-const database = firebase.database();
+const db = firebase.firestore();
 
 // --- DAILY LOGIN STREAK LOGIC ---
 function getTodayDateString() {
@@ -34,14 +24,14 @@ function isYesterday(dateA, dateB) {
 
 async function recordDailyLogin(uid) {
   const today = getTodayDateString();
-  const streakRef = database.ref(`users/${uid}/streakData`);
-  const statsStreakRef = database.ref(`users/${uid}/profileData/stats/streak`);
+  const userRef = db.collection("users").doc(uid);
 
   try {
-    const snapshot = await streakRef.once("value");
-    const data = snapshot.val() || {};
-    const lastLogin = data.lastLoginDate || null;
-    let currentStreak = data.currentStreak || 0;
+    const docSnap = await userRef.get();
+    const data = docSnap.exists ? docSnap.data() : {};
+    const streakData = data.streakData || {};
+    const lastLogin = streakData.lastLoginDate || null;
+    let currentStreak = streakData.currentStreak || 0;
 
     if (lastLogin === today) {
       // Already logged in today — nothing to do
@@ -59,14 +49,11 @@ async function recordDailyLogin(uid) {
       console.log("Streak reset to 1.");
     }
 
-    // Save streak data
-    await streakRef.set({
-      lastLoginDate: today,
-      currentStreak: currentStreak,
+    // Save streak data and mirror to profileData.stats.streak
+    await userRef.update({
+      streakData: { lastLoginDate: today, currentStreak: currentStreak },
+      "profileData.stats.streak": currentStreak,
     });
-
-    // Mirror to profileData/stats so the profile page can read it
-    await statsStreakRef.set(currentStreak);
   } catch (error) {
     console.error("Error recording daily login streak:", error);
   }
@@ -99,32 +86,33 @@ if (signupForm) {
 
     try {
       const usernameLower = username.toLowerCase();
-      const usernameRef = database.ref(`usernames/${usernameLower}`);
-      const snapshot = await usernameRef.once("value");
+      const usernameDocRef = db.collection("usernames").doc(usernameLower);
+      const snapshot = await usernameDocRef.get();
 
-      if (snapshot.exists()) {
+      if (snapshot.exists) {
         alert("❌ This Hero Name has already been claimed by another player!");
         return;
       }
 
-
       const userCredential = await auth.createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
 
-      await database.ref(`usernames/${usernameLower}`).set(user.uid);
+      await db.collection("usernames").doc(usernameLower).set({ uid: user.uid });
 
-      await database.ref(`users/${user.uid}/profileData`).set({
-        displayName: username,
-        email: email,
-        equippedFrame: "none",
-      });
-
-      await database.ref(`users/${user.uid}/profileData/stats`).set({
-        level: 1,
-        xp: 0,
-        gems: 0,
-        streak: 0,
-        rank: "Unranked",
+      await db.collection("users").doc(user.uid).set({
+        profileData: {
+          displayName: username,
+          email: email,
+          equippedFrame: "none",
+          stats: {
+            level: 1,
+            xp: 0,
+            gems: 0,
+            streak: 0,
+            rank: "Unranked",
+          },
+        },
+        streakData: {},
       });
 
       // Record first daily login on signup (starts streak at 1)
@@ -161,10 +149,9 @@ if (loginForm) {
       // Record daily login streak
       await recordDailyLogin(user.uid);
 
-      const snapshot = await database
-        .ref(`users/${user.uid}/profileData/role`)
-        .once("value");
-      const role = snapshot.val();
+      const docSnap = await db.collection("users").doc(user.uid).get();
+      const data = docSnap.exists ? docSnap.data() : {};
+      const role = data.profileData ? data.profileData.role : null;
 
       if (role === "admin") {
         console.log("Guild Master recognized. Rerouting to Admin Dashboard...");
