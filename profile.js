@@ -138,20 +138,8 @@
 //   loadProfileData();
 // });
 
-// --- 1. FIREBASE CONFIGURATION ---
-const firebaseConfig = {
-  apiKey: "AIzaSyDxLu8HGi27suKE3UsONs_LecE5XXhm7SA",
-  authDomain: "g3mx-b6b1b.firebaseapp.com",
-  projectId: "g3mx-b6b1b",
-  databaseURL:
-    "https://g3mx-b6b1b-default-rtdb.asia-southeast1.firebasedatabase.app",
-  messagingSenderId: "942145798920",
-  appId: "1:942145798920:web:30d8af7f59c539bba9e2bd",
-  measurementId: "G-0Y9JLM6LHM",
-};
-
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const db = firebase.firestore();
 const auth = firebase.auth(); // 🛑 AUTH TEAM: Initialize Auth
 
 // ==========================================
@@ -224,14 +212,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const email = document.getElementById("emailInput").value;
 
       // 🛑 AUTH TEAM: Using currentUserId instead of hardcoded student_123
-      const dbRef = database.ref(`users/${currentUserId}/profileData`);
+      const userRef = db.collection("users").doc(currentUserId);
 
       try {
-        // Save everything, including the image string, directly to the database!
-        await dbRef.update({
-          displayName: updatedUsername,
-          email: email,
-          profileImageUrl: base64ImageString,
+        // Save everything, including the image string, directly to Firestore!
+        await userRef.update({
+          "profileData.displayName": updatedUsername,
+          "profileData.email": email,
+          "profileData.profileImageUrl": base64ImageString,
         });
 
         document.getElementById("displayUsername").textContent =
@@ -288,14 +276,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!currentUserId) return;
 
     // 🛑 AUTH TEAM: Using currentUserId instead of hardcoded student_123
-    const dbRef = database.ref(`users/${currentUserId}/profileData`);
+    const userRef = db.collection("users").doc(currentUserId);
 
     console.log("Fetching profile data...");
 
-    dbRef.get().then((snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        console.log("Data loaded successfully!", data);
+    userRef.get().then((docSnap) => {
+      if (docSnap.exists) {
+        const userData = docSnap.data();
+        const data = userData.profileData || {};
+        const stats = data.stats || {};
+        console.log("Data loaded successfully!", userData);
 
         // Restore Text Fields
         if (data.displayName) {
@@ -317,14 +307,8 @@ document.addEventListener("DOMContentLoaded", () => {
           // Keep the string in memory in case they save again without picking a new image
           base64ImageString = data.profileImageUrl;
         }
-      }
-    });
 
-    // --- LOAD STATS (Streak, Gems, Level, XP, Rank) ---
-    const statsRef = database.ref(`users/${currentUserId}/profileData/stats`);
-    statsRef.get().then((snapshot) => {
-      if (snapshot.exists()) {
-        const stats = snapshot.val();
+        // --- LOAD STATS (Streak, Gems, Level, XP, Rank) ---
 
         // Streak Days
         const streak = stats.streak || 0;
