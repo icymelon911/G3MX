@@ -121,5 +121,8 @@ closeLogout.addEventListener("click", closeLogoutPopup);
 cancelLogout.addEventListener("click", closeLogoutPopup);
 
 confirmLogout.addEventListener("click", () => {
-    window.location.href = "index.html";
+    firebase.auth().signOut().then(() => {
+        window.location.href = "login.html";
+    });
 });
+

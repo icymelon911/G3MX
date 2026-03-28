@@ -9,7 +9,10 @@
       "Bash(ls -lah \"c:\\\\APU\\\\SEM 5\\\\Capstone Project \\(FYP\\)\\\\Assignment/media\")",
       "Bash(ls \"c:/APU/SEM 5/Capstone Project \\(FYP\\)/Assignment\" --ignore=node_modules)",
       "Bash(ls -la \"c:/APU/SEM 5/Capstone Project \\(FYP\\)/Assignment\")",
-      "Bash(find 'c:\\\\APU\\\\SEM 5\\\\Capstone Project \\(FYP\\)\\\\Assignment' -maxdepth 1 -type f -name *.js -o -name *firebase* -o -name *config*)"
+      "Bash(find 'c:\\\\APU\\\\SEM 5\\\\Capstone Project \\(FYP\\)\\\\Assignment' -maxdepth 1 -type f -name *.js -o -name *firebase* -o -name *config*)",
+      "Bash(find \"c:\\\\APU\\\\SEM 5\\\\Capstone Project \\(FYP\\)\\\\Assignment\" -type f -name \"*.html\" -o -name \"*.js\")",
+      "Bash(ls -lh \"c:\\\\APU\\\\SEM 5\\\\Capstone Project \\(FYP\\)\\\\Assignment\")",
+      "Read(//c/APU/SEM 5/Capstone Project \\(FYP\\)/Assignment/**)"
     ]
   }
 }

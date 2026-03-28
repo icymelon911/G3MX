@@ -152,26 +152,54 @@ h4 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 200px;
-    height: 60px;
-    padding: 0 1.5rem;
+    gap: 0.6rem;
+    min-width: 240px;
+    height: 64px;
+    padding: 0 2.8rem;
     color: #ffffff;
     text-decoration: none;
     font-family: 'VT323', monospace;
-    font-size: 2.2rem;
-    letter-spacing: 2px;
+    font-size: 2.3rem;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    background: rgba(8, 14, 26, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    text-shadow: 0 0 12px rgba(0, 230, 220, 0.9), 0 2px 6px rgba(0, 0, 0, 0.9);
+
+    /* Warrior banner shape — angled sides like a scroll */
+    clip-path: polygon(18px 0%, 100% 0%, calc(100% - 18px) 100%, 0% 100%);
+    background: linear-gradient(180deg, rgba(30, 207, 180, 0.45) 0%, rgba(10, 158, 140, 0.35) 45%, rgba(6, 94, 84, 0.3) 100%);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow:
+        0 0 32px rgba(0, 220, 200, 0.45),
+        0 6px 24px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 0 0 1px rgba(0, 220, 200, 0.35);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .hero-play-link:hover {
-    background: rgba(255, 255, 255, 0.10);
-    border-color: rgba(255, 255, 255, 0.28);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14) inset, 0 0 18px rgba(255, 255, 255, 0.06);
+    background: linear-gradient(180deg, rgba(40, 255, 224, 0.55) 0%, rgba(13, 191, 170, 0.45) 45%, rgba(7, 122, 110, 0.4) 100%);
+    box-shadow:
+        0 0 52px rgba(0, 240, 210, 0.6),
+        0 8px 28px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 0 0 1px rgba(0, 240, 210, 0.5);
+    transform: translate(-50%, calc(-50% - 3px));
+    text-shadow: 0 0 20px rgba(0, 255, 230, 1), 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+.hero-play-link:active {
+    transform: translate(-50%, calc(-50% + 2px));
+    box-shadow:
+        0 0 20px rgba(0, 220, 200, 0.4),
+        0 3px 12px rgba(0, 0, 0, 0.7);
+}
+
+.play-sword {
+    font-size: 1.3rem;
+    filter: drop-shadow(0 0 6px rgba(0, 240, 210, 0.8));
 }
 
 .hero-copy h1 {

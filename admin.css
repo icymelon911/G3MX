@@ -22,10 +22,44 @@ body {
   margin: 0;
 }
 
+/* --- LOGOUT BUTTON (Fixed Top-Right) --- */
+.admin-logout-btn {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  background: #a33232;
+  color: white;
+  font-family: "VT323", monospace;
+  font-size: 1.5rem;
+  padding: 0.5rem 1.2rem;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0px #000;
+  letter-spacing: 2px;
+  border: 4px solid var(--ck-border-dark);
+  border-top-color: #d14747;
+  border-left-color: #d14747;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.admin-logout-btn:hover {
+  background: #ba3a3a;
+}
+
+.admin-logout-btn:active {
+  transform: translateY(4px) translateX(4px);
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
+  border-top-color: var(--ck-border-dark);
+  border-left-color: var(--ck-border-dark);
+}
+
 .admin-container {
   background: var(--ck-panel-bg);
   width: 100%;
-  max-width: 1000px; /* Wider than the profile page for the table */
+  max-width: 1000px;
+  /* Wider than the profile page for the table */
   padding: 2rem;
   border: 4px solid var(--ck-border-dark);
   border-top-color: var(--ck-border-light);
@@ -50,11 +84,47 @@ body {
 }
 
 /* --- REUSED STAT CARDS --- */
-.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
-.stat-card { background: var(--ck-slot-bg); padding: 1rem; border: 4px solid var(--ck-border-dark); border-bottom-color: var(--ck-border-light); border-right-color: var(--ck-border-light); display: flex; align-items: center; gap: 1rem; }
-.stat-icon { font-size: 2.5rem; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; background: var(--ck-bg-deep); border: 4px solid var(--ck-border-dark); border-bottom-color: var(--ck-border-light); border-right-color: var(--ck-border-light); }
-.stat-info h3 { margin: 0; color: var(--ck-text-dim); }
-.stat-info p { margin: 0; font-size: 1.8rem; color: var(--ck-text-main); }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--ck-slot-bg);
+  padding: 1rem;
+  border: 4px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ck-bg-deep);
+  border: 4px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+}
+
+.stat-info h3 {
+  margin: 0;
+  color: var(--ck-text-dim);
+}
+
+.stat-info p {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--ck-text-main);
+}
 
 .admin-header p {
   font-size: 1.5rem;
@@ -79,7 +149,7 @@ body {
   color: var(--ck-gold);
   border-bottom: 4px solid var(--ck-border-dark);
   padding: 1rem;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .retro-table td {
@@ -92,8 +162,13 @@ body {
   background: rgba(255, 255, 255, 0.05);
 }
 
-.player-name { color: var(--ck-crystal-glow); }
-.player-gems { color: var(--ck-gold); }
+.player-name {
+  color: var(--ck-crystal-glow);
+}
+
+.player-gems {
+  color: var(--ck-gold);
+}
 
 /* --- MINI AVATAR IN TABLE --- */
 .mini-avatar-wrapper {
@@ -103,10 +178,16 @@ body {
   background: #000;
   border: 2px solid var(--ck-border-dark);
 }
-.mini-photo { width: 100%; height: 100%; object-fit: cover; }
+
+.mini-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 /* --- BUTTONS --- */
-.action-btn, .sm-btn {
+.action-btn,
+.sm-btn {
   background: var(--ck-panel-bg);
   color: var(--ck-text-main);
   font-family: "VT323", monospace;
@@ -116,17 +197,258 @@ body {
   cursor: pointer;
   text-transform: uppercase;
 }
-.action-btn { font-size: 1.5rem; padding: 0.5rem 1.5rem; }
-.action-btn:active { border-top-color: var(--ck-border-dark); border-left-color: var(--ck-border-dark); }
 
-.sm-btn { font-size: 1.2rem; padding: 0.3rem 0.8rem; margin-right: 5px; }
-.award-btn { background: var(--ck-copper); color: white; border-top-color: #e58255; border-left-color: #e58255; }
-
-
-.chart-container {
+.action-btn {
   font-size: 1.5rem;
+  padding: 0.5rem 1.5rem;
 }
+
+.action-btn:active {
+  border-top-color: var(--ck-border-dark);
+  border-left-color: var(--ck-border-dark);
+}
+
+.sm-btn {
+  font-size: 1.2rem;
+  padding: 0.3rem 0.8rem;
+  margin-right: 5px;
+}
+
+.award-btn {
+  background: var(--ck-copper);
+  color: white;
+  border-top-color: #e58255;
+  border-left-color: #e58255;
+}
+
+
+/* ═══════════════════════════════════════════════════════════ */
+/*  ⚔️  ANALYTICS DUNGEON — 3-Chart Grid System              */
+/*  Layout: Full-width top row + 50/50 bottom row             */
+/* ═══════════════════════════════════════════════════════════ */
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* The top chart spans both columns */
+.chart-panel--wide {
+  grid-column: 1 / -1;
+}
+
+/* ── Stone Panel Container ── */
+.chart-panel {
+  background:
+    linear-gradient(
+      168deg,
+      #1c1615 0%,
+      #140f0e 40%,
+      #110d0c 100%
+    );
+  border: 4px solid var(--ck-border-dark);
+  border-top-color: var(--ck-border-light);
+  border-left-color: var(--ck-border-light);
+  box-shadow:
+    6px 6px 0px rgba(0, 0, 0, 0.55),
+    inset 0 0 50px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(82, 68, 63, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.4s ease;
+}
+
+.chart-panel:hover {
+  box-shadow:
+    6px 6px 0px rgba(0, 0, 0, 0.55),
+    inset 0 0 50px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(82, 68, 63, 0.3),
+    0 0 20px rgba(56, 217, 169, 0.06);
+}
+
+/* Glowing ore vein — animated shimmer across the top */
+.chart-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--ck-crystal-glow) 15%,
+    var(--ck-gold) 45%,
+    var(--ck-copper) 75%,
+    transparent 100%
+  );
+  opacity: 0.5;
+  z-index: 3;
+  animation: oreVeinShimmer 6s ease-in-out infinite alternate;
+}
+
+@keyframes oreVeinShimmer {
+  0%   { opacity: 0.35; }
+  50%  { opacity: 0.65; }
+  100% { opacity: 0.35; }
+}
+
+/* Dirt / scanline texture overlay */
+.chart-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.035) 2px,
+      rgba(0, 0, 0, 0.035) 3px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Panel Header ── */
+.chart-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 3px solid var(--ck-border-dark);
+  background: rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 2;
+}
+
+.chart-panel__icon {
+  font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  background: var(--ck-bg-deep);
+  border: 3px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+  animation: iconPulse 4s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% { box-shadow: inset 0 0 8px rgba(56, 217, 169, 0.15); }
+  50%      { box-shadow: inset 0 0 18px rgba(56, 217, 169, 0.45); }
+}
+
+.chart-panel__title {
+  margin: 0;
+  font-family: 'Pixelify Sans', 'VT323', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ck-gold);
+  text-shadow:
+    0 0 10px rgba(223, 166, 50, 0.35),
+    2px 2px 0px #000;
+  letter-spacing: 1px;
+}
+
+.chart-panel__subtitle {
+  margin: 2px 0 0;
+  font-family: 'Pixelify Sans', 'VT323', monospace;
+  font-size: 0.9rem;
+  color: var(--ck-text-dim);
+  letter-spacing: 0.5px;
+}
+
+/* ── Canvas Wrapper ── */
+.chart-panel__canvas-wrap {
+  padding: 1.25rem 1.25rem 0.75rem;
+  position: relative;
+  z-index: 2;
+  height: 260px;
+}
+
+/* Taller canvas for the full-width line chart */
+.chart-panel--wide .chart-panel__canvas-wrap {
+  height: 280px;
+}
+
+/* Constrain doughnut so it doesn't stretch weirdly */
+.chart-panel__canvas-wrap--doughnut {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-panel__canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── Panel Footer ── */
+.chart-panel__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  border-top: 2px dashed rgba(15, 12, 11, 0.7);
+  background: rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+.chart-panel__footer span {
+  font-family: 'Pixelify Sans', 'VT323', monospace;
+  font-size: 0.95rem;
+  color: var(--ck-text-dim);
+  letter-spacing: 0.5px;
+}
+
+.chart-panel__gem {
+  animation: gemFlicker 3s ease-in-out infinite alternate;
+}
+
+@keyframes gemFlicker {
+  0%   { opacity: 0.5; filter: brightness(0.8); }
+  50%  { opacity: 1;   filter: brightness(1.4); }
+  100% { opacity: 0.6; filter: brightness(1.0); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════ */
+/*  📱 Responsive: collapse to single column on smaller       */
+/* ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 860px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+  .chart-panel--wide {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .chart-panel__title {
+    font-size: 1.1rem;
+  }
+  .chart-panel__canvas-wrap {
+    padding: 0.75rem;
+    height: 220px;
+  }
+  .chart-panel--wide .chart-panel__canvas-wrap {
+    height: 220px;
+  }
+}
+
 
 .roster-section {
   font-size: 1.5rem;
-}
+}

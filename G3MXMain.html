@@ -9,10 +9,20 @@
     <link rel="stylesheet" href="G3MXMain.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
+    <style>
+        canvas#snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
 
 <body>
-
+    <canvas id="snowflakes"></canvas>
     <div class="pixel-ui">
 
         <div class="galaxy"></div>
@@ -38,18 +48,15 @@
                     <i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
 
-        </header>
+            <div class="side-left">
 
+                <button class="side-item" onclick="window.location.href='shop2.html'">Shop</button>
 
-        <div class="side-left">
+                <button class="side-item" onclick="window.location.href='leaderboard2.html'">Leaderboard</button>
 
-            <button class="side-item">Shop</button>
+                <button class="side-item" onclick="window.location.href='profile.html'">Profile</button>
 
-            <button class="side-item">Leaderboard</button>
-
-            <button class="side-item" onclick="window.location.href='profile.html'">Profile</button>
-
-        </div>
+            </div>
 
     </div>
 
@@ -190,7 +197,70 @@
 
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <script src="G3MXMain.js"></script>
+    <script>
+        // --- INITIALIZE FIREBASE ---
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        // --- OFFLINE GEM SYNC (Godot Race Condition fix) ---
+        // If Godot 2 exits before Firebase finishes saving, the pending gems fall back here.
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Sync any stranded gems
+            var pendingGems = parseInt(localStorage.getItem('pending_gems') || '0');
+            if (pendingGems > 0) {
+                console.log("Main Menu: Recovered " + pendingGems + " stranded gems from Godot exit.");
+                localStorage.setItem('pending_gems', '0');
+                firebase.firestore().collection("users").doc(user.uid).update({
+                    "profileData.stats.gems": firebase.firestore.FieldValue.increment(pendingGems)
+                }).catch(e => console.error("Sync failed, gems may be lost", e));
+            }
+
+            const gemDisplay = document.getElementById("userGemCount");
+
+            // Load gem count once on page load
+            firebase.firestore().collection("users").doc(user.uid).get()
+                .then(function (docSnap) {
+                    if (docSnap.exists) {
+                        const stats = (docSnap.data().profileData || {}).stats || {};
+                        gemDisplay.textContent = stats.gems || 0;
+                    }
+                });
+
+            // Listen for real-time gem updates (so returning from game auto-updates)
+            firebase.firestore().collection("users").doc(user.uid)
+                .onSnapshot(function (docSnap) {
+                    if (docSnap.exists) {
+                        const stats = (docSnap.data().profileData || {}).stats || {};
+                        gemDisplay.textContent = stats.gems || 0;
+                    }
+                });
+        });
+    </script>
+    <script>
+        (function () {
+            const c = document.getElementById("snowflakes");
+            const ctx = c.getContext("2d");
+            c.width = window.innerWidth; c.height = window.innerHeight;
+            const flakes = [];
+            for (let i = 0; i < 220; i++) flakes.push({ x: Math.random() * c.width, y: Math.random() * c.height, r: Math.random() * 1.5, s: Math.random() * 0.5 });
+            (function draw() {
+                ctx.clearRect(0, 0, c.width, c.height); ctx.fillStyle = "#ffffff";
+                flakes.forEach(f => { ctx.fillRect(Math.round(f.x), Math.round(f.y), Math.ceil(f.r * 2), Math.ceil(f.r * 2)); f.y += f.s; if (f.y > c.height) f.y = 0; });
+                requestAnimationFrame(draw);
+            })();
+        })();
+    </script>
 
 </body>
 
