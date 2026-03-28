@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G3MX — Leaderboard</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Press Start 2P', cursive;
+      background-image:
+        radial-gradient(circle at center, rgba(18, 14, 13, 0.4) 0%, rgba(18, 14, 13, 0.95) 85%),
+        url("images/core-keeper-bg.png");
+      background-size: cover;
+      background-color: #0c0b08;
+      color: #e8dee0;
+      image-rendering: pixelated;
+      cursor: pointer;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background:
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 3px 100%;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ===== BACK BUTTON ===== */
+    .back-btn {
+      position: fixed;
+      top: 1.5rem;
+      left: 1.5rem;
+      z-index: 1000;
+      background: #c2653e;
+      color: white;
+      font-family: "Jersey 15", sans-serif;
+      font-size: 1.5rem;
+      padding: 0.5rem 1.2rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0px #000;
+      letter-spacing: 2px;
+      border: 4px solid #0f0c0b;
+      border-top-color: #e58255;
+      border-left-color: #e58255;
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
+      image-rendering: pixelated;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .back-btn:hover {
+      background: #d97b52;
+    }
+
+    .back-btn:active {
+      transform: translateY(4px) translateX(4px);
+      box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
+      border-top-color: #0f0c0b;
+      border-left-color: #0f0c0b;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px 40px;
+      position: relative;
+      z-index: 200;
+    }
+
+    .logo {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: #dfa632;
+      text-shadow: 0 1px 0 #0f0c0b, 0 2px 0 #0f0c0b, 0 3px 0 #0f0c0b, 0 4px 0 #0f0c0b,
+        0 5px 8px rgba(0, 0, 0, 0.6), 0 0 15px rgba(223, 166, 50, 0.2);
+      transform: perspective(400px) rotateX(18deg);
+      cursor: pointer;
+    }
+
+    .logout-btn {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 1000;
+      background: #a33232;
+      color: white;
+      font-family: "Jersey 15", sans-serif;
+      font-size: 1.5rem;
+      padding: 0.5rem 1.2rem;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0px #000;
+      letter-spacing: 2px;
+      border: 4px solid #0f0c0b;
+      border-top-color: #d14747;
+      border-left-color: #d14747;
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .logout-btn:hover {
+      background: #ba3a3a;
+    }
+
+    .logout-btn:active {
+      transform: translateY(4px) translateX(4px);
+      box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
+      border-top-color: #0f0c0b;
+      border-left-color: #0f0c0b;
+    }
+
+    /* ===== SIDE NAV ===== */
+    .side-left {
+      position: fixed;
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 1000;
+    }
+
+    .side-item {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 11px;
+      padding: 14px 16px;
+      width: 170px;
+      background: #1c1615;
+      border: 4px solid #0f0c0b;
+      border-bottom-color: #52443f;
+      border-right-color: #52443f;
+      box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.5), 4px 4px 0px rgba(0, 0, 0, 0.4);
+      color: #dfa632;
+      text-transform: uppercase;
+      text-decoration: none;
+      text-shadow: 2px 2px 0px #000;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      image-rendering: pixelated;
+      transition: all 0.1s ease;
+    }
+
+    .side-item i {
+      font-size: 20px;
+      background: #120e0d;
+      padding: 18px;
+      border-radius: 2px;
+      display: block;
+      margin-bottom: 10px;
+      border: 2px solid #52443f;
+      box-shadow: 4px 4px 0px #000, inset 4px 4px 8px rgba(0, 0, 0, 0.8);
+      color: #dfa632;
+    }
+
+    .side-item:hover,
+    .side-item.active {
+      transform: scale(1.1);
+      background: #2a2220;
+      border-color: #dfa632;
+      color: #e8dee0;
+      box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.5), 0 0 16px rgba(223, 166, 50, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .side-item:hover i {
+      transform: scale(1.15);
+      box-shadow: 0 0 10px currentColor, 4px 4px 0px #000;
+    }
+
+    .side-item::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -150%;
+      width: 40%;
+      height: 200%;
+      background: rgba(223, 166, 50, 0.15);
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+
+    .side-item:hover::after {
+      left: 150%;
+      transition: 0.4s;
+    }
+
+    .side-item:hover::before {
+      content: "▶";
+      position: absolute;
+      left: -20px;
+      color: #33cfff;
+      font-size: 12px;
+      animation: blink 0.5s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 0
+      }
+
+      50% {
+        opacity: 1
+      }
+    }
+
+    .fa-store {
+      color: #ffd166;
+    }
+
+    .fa-trophy {
+      color: #ffb703;
+    }
+
+    .fa-user {
+      color: #80ed99;
+    }
+
+    .fa-home {
+      color: #90dbf4;
+    }
+
+    .fa-sign-out-alt {
+      color: #ff6b6b;
+    }
+
+    /* ===== CONTENT ===== */
+    .page-content {
+      margin-left: 260px;
+      padding: 0 40px 80px;
+      position: relative;
+      z-index: 200;
+    }
+
+    .header-box {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header-box h1 {
+      font-size: 22px;
+      color: #dfa632;
+      text-shadow: 3px 3px 0px #000;
+      letter-spacing: 3px;
+    }
+
+    /* ===== TABLE ===== */
+    .leaderboard-table {
+      width: 100%;
+      background: #1c1615;
+      border: 4px solid #0f0c0b;
+      border-bottom-color: #52443f;
+      border-right-color: #52443f;
+      box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.5), 8px 8px 0px rgba(0, 0, 0, 0.5);
+      border-collapse: collapse;
+    }
+
+    .leaderboard-table th {
+      background: #120e0d;
+      padding: 18px 20px;
+      border-bottom: 4px solid #0f0c0b;
+      color: #8a6b2f;
+      text-align: left;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .leaderboard-table td {
+      padding: 18px 20px;
+      border-bottom: 2px solid #0f0c0b;
+      vertical-align: middle;
+      font-size: 11px;
+    }
+
+    .row-user {
+      background: rgba(223, 166, 50, 0.08);
+      outline: 2px solid #dfa632;
+    }
+
+    .mini-avatar {
+      width: 50px;
+      height: 50px;
+      background: #000;
+      border: 2px solid #52443f;
+      object-fit: cover;
+      margin-right: 15px;
+      image-rendering: pixelated;
+    }
+
+    .player-cell {
+      display: flex;
+      align-items: center;
+    }
+
+    .gem-icon {
+      width: 14px;
+      height: 14px;
+      vertical-align: middle;
+      margin-right: 5px;
+      image-rendering: pixelated;
+    }
+
+    /* ===== LOGOUT POPUP ===== */
+    #logoutPopup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 9999;
+    }
+
+    #logoutPopup.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .logout-box {
+      background: #2a2220;
+      border: 4px solid #0f0c0b;
+      border-bottom-color: #52443f;
+      border-right-color: #52443f;
+      box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.5), 8px 8px 0px rgba(0, 0, 0, 0.6);
+      padding: 30px 25px 20px;
+      width: 400px;
+      text-align: center;
+      position: relative;
+      animation: popupAppear 0.3s ease;
+    }
+
+    @keyframes popupAppear {
+      from {
+        transform: scale(0.85);
+        opacity: 0
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .logout-box p {
+      font-size: 12px;
+      line-height: 1.9;
+      margin-bottom: 30px;
+      color: #e8dee0;
+      text-shadow: 2px 2px 0 #000;
+    }
+
+    .logout-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .logout-actions button {
+      flex: 1;
+      padding: 10px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      background: #c2653e;
+      border: 4px solid #0f0c0b;
+      border-top-color: #e58255;
+      border-left-color: #e58255;
+      color: white;
+      cursor: pointer;
+      text-shadow: 2px 2px 0px #000;
+      text-transform: uppercase;
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+      transition: 0.1s;
+    }
+
+    .logout-actions button:hover {
+      background: #d97b52;
+      transform: scale(1.05);
+    }
+
+    #closeLogout {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #94817a;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="stars"></canvas>
+
+  <header></header>
+  <a href="G3MXMain.html" class="back-btn" style="z-index: 9999;">Back</a>
+
+  <button class="logout-btn" onclick="openLogoutPopup()" style="z-index: 9999;">Log Out</button>
+
+
+  <!-- CONTENT -->
+  <div class="page-content" style="margin-left:0;">
+    <div class="header-box">
+      <h1>◆ LEADERBOARD ◆</h1>
+    </div>
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>RANK</th>
+          <th>PLAYER</th>
+          <th style="text-align:right;">GEMS</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body"></tbody>
+    </table>
+  </div>
+
+  <!-- LOGOUT POPUP -->
+  <div id="logoutPopup">
+    <div class="logout-box">
+      <button id="closeLogout" onclick="closeLogoutPopup()">✖</button>
+      <p>Are you sure you want to Log Out?</p>
+      <div class="logout-actions">
+        <button onclick="confirmLogout()">Yes, Log Out</button>
+        <button onclick="closeLogoutPopup()">No, Stay</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Stars
+    const canvas = document.getElementById("stars");
+    const sCtx = canvas.getContext("2d");
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    const stars = [];
+    for (let i = 0; i < 220; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.5, s: Math.random() * 0.5 });
+    (function drawStars() {
+      sCtx.clearRect(0, 0, canvas.width, canvas.height); sCtx.fillStyle = "#ffffff";
+      stars.forEach(s => { sCtx.fillRect(Math.round(s.x), Math.round(s.y), Math.ceil(s.r * 2), Math.ceil(s.r * 2)); s.y += s.s; if (s.y > canvas.height) s.y = 0; });
+      requestAnimationFrame(drawStars);
+    })();
+
+    // Logout popup
+    function openLogoutPopup() { document.getElementById("logoutPopup").classList.add("active"); }
+    function closeLogoutPopup() { document.getElementById("logoutPopup").classList.remove("active"); }
+    function confirmLogout() { window.location.href = "login.html"; }
+
+    async function fetchLeaderboard() {
+      const tableBody = document.getElementById("leaderboard-body");
+      const players = [
+        { name: "YOU", gems: 0, isMe: true, photo: "" }
+      ];
+      tableBody.innerHTML = "";
+      players.forEach((p, i) => {
+        const avatarSrc = p.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${p.name}`;
+        tableBody.innerHTML += `
+      <tr class="${p.isMe ? 'row-user' : ''}">
+        <td>${i + 1}</td>
+        <td>
+          <div class="player-cell">
+            <img src="${avatarSrc}" class="mini-avatar">
+            <span>${p.name}</span>
+          </div>
+        </td>
+        <td style="text-align:right; color:#dfa632;">
+          <img src="images/gem.png" class="gem-icon"> ${p.gems}
+        </td>
+      </tr>`;
+      });
+    }
+    fetchLeaderboard();
+  </script>
+</body>
+
+</html>

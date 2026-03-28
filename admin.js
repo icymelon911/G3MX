@@ -3,6 +3,15 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 
 // ==========================================
+// 🚪 LOGOUT BUTTON
+// ==========================================
+document.getElementById("adminLogoutBtn").addEventListener("click", () => {
+    auth.signOut().then(() => {
+        window.location.href = "login.html";
+    });
+});
+
+// ==========================================
 // 🛑 THE ADMIN BOUNCER 🛑
 // ==========================================
 auth.onAuthStateChanged((user) => {

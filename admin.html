@@ -7,9 +7,12 @@
     <title>GemX | Guild Master Dashboard</title>
     <link rel="stylesheet" href="admin.css">
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
+    <button id="adminLogoutBtn" class="admin-logout-btn">Log Out</button>
     <main class="admin-container">
 
         <header class="admin-header">
@@ -44,9 +47,67 @@
             </div>
         </div>
 
-        <div class="chart-container">
-            <h2>Student Level Distribution</h2>
-            <canvas id="levelChart"></canvas>
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- ⚔️ ANALYTICS DUNGEON — 3-Chart Grid Layout ⚔️              -->
+        <!-- Top Row: Full-width line chart                              -->
+        <!-- Bottom Row: 50/50 split — bar chart + doughnut chart        -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="analytics-grid">
+
+            <!-- ── TOP ROW: Full-Width Line Chart ── -->
+            <div class="chart-panel chart-panel--wide" id="enlistmentPanel">
+                <div class="chart-panel__header">
+                    <span class="chart-panel__icon">📜</span>
+                    <div>
+                        <h2 class="chart-panel__title">Scholar Enlistment</h2>
+                        <p class="chart-panel__subtitle">New user registrations — last 7 days</p>
+                    </div>
+                </div>
+                <div class="chart-panel__canvas-wrap">
+                    <canvas id="enlistmentChart"></canvas>
+                </div>
+                <div class="chart-panel__footer">
+                    <span class="chart-panel__gem">💎</span>
+                    <span>Guild Recruitment Tracker</span>
+                </div>
+            </div>
+
+            <!-- ── BOTTOM-LEFT: Bar Chart ── -->
+            <div class="chart-panel" id="questBoardPanel">
+                <div class="chart-panel__header">
+                    <span class="chart-panel__icon">⚔️</span>
+                    <div>
+                        <h2 class="chart-panel__title">Quest Board</h2>
+                        <p class="chart-panel__subtitle">Chapter completions — difficulty spike check</p>
+                    </div>
+                </div>
+                <div class="chart-panel__canvas-wrap">
+                    <canvas id="questBoardChart"></canvas>
+                </div>
+                <div class="chart-panel__footer">
+                    <span class="chart-panel__gem">🗡️</span>
+                    <span>Dungeon Clearance Rates</span>
+                </div>
+            </div>
+
+            <!-- ── BOTTOM-RIGHT: Doughnut Chart ── -->
+            <div class="chart-panel" id="merchantVaultPanel">
+                <div class="chart-panel__header">
+                    <span class="chart-panel__icon">🔮</span>
+                    <div>
+                        <h2 class="chart-panel__title">Merchant Vault</h2>
+                        <p class="chart-panel__subtitle">Top cosmetics purchased from the shop</p>
+                    </div>
+                </div>
+                <div class="chart-panel__canvas-wrap chart-panel__canvas-wrap--doughnut">
+                    <canvas id="merchantVaultChart"></canvas>
+                </div>
+                <div class="chart-panel__footer">
+                    <span class="chart-panel__gem">✨</span>
+                    <span>Best-Selling Cosmetics</span>
+                </div>
+            </div>
+
         </div>
 
         <section class="roster-section">
@@ -88,6 +149,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
+    <script src="admin-charts.js"></script>
     <script src="admin.js"></script>
 </body>
 

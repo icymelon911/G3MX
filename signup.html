@@ -38,6 +38,17 @@
     <script src="firebase-config.js"></script>
     <script src="auth.js"></script>
     <script src="script.js"></script>
+
+    <script>
+        const toggleBtn = document.getElementById('signupPassword');
+        const pwInput = document.getElementById('signupConfirmPassword');
+        toggleBtn.addEventListener('click', () => {
+            const isPassword = pwInput.type === 'password';
+            pwInput.type = isPassword ? 'text' : 'password';
+            toggleBtn.textContent = isPassword ? '🙈' : '👁️‍🗨️';
+            toggleBtn.title = isPassword ? 'Hide password' : 'Show password';
+        });
+    </script>
 </body>
 
 </html>
