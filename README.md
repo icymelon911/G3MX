@@ -170,8 +170,8 @@ usernames/
 | Student profile page | Done |
 | Admin dashboard | Done (some stats hardcoded) |
 | Medical / Business / Engineering worlds | Coming Soon |
-| Chapter content & quiz pages | In Progress |
-| Profile image upload | In Progress |
+| Chapter content & quiz pages | Done |
+| Profile image upload | Done |
 | Admin grant XP feature | Planned |
 
 ---
