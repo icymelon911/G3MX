@@ -1,149 +1,323 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GemX | Guild Master Dashboard</title>
-    <link rel="stylesheet" href="admin.css">
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Jersey+15&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+    <link rel="stylesheet" href="TargetCursor.css" />
+    <link
+      rel="icon"
+      href="images/AdminDashboard-removebg-preview.png"
+      sizes="256x256"
+    />
+  </head>
 
-<body>
+  <body>
     <button id="adminLogoutBtn" class="admin-logout-btn">Log Out</button>
     <main class="admin-container">
+      <header class="admin-header">
+        <div>
+          <h1>G3MX Admin Dashboard</h1>
+        </div>
+        <button id="generatePdfBtn" class="retro-btn-scribe">
+          📜 Generate Report
+        </button>
+      </header>
 
-        <header class="admin-header">
+      <!-- 🏛️ TOP-LEVEL GUILD STATS -->
+      <div class="admin-stats-grid">
+        <!-- Tablet 1: Total Scholars (Students Only) -->
+        <div class="stat-tablet">
+          <div class="stat-tablet__icon">🧑‍🎓</div>
+          <div class="stat-tablet__info">
+            <h3 class="stat-tablet__label">Total Scholars</h3>
+            <p
+              class="stat-tablet__value"
+              id="totalStudentsStat"
+              style="color: #38d9a9"
+            >
+              00
+            </p>
+          </div>
+          <div
+            class="stat-tablet__glow"
+            style="background: rgba(56, 217, 169, 0.1)"
+          ></div>
+        </div>
+
+        <!-- Tablet 2: Longest Streak (Students Only) -->
+        <div class="stat-tablet">
+          <div class="stat-tablet__icon">🔥</div>
+          <div class="stat-tablet__info">
+            <h3 class="stat-tablet__label">Longest Streak</h3>
+            <p
+              class="stat-tablet__value stat-tablet__value--streak"
+              id="highestStreakStat"
+              style="color: #c2653e"
+            >
+              00 Days — <small id="streakHolderName">[None]</small>
+            </p>
+          </div>
+          <div
+            class="stat-tablet__glow"
+            style="background: rgba(194, 101, 62, 0.1)"
+          ></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- ⚔️ ANALYTICS DUNGEON — 3-Chart Grid Layout ⚔️              -->
+      <!-- Top Row: Full-width line chart                              -->
+      <!-- Bottom Row: 50/50 split — bar chart + doughnut chart        -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <div class="analytics-grid">
+        <!-- ── TOP ROW: Full-Width Line Chart ── -->
+        <div class="chart-panel chart-panel--wide" id="enlistmentPanel">
+          <div class="chart-panel__header">
+            <span class="chart-panel__icon">📜</span>
             <div>
-                <h1>G3MX Admin Dashboard</h1>
-                <p>System Overview & Student Roster</p>
+              <h2 class="chart-panel__title">Scholar Enlistment</h2>
+              <p class="chart-panel__subtitle">
+                New user registrations — last
+                <span
+                  id="enlistmentTimeframeLabel"
+                  style="color: var(--ck-crystal-glow)"
+                  >7 days</span
+                >
+              </p>
             </div>
-            <button class="action-btn">Generate Report</button>
-        </header>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon" style="box-shadow: inset 0 0 15px rgba(56, 217, 169, 0.4);">👥</div>
-                <div class="stat-info">
-                    <h3>Active Students</h3>
-                    <p id="totalStudents">42</p>
-                </div>
+            <!-- UI Controls: Timeframe filters -->
+            <div class="chart-filter-group" id="enlistmentFilters">
+              <button class="filter-btn active" data-timeframe="7">
+                7 Days
+              </button>
+              <button class="filter-btn" data-timeframe="30">1 Months</button>
+              <button class="filter-btn" data-timeframe="90">3 Months</button>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="box-shadow: inset 0 0 15px rgba(223, 166, 50, 0.4);">📝</div>
-                <div class="stat-info">
-                    <h3>Quizzes Completed</h3>
-                    <p id="totalQuizzes">128</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="box-shadow: inset 0 0 15px rgba(223, 107, 32, 0.4);">🔥</div>
-                <div class="stat-info">
-                    <h3>Highest Streak</h3>
-                    <p id="highestStreak">14 Days</p>
-                </div>
-            </div>
+          </div>
+          <div class="chart-panel__canvas-wrap">
+            <canvas id="enlistmentChart"></canvas>
+          </div>
+          <div class="chart-panel__footer">
+            <img src="images/gem.png" class="gem-icon" />
+            <span>Guild Recruitment Tracker</span>
+          </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <!-- ⚔️ ANALYTICS DUNGEON — 3-Chart Grid Layout ⚔️              -->
-        <!-- Top Row: Full-width line chart                              -->
-        <!-- Bottom Row: 50/50 split — bar chart + doughnut chart        -->
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <div class="analytics-grid">
-
-            <!-- ── TOP ROW: Full-Width Line Chart ── -->
-            <div class="chart-panel chart-panel--wide" id="enlistmentPanel">
-                <div class="chart-panel__header">
-                    <span class="chart-panel__icon">📜</span>
-                    <div>
-                        <h2 class="chart-panel__title">Scholar Enlistment</h2>
-                        <p class="chart-panel__subtitle">New user registrations — last 7 days</p>
-                    </div>
-                </div>
-                <div class="chart-panel__canvas-wrap">
-                    <canvas id="enlistmentChart"></canvas>
-                </div>
-                <div class="chart-panel__footer">
-                    <span class="chart-panel__gem">💎</span>
-                    <span>Guild Recruitment Tracker</span>
-                </div>
+        <!-- ── BOTTOM-LEFT: Bar Chart ── -->
+        <div class="chart-panel" id="questBoardPanel">
+          <div class="chart-panel__header">
+            <span class="chart-panel__icon">⚔️</span>
+            <div>
+              <h2 class="chart-panel__title">Quest Board</h2>
+              <p class="chart-panel__subtitle">
+                Chapter completions — difficulty spike check
+              </p>
             </div>
-
-            <!-- ── BOTTOM-LEFT: Bar Chart ── -->
-            <div class="chart-panel" id="questBoardPanel">
-                <div class="chart-panel__header">
-                    <span class="chart-panel__icon">⚔️</span>
-                    <div>
-                        <h2 class="chart-panel__title">Quest Board</h2>
-                        <p class="chart-panel__subtitle">Chapter completions — difficulty spike check</p>
-                    </div>
-                </div>
-                <div class="chart-panel__canvas-wrap">
-                    <canvas id="questBoardChart"></canvas>
-                </div>
-                <div class="chart-panel__footer">
-                    <span class="chart-panel__gem">🗡️</span>
-                    <span>Dungeon Clearance Rates</span>
-                </div>
-            </div>
-
-            <!-- ── BOTTOM-RIGHT: Doughnut Chart ── -->
-            <div class="chart-panel" id="merchantVaultPanel">
-                <div class="chart-panel__header">
-                    <span class="chart-panel__icon">🔮</span>
-                    <div>
-                        <h2 class="chart-panel__title">Merchant Vault</h2>
-                        <p class="chart-panel__subtitle">Top cosmetics purchased from the shop</p>
-                    </div>
-                </div>
-                <div class="chart-panel__canvas-wrap chart-panel__canvas-wrap--doughnut">
-                    <canvas id="merchantVaultChart"></canvas>
-                </div>
-                <div class="chart-panel__footer">
-                    <span class="chart-panel__gem">✨</span>
-                    <span>Best-Selling Cosmetics</span>
-                </div>
-            </div>
-
+          </div>
+          <div class="chart-panel__canvas-wrap">
+            <canvas id="questBoardChart"></canvas>
+          </div>
+          <div class="chart-panel__footer">
+            <span class="chart-panel__gem">🗡️</span>
+            <span>Dungeon Clearance Rates</span>
+          </div>
         </div>
 
-        <section class="roster-section">
-            <h2>Student Roster</h2>
-            <div class="table-wrapper">
-                <table class="retro-table" id="studentTable">
-                    <thead>
-                        <tr>
-                            <th>Avatar</th>
-                            <th>Student Name</th>
-                            <th>Level</th>
-                            <th>Total GEMs</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="mini-avatar-wrapper">
-                                    <img class="mini-photo" src="https://placehold.co/50x50/1c1615/94817a?text=IMG"
-                                        alt="User">
-                                </div>
-                            </td>
-                            <td class="player-name">Edison_Hacker</td>
-                            <td class="player-level">Level 5</td>
-                            <td class="player-gems">1,250 💎</td>
-                            <td>
-                                <button class="sm-btn award-btn">Grant XP</button>
-                                <button class="sm-btn view-btn">View</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- ── BOTTOM-RIGHT: Doughnut Chart ── -->
+        <div class="chart-panel" id="merchantVaultPanel">
+          <div class="chart-panel__header">
+            <span class="chart-panel__icon">🔮</span>
+            <div>
+              <h2 class="chart-panel__title">Merchant Vault</h2>
+              <p class="chart-panel__subtitle">
+                Top cosmetics purchased from the shop
+              </p>
             </div>
-        </section>
+          </div>
+          <div
+            class="chart-panel__canvas-wrap chart-panel__canvas-wrap--doughnut"
+          >
+            <canvas id="merchantVaultChart"></canvas>
+          </div>
+          <div class="chart-panel__footer">
+            <span class="chart-panel__gem">✨</span>
+            <span>Best-Selling Cosmetics</span>
+          </div>
+        </div>
+      </div>
 
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- ⚒️ RELIC FORGE (ECONOMY BALANCING)                        -->
+      <!-- Admin controls for adjusting GEM achievement thresholds    -->
+      <!-- Saves to: game_settings/achievements in Firestore          -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <div class="forge-panel">
+        <div class="forge-panel__header">
+          <span class="forge-panel__icon">⚒️</span>
+          <div>
+            <h2 class="forge-panel__title">RELIC FORGE (ECONOMY BALANCING)</h2>
+            <p class="forge-panel__subtitle">
+              Set required GEM thresholds for dynamic achievement unlocks.
+            </p>
+          </div>
+        </div>
+
+        <div class="forge-panel__body">
+          <!-- Row: First Spark -->
+          <div class="forge-row">
+            <div class="forge-row__info">
+              <span class="forge-row__icon">✨</span>
+              <div>
+                <p class="forge-row__name">First Spark</p>
+                <p class="forge-row__desc">
+                  The scholar's first milestone — early engagement reward
+                </p>
+              </div>
+            </div>
+            <div class="forge-row__input-wrap">
+              <span class="forge-row__gem-label"
+                ><img src="images/gem.png" class="forge-row__gem-icon" />GEMs
+                Required</span
+              >
+              <input
+                type="number"
+                id="forge-first-spark"
+                class="forge-input"
+                min="1"
+                placeholder="100"
+              />
+            </div>
+          </div>
+
+          <!-- Row: Wealthy Scholar -->
+          <div class="forge-row">
+            <div class="forge-row__info">
+              <span class="forge-row__icon">🪙</span>
+              <div>
+                <p class="forge-row__name">Wealthy Scholar</p>
+                <p class="forge-row__desc">
+                  Mid-tier reward — recognises consistent earners
+                </p>
+              </div>
+            </div>
+            <div class="forge-row__input-wrap">
+              <span class="forge-row__gem-label"
+                ><img src="images/gem.png" class="forge-row__gem-icon" />GEMs
+                Required</span
+              >
+              <input
+                type="number"
+                id="forge-wealthy-scholar"
+                class="forge-input"
+                min="1"
+                placeholder="500"
+              />
+            </div>
+          </div>
+
+          <!-- Row: Core Master -->
+          <div class="forge-row">
+            <div class="forge-row__info">
+              <span class="forge-row__icon">🔮</span>
+              <div>
+                <p class="forge-row__name">Core Master</p>
+                <p class="forge-row__desc">
+                  High-tier — granted to dedicated dungeon explorers
+                </p>
+              </div>
+            </div>
+            <div class="forge-row__input-wrap">
+              <span class="forge-row__gem-label"
+                ><img src="images/gem.png" class="forge-row__gem-icon" />GEMs
+                Required</span
+              >
+              <input
+                type="number"
+                id="forge-core-master"
+                class="forge-input"
+                min="1"
+                placeholder="1000"
+              />
+            </div>
+          </div>
+
+          <!-- Row: Deep Delver -->
+          <div class="forge-row">
+            <div class="forge-row__info">
+              <span class="forge-row__icon">⛏️</span>
+              <div>
+                <p class="forge-row__name">Deep Delver</p>
+                <p class="forge-row__desc">
+                  Elite tier — only the most devoted miners reach this
+                </p>
+              </div>
+            </div>
+            <div class="forge-row__input-wrap">
+              <span class="forge-row__gem-label"
+                ><img src="images/gem.png" class="forge-row__gem-icon" />GEMs
+                Required</span
+              >
+              <input
+                type="number"
+                id="forge-deep-delver"
+                class="forge-input"
+                min="1"
+                placeholder="2500"
+              />
+            </div>
+          </div>
+
+          <!-- Row: Legend -->
+          <div class="forge-row">
+            <div class="forge-row__info">
+              <span class="forge-row__icon">👑</span>
+              <div>
+                <p class="forge-row__name">Legend</p>
+                <p class="forge-row__desc">
+                  Pinnacle relic — the rarest title in the entire guild
+                </p>
+              </div>
+            </div>
+            <div class="forge-row__input-wrap">
+              <span class="forge-row__gem-label"
+                ><img src="images/gem.png" class="forge-row__gem-icon" />GEMs
+                Required</span
+              >
+              <input
+                type="number"
+                id="forge-legend"
+                class="forge-input"
+                min="1"
+                placeholder="5000"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="forge-panel__footer">
+          <button
+            id="saveForgeBtn"
+            class="forge-save-btn"
+            onclick="saveAchievementSettings()"
+          >
+            SAVE ENCHANTMENTS
+          </button>
+          <p class="forge-hint">
+            Changes apply to all scholars instantly via live Firestore sync.
+          </p>
+        </div>
+      </div>
     </main>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
@@ -151,6 +325,8 @@
     <script src="firebase-config.js"></script>
     <script src="admin-charts.js"></script>
     <script src="admin.js"></script>
-</body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="target-cursor-vanilla.js"></script>
+  </body>
 </html>

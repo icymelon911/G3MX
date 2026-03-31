@@ -143,62 +143,91 @@ Chart.defaults.plugins.legend.labels.pointStyleWidth = 14;
 //      Position: Top row, full width
 // ══════════════════════════════════════════════════════════════════════
 
+let enlistmentChartInstance = null;
+let enlistmentUnsubscribe = null;
+
+function subscribeToRegistrationData(timeframeDays, labelText = null) {
+  const db = firebase.firestore();
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - timeframeDays);
+  startDate.setHours(0, 0, 0, 0);
+
+  // Update the UI label if provided
+  if (labelText) {
+    const labelEl = document.getElementById("enlistmentTimeframeLabel");
+    if (labelEl) labelEl.textContent = labelText;
+  }
+
+  // Clear existing listener if user changes timeframe
+  if (enlistmentUnsubscribe) {
+    enlistmentUnsubscribe();
+  }
+
+  // Attach real-time listener
+  enlistmentUnsubscribe = db.collection("users")
+    .where("createdAt", ">=", startDate)
+    .onSnapshot((snap) => {
+      const dayCounts = {};
+
+      // Initialize buckets to ensure empty days are represented with 0
+      for (let i = timeframeDays - 1; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const label = (timeframeDays <= 7) 
+          ? d.toLocaleDateString('en', { weekday: 'short' })
+          : d.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+        dayCounts[label] = 0;
+      }
+
+      snap.forEach(doc => {
+        const data = doc.data();
+        const timestamp = data.createdAt || (data.profileData && data.profileData.createdAt);
+        if (timestamp) {
+          const created = (typeof timestamp.toDate === 'function') ? timestamp.toDate() : new Date(timestamp);
+          const label = (timeframeDays <= 7)
+            ? created.toLocaleDateString('en', { weekday: 'short' })
+            : created.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+          
+          if (dayCounts[label] !== undefined) {
+            dayCounts[label] += 1;
+          }
+        }
+      });
+
+      // Update Chart.js interactively
+      if (enlistmentChartInstance) {
+        enlistmentChartInstance.data.labels = Object.keys(dayCounts);
+        enlistmentChartInstance.data.datasets[0].data = Object.values(dayCounts);
+        enlistmentChartInstance.update();
+      }
+    }, (error) => {
+      console.error("Error with real-time registration data:", error);
+    });
+}
+
 function renderEnlistmentChart() {
-
-  // ┌────────────────────────────────────────────────────────────────┐
-  // │  📦 MOCK DATA — Replace with Firebase Firestore query         │
-  // │                                                                │
-  // │  HOW TO REPLACE WITH FIREBASE:                                │
-  // │                                                                │
-  // │  // 1. Query users created in the last 7 days                  │
-  // │  const sevenDaysAgo = new Date();                              │
-  // │  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);            │
-  // │                                                                │
-  // │  const snap = await db.collection("users")                     │
-  // │    .where("profileData.createdAt", ">=", sevenDaysAgo)         │
-  // │    .get();                                                     │
-  // │                                                                │
-  // │  // 2. Bucket into day-of-week counts                          │
-  // │  const dayCounts = {};                                         │
-  // │  snap.forEach(doc => {                                         │
-  // │    const created = doc.data().profileData.createdAt.toDate();   │
-  // │    const dayLabel = created.toLocaleDateString('en',            │
-  // │      { weekday: 'short' });                                    │
-  // │    dayCounts[dayLabel] = (dayCounts[dayLabel] || 0) + 1;       │
-  // │  });                                                           │
-  // │                                                                │
-  // │  // 3. Map into labels[] and data[] arrays                     │
-  // │  const labels = Object.keys(dayCounts);                        │
-  // │  const data   = Object.values(dayCounts);                      │
-  // └────────────────────────────────────────────────────────────────┘
-
-  const mockData = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    newUsers: [4, 7, 3, 9, 12, 6, 8],
-  };
-
   const canvas = document.getElementById('enlistmentChart');
   if (!canvas) return;
 
-  // Build the translucent fill gradient (teal → transparent)
   const ctx = canvas.getContext('2d');
   const fillGrad = ctx.createLinearGradient(0, 0, 0, 280);
   fillGrad.addColorStop(0, 'rgba(0, 212, 170, 0.35)');
   fillGrad.addColorStop(0.7, 'rgba(0, 212, 170, 0.06)');
   fillGrad.addColorStop(1, 'rgba(0, 212, 170, 0)');
 
-  new Chart(canvas, {
+  // Initialize empty chart
+  enlistmentChartInstance = new Chart(canvas, {
     type: 'line',
     data: {
-      labels: mockData.labels,
+      labels: [],
       datasets: [{
         label: 'New Scholars',
-        data: mockData.newUsers,
+        data: [],
         borderColor: ORE.teal,
         backgroundColor: fillGrad,
         borderWidth: 3,
-        tension: 0.3,                 // Smooth curve
-        fill: true,                   // Translucent area fill
+        tension: 0.3,
+        fill: true,
         pointBackgroundColor: ORE.teal,
         pointBorderColor: '#000',
         pointBorderWidth: 2,
@@ -222,7 +251,7 @@ function renderEnlistmentChart() {
       },
       scales: retroAxes({ stepSize: 3 }),
       plugins: {
-        legend: { display: false },   // Clean — title is in the HTML header
+        legend: { display: false },
         tooltip: retroTooltip({
           callbacks: {
             label: (item) => `  ⚔️  ${item.parsed.y} new scholars enlisted`,
@@ -230,6 +259,23 @@ function renderEnlistmentChart() {
         }),
       },
     },
+  });
+
+  // Start listening to the last 7 days by default
+  subscribeToRegistrationData(7, "7 days");
+
+  // Setup UI Control Listeners
+  const filterBtns = document.querySelectorAll('#enlistmentFilters .filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // Manage active state
+      filterBtns.forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      
+      const days = parseInt(e.target.dataset.timeframe, 10);
+      const labelTx = e.target.textContent.toLowerCase();
+      subscribeToRegistrationData(days, labelTx);
+    });
   });
 }
 
@@ -240,48 +286,68 @@ function renderEnlistmentChart() {
 //      Position: Bottom-left column
 // ══════════════════════════════════════════════════════════════════════
 
-function renderQuestBoardChart() {
+let questBoardChartInstance = null;
 
-  // ┌────────────────────────────────────────────────────────────────┐
-  // │  📦 MOCK DATA — Replace with Firebase Firestore query         │
-  // │                                                                │
-  // │  HOW TO REPLACE WITH FIREBASE:                                │
-  // │                                                                │
-  // │  // 1. Query all quiz / chapter completion records             │
-  // │  const snap = await db.collection("quizResults").get();        │
-  // │                                                                │
-  // │  // 2. Count completions per chapter                           │
-  // │  const chapterCounts = {};                                     │
-  // │  snap.forEach(doc => {                                         │
-  // │    const ch = doc.data().chapter; // e.g. "Ch 1"               │
-  // │    chapterCounts[ch] = (chapterCounts[ch] || 0) + 1;           │
-  // │  });                                                           │
-  // │                                                                │
-  // │  // 3. Map into labels[] and data[] arrays                     │
-  // │  const labels = Object.keys(chapterCounts);                    │
-  // │  const data   = Object.values(chapterCounts);                  │
-  // └────────────────────────────────────────────────────────────────┘
+/**
+ * ──────────────────────────────────────────────────────────────────────
+ * Firestore Query Logic
+ * We use a Collection Group query to search across all "Game_Log" 
+ * sub-collections belonging to any user in the database.
+ * ──────────────────────────────────────────────────────────────────────
+ */
+async function loadQuestBoardData() {
+  const db = firebase.firestore();
+  
+  // Array matching the requested fixed chart labels
+  const chapters = ['Chapter 1', 'Chapter 2', 'Chapter 3', 'Chapter 4', 'Chapter 5'];
+  const totals = [0, 0, 0, 0, 0];
 
-  const mockData = {
-    labels: ['Ch 1', 'Ch 2', 'Ch 3', 'Ch 4', 'Ch 5'],
-    completions: [38, 31, 22, 14, 8],
-  };
+  try {
+    // 1. Query all game logs across all users
+    const snapshot = await db.collectionGroup("activity_logs").get();
+    
+    // 2. Tally up the completions by finding the matching chapter prefix
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const chapterName = data.chapterName || data.chapter || ""; 
+      
+      // Since activity_logs saves "Chapter 1: Data Types", we check which 
+      // label it starts with (e.g., "Chapter 1")
+      const matchedIdx = chapters.findIndex(label => chapterName.startsWith(label));
+      if (matchedIdx !== -1) {
+        totals[matchedIdx]++;
+      }
+    });
 
+    return totals;
+  } catch (error) {
+    console.error("Error fetching quest board data:", error);
+    // If you don't have an index built yet, Firestore will throw an error with a link to build it.
+    // We return zeroed data so the chart doesn't crash visually.
+    return totals; 
+  }
+}
+
+async function renderQuestBoardChart() {
   const canvas = document.getElementById('questBoardChart');
   if (!canvas) return;
 
-  new Chart(canvas, {
+  // Fetch the real totals
+  const totals = await loadQuestBoardData();
+
+  // Initialize the Chart
+  questBoardChartInstance = new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: mockData.labels,
+      labels: ['Chapter 1', 'Chapter 2', 'Chapter 3', 'Chapter 4', 'Chapter 5'],
       datasets: [{
         label: 'Completions',
-        data: mockData.completions,
-        backgroundColor: glowGradient(canvas, ORE.amber, ORE.amberGlow),
-        borderColor: ORE.amber,
+        data: totals,
+        backgroundColor: glowGradient(canvas, '#dfa632', 'rgba(223, 166, 50, 0.18)'), // Glowing gold with gradient fade
+        borderColor: '#f0be44',      // Slightly lighter gold border
         borderWidth: 2,
-        borderRadius: 4,             // Slightly rounded corners
-        hoverBackgroundColor: ORE.amber,
+        borderRadius: 4,             // Slightly rounded pixel corners
+        hoverBackgroundColor: '#38d9a9', // Glowing teal on hover
         hoverBorderColor: '#fff',
         hoverBorderWidth: 2,
         barPercentage: 0.7,
@@ -296,9 +362,10 @@ function renderQuestBoardChart() {
         easing: 'easeOutQuart',
         delay: (ctx) => ctx.dataIndex * 100,
       },
-      scales: retroAxes({ stepSize: 10 }),
+      // Hide x-axis grid lines entirely and use subtle dark lines for y-axis
+      scales: retroAxes({ stepSize: 1 }), 
       plugins: {
-        legend: { display: false },
+        legend: { display: false }, // Disabled legend (title explains it)
         tooltip: retroTooltip({
           callbacks: {
             label: (item) => `  🗡️  ${item.parsed.y} adventurers cleared`,
@@ -316,75 +383,82 @@ function renderQuestBoardChart() {
 //      Position: Bottom-right column
 // ══════════════════════════════════════════════════════════════════════
 
-function renderMerchantVaultChart() {
-
-  // ┌────────────────────────────────────────────────────────────────┐
-  // │  📦 MOCK DATA — Replace with Firebase Firestore query         │
-  // │                                                                │
-  // │  HOW TO REPLACE WITH FIREBASE:                                │
-  // │                                                                │
-  // │  // 1. Query the purchases / inventory collection              │
-  // │  const snap = await db.collection("purchases").get();          │
-  // │                                                                │
-  // │  // 2. Count purchases per cosmetic item                       │
-  // │  const itemCounts = {};                                        │
-  // │  snap.forEach(doc => {                                         │
-  // │    const item = doc.data().itemName;                            │
-  // │    itemCounts[item] = (itemCounts[item] || 0) + 1;             │
-  // │  });                                                           │
-  // │                                                                │
-  // │  // 3. Sort descending and take top N items                    │
-  // │  const sorted = Object.entries(itemCounts)                     │
-  // │    .sort((a, b) => b[1] - a[1])                                │
-  // │    .slice(0, 5);                                               │
-  // │  const labels = sorted.map(s => s[0]);                         │
-  // │  const data   = sorted.map(s => s[1]);                         │
-  // └────────────────────────────────────────────────────────────────┘
-
-  const mockData = {
-    labels: ['Crystal Aura', 'Iron Frame', 'Stealth Cloak', 'Phoenix Wings', 'Void Mask'],
-    purchases: [42, 35, 28, 19, 12],
+/**
+ * ──────────────────────────────────────────────────────────────────────
+ * Firestore Aggregation Logic
+ * Loops through the "users" collection and tallies items in 
+ * their profileData.ownedItems arrays.
+ * ──────────────────────────────────────────────────────────────────────
+ */
+async function loadMerchantVaultData() {
+  const db = firebase.firestore();
+  
+  // The exact 6 items in the shop
+  const shopItems = [
+    "Gold Frame", "Green Frame", "Wizard Hat", 
+    "Cool Shades", "Construction Hat", "Nerd Glasses"
+  ];
+  const tally = {
+    "Gold Frame": 0, "Green Frame": 0, "Wizard Hat": 0,
+    "Cool Shades": 0, "Construction Hat": 0, "Nerd Glasses": 0
   };
 
-  // Distinct ore colors for each slice
-  const sliceColors = [
-    ORE.purple,      // Crystal Aura
-    ORE.dimStone,    // Iron Frame
-    ORE.amber,       // Stealth Cloak
-    ORE.teal,        // Phoenix Wings
-    ORE.gold,        // Void Mask
-  ];
+  try {
+    const snapshot = await db.collection("users").get();
+    
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const owned = (data.profileData && data.profileData.ownedItems) || [];
+      
+      owned.forEach(item => {
+        if (tally.hasOwnProperty(item)) {
+          tally[item]++;
+        }
+      });
+    });
 
-  const sliceHoverColors = [
-    '#b577ff',
-    '#a3b3cc',
-    '#ffc76e',
-    '#33ebc2',
-    '#f0c040',
-  ];
+    return shopItems.map(name => tally[name]);
+  } catch (error) {
+    console.error("Error aggregating merchant data:", error);
+    return [0, 0, 0, 0, 0, 0];
+  }
+}
 
+async function renderMerchantVaultChart() {
   const canvas = document.getElementById('merchantVaultChart');
   if (!canvas) return;
+
+  const dataValues = await loadMerchantVaultData();
+  const labels = ["Gold Frame", "Green Frame", "Wizard Hat", "Cool Shades", "Construction Hat", "Nerd Glasses"];
+
+  // ── Dynamic Coloring Logic ──
+  const maxVal = Math.max(...dataValues);
+  const minVal = Math.min(...dataValues);
+
+  const backgroundColors = dataValues.map((val, index) => {
+    if (val === maxVal && maxVal > 0) return '#38d9a9'; // Most Purchased (Teal)
+    if (val === minVal) return '#a33232';              // Least Purchased (Danger Red)
+    
+    // Split remaining between Gold and Purple for variety
+    return index % 2 === 0 ? '#dfa632' : '#9b59ff';
+  });
 
   new Chart(canvas, {
     type: 'doughnut',
     data: {
-      labels: mockData.labels,
+      labels: labels,
       datasets: [{
-        data: mockData.purchases,
-        backgroundColor: sliceColors,
-        borderColor: '#0f0c0b',        // Dark stone border between slices
-        borderWidth: 3,
-        hoverBackgroundColor: sliceHoverColors,
-        hoverBorderColor: '#fff',
-        hoverBorderWidth: 2,
-        hoverOffset: 8,
+        data: dataValues,
+        backgroundColor: backgroundColors,
+        borderColor: '#0d1117',        // Deep cave background
+        borderWidth: 4,                // Creates "gaps" between slices
+        hoverOffset: 12,
       }],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutout: '75%',                   // Sleek ring shape
+      cutout: '75%',                   // Sleek high-tech ring
       animation: {
         animateRotate: true,
         duration: 1600,
@@ -395,23 +469,27 @@ function renderMerchantVaultChart() {
           display: true,
           position: 'bottom',
           labels: {
-            color: ORE.textMain,
+            color: '#e8dee0',          // --ck-text-main
             font: {
               family: "'Pixelify Sans', monospace",
-              size: 12,
+              size: 13,
               weight: '600',
             },
-            padding: 14,
+            padding: 18,
             usePointStyle: true,
-            pointStyleWidth: 12,
+            pointStyleWidth: 10,
           },
         },
         tooltip: retroTooltip({
           callbacks: {
             label: (item) => {
               const total = item.dataset.data.reduce((a, b) => a + b, 0);
-              const pct = ((item.parsed / total) * 100).toFixed(0);
-              return `  ✨  ${item.label}: ${item.parsed} sold (${pct}%)`;
+              const pct = total > 0 ? ((item.parsed / total) * 100).toFixed(0) : 0;
+              let rank = "";
+              if (item.parsed === maxVal && maxVal > 0) rank = " (BEST SELLER!)";
+              if (item.parsed === minVal) rank = " (LOW STOCK)";
+              
+              return `  ✨  ${item.label}: ${item.parsed} sold ${rank}`;
             },
           },
         }),

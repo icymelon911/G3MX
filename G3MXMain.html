@@ -7,19 +7,10 @@
     <title>G3MX- Main Menu</title>
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="G3MXMain.css">
+    <link rel="icon" type="image/png" href="images/main_menu_logo.png" sizes="32x32">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <style>
-        canvas#snowflakes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-    </style>
+    <link rel="stylesheet" href="TargetCursor.css">
 
 <body>
     <canvas id="snowflakes"></canvas>
@@ -44,11 +35,25 @@
                     <img src="images/gem.png" class="gem-icon" alt="Gem">
                 </div>
 
-                <button class="menu-btn logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Logout</button>
+                <div class="profile-menu-container">
+                    <button class="profile-btn" id="headerProfileBtn">
+                        <img src="images/steam.png"
+                            id="mainMenuUserAvatar" alt="Profile">
+                        <i class="fas fa-caret-down"></i>
+                    </button>
+                    <div class="profile-dropdown-content" id="headerProfileDropdown">
+                        <button class="logout-dropdown-btn" id="logoutBtnMain">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div class="side-left">
+            <button id="sideNavToggle" class="side-nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="side-left" id="sideNav">
 
                 <button class="side-item" onclick="window.location.href='shop2.html'">Shop</button>
 
@@ -232,8 +237,12 @@
             firebase.firestore().collection("users").doc(user.uid).get()
                 .then(function (docSnap) {
                     if (docSnap.exists) {
-                        const stats = (docSnap.data().profileData || {}).stats || {};
-                        gemDisplay.textContent = stats.gems || 0;
+                        const data = docSnap.data().profileData || {};
+                        const stats = data.stats || {};
+                        gemDisplay.textContent = (stats.gems || 0).toLocaleString();
+                        if (data.profileImageUrl && data.profileImageUrl !== "undefined" && data.profileImageUrl !== "null" && data.profileImageUrl.trim() !== "") {
+                            document.getElementById("mainMenuUserAvatar").src = data.profileImageUrl;
+                        }
                     }
                 });
 
@@ -242,7 +251,7 @@
                 .onSnapshot(function (docSnap) {
                     if (docSnap.exists) {
                         const stats = (docSnap.data().profileData || {}).stats || {};
-                        gemDisplay.textContent = stats.gems || 0;
+                        gemDisplay.textContent = (stats.gems || 0).toLocaleString();
                     }
                 });
         });
@@ -262,6 +271,8 @@
         })();
     </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="target-cursor-vanilla.js"></script>
 </body>
 
 </html>

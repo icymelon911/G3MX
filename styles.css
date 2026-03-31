@@ -13,6 +13,34 @@ body {
     overflow-x: hidden;
 }
 
+.navbar .logo {
+    font-size: 80px;
+    margin-top: 0;
+    margin-left: 0;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #dfa632;
+    text-shadow:
+        0 1px 0 #fff4a3,
+        0 2px 0 #fff4a3,
+        0 3px 0 #fff4a3,
+        0 4px 0 #fff4a3,
+        0 5px 8px rgba(0, 0, 0, 0.6),
+        0 0 8px var(--main-color),
+        0 0 15px var(--main-color),
+        0 0 30px var(--main-glow);
+    transform: perspective(400px) rotateX(18deg);
+    image-rendering: pixelated;
+    
+}
+
+:root {
+    --main-color: #dfa632;
+    --main-glow: rgba(223, 166, 50, 0.6);
+    --main-glow-soft: rgba(223, 166, 50, 0.3);
+}
+ 
+
 h1,
 h2,
 h3,
@@ -53,7 +81,7 @@ h4 {
 }
 
 .nav-links a:hover {
-    color: #00eaff;
+    color:#dfa632;
 }
 
 .scroll-story {

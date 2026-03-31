@@ -20,6 +20,9 @@
     /* Level / Achievements */
     --ck-crystal-glow: #38d9a9;
     /* Core / GEM glow */
+    --main-color: #dfa632;
+    --main-glow: rgba(223, 166, 50, 0.6);
+    --main-glow-soft: rgba(223, 166, 50, 0.3);
 }
 
 body {
@@ -30,12 +33,33 @@ body {
         radial-gradient(circle at center,
             rgba(18, 14, 13, 0.4) 0%,
             rgba(18, 14, 13, 0.95) 85%),
-        url("images/core-keeper-bg.png");
+        url("images/core2.png");
     overflow: hidden;
     color: white;
     text-align: center;
     image-rendering: pixelated;
     cursor: crosshair;
+}
+
+canvas#stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    opacity: 0.4;
+    display: block;
+}
+
+#snowflakes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1; /* Layer snowflakes above stars but below UI */
 }
 
 #stars {
@@ -68,7 +92,6 @@ body {
     border-left-color: #e58255;
     box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
     image-rendering: pixelated;
-    cursor: pointer;
     transition: background 0.1s;
 }
 
@@ -114,15 +137,18 @@ button,
 
 .title {
     margin-top: 40px;
-    font-size: 28px;
+    font-size: 40px;
     color: #dfa632;
     text-shadow:
-        0 2px 0 #0f0c0b,
-        0 4px 0 #0f0c0b,
-        0 6px 0 #0f0c0b,
-        0 8px 15px rgba(223, 166, 50, 0.3);
-    letter-spacing: 2px;
-    animation: textGlitch 15s infinite;
+        0 1px 0 #fff4a3,
+        0 2px 0 #fff4a3,
+        0 3px 0 #fff4a3,
+        0 4px 0 #fff4a3,
+        0 5px 8px rgba(0, 0, 0, 0.6),
+        0 0 8px var(--main-color),
+        0 0 15px var(--main-color),
+        0 0 30px var(--main-glow);
+    transform: perspective(400px) rotateX(18deg);
 }
 
 .island-container {
@@ -139,7 +165,6 @@ button,
     position: relative;
     width: 280px;
     height: 350px;
-    cursor: pointer;
     transform-style: preserve-3d;
     animation: floatIsland 10s ease-in-out infinite;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -156,13 +181,13 @@ button,
     position: absolute;
     width: 100%;
     height: 160px;
-    background: radial-gradient(circle at center, #145c3a, #0a2f21);
+    background: radial-gradient(circle at center, #3d3328, #1a1614);
     border-radius: 50%;
     top: 0;
     z-index: 5;
     box-shadow:
-        0 0 40px rgba(0, 255, 255, 0.6),
-        0 0 80px rgba(0, 255, 255, 0.3),
+        0 0 40px rgba(223, 166, 50, 0.4),
+        0 0 80px rgba(223, 166, 50, 0.2),
         inset 0 -10px 30px rgba(0, 0, 0, 0.6);
 }
 
@@ -172,7 +197,7 @@ button,
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.05);
+    box-shadow: 0 0 40px rgba(223, 166, 50, 0.1);
     margin-left: -100px;
 }
 
@@ -183,7 +208,7 @@ button,
     height: 100%;
     background: linear-gradient(120deg,
             transparent 30%,
-            rgba(0, 255, 255, 0.2),
+            rgba(223, 166, 50, 0.2),
             transparent 90%);
     animation: lightMove 6s linear infinite;
 }
@@ -215,7 +240,7 @@ button,
 
 .island:hover {
     transform: translateY(-25px) scale(1.05);
-    filter: brightness(1.2) drop-shadow(0 0 20px rgba(51, 207, 255, 0.5));
+    filter: brightness(1.2) drop-shadow(0 0 20px rgba(223, 166, 50, 0.5));
 }
 
 .top-surface {
@@ -265,7 +290,6 @@ button,
     left: 50%;
     transform: translateX(-50%);
     z-index: 30;
-    cursor: pointer;
 }
 
 .forest .island-img {
@@ -291,7 +315,7 @@ button,
 }
 
 .island:hover .island-img {
-    filter: brightness(1.15) drop-shadow(0 20px 15px rgba(51, 207, 255, 0.3));
+    filter: brightness(1.15) drop-shadow(0 20px 15px rgba(223, 166, 50, 0.3));
 }
 
 .desert .d1 {
@@ -336,7 +360,7 @@ button,
     width: 70px;
     z-index: 4;
     transition: 0.4s ease;
-    filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.6));
+    filter: drop-shadow(0 0 12px rgba(223, 166, 50, 0.6));
 }
 
 .c1 {
@@ -374,11 +398,11 @@ button,
 
 .island-text h2 {
     font-size: 16px;
-    color: #cbdadb;
+    color: var(--ck-gold);
     text-shadow:
-        0 2px 0 #1a6d85,
+        0 2px 0 #52443f,
         0 4px 6px rgba(0, 0, 0, 0.9);
-    animation: textGlitch 30s infinite;
+    animation: goldGlitch 30s infinite;
 }
 
 .island-text p {
@@ -398,7 +422,6 @@ button,
     display: flex;
     align-items: center;
     gap: 15px;
-    cursor: pointer;
     z-index: 1000;
     transition: transform 0.2s, filter 0.2s;
     animation: simpleFlicker 6s infinite;
@@ -492,7 +515,7 @@ button,
     width: 340px;
     height: 340px;
     border-radius: 50%;
-    border: 2px solid rgba(0, 255, 255, 0.4);
+    border: 2px solid rgba(223, 166, 50, 0.4);
     top: -40px;
     left: -20px;
     z-index: 0;
@@ -586,7 +609,6 @@ button,
     top: 25px;
     left: 25px;
     font-size: 24px;
-    cursor: pointer;
     color: #fff;
     z-index: 1000;
     transition: 0.2s;
@@ -639,7 +661,7 @@ button,
     }
 }
 
-@keyframes textGlitch {
+@keyframes goldGlitch {
 
     0%,
     90%,
@@ -647,24 +669,24 @@ button,
     96%,
     100% {
         transform: translate(0);
-        text-shadow: 0 0 2px #acffff;
-        color: #84ebeb;
+        text-shadow: 0 0 5px rgba(223, 166, 50, 0.4);
+        color: #dfa632;
         opacity: 1;
     }
 
     91% {
         transform: translate(-3px, 2px);
-        text-shadow: 3px 0 #ff00ff, -3px 0 #00ffff;
+        text-shadow: 3px 0 #fff6b3, -3px 0 #c2653e;
         color: #fff;
     }
 
     92% {
         transform: translate(3px, -2px);
-        text-shadow: -3px 0 #ff00ff, 3px 0 #00ffff;
+        text-shadow: -3px 0 #fff6b3, 3px 0 #c2653e;
     }
 
     94% {
-        color: #0088aa;
+        color: #c2653e;
         opacity: 0.5;
     }
 
@@ -705,7 +727,83 @@ button,
     }
 
     50% {
-        filter: brightness(1.05) drop-shadow(0 15px 12px rgba(0, 255, 255, 0.2));
+        filter: brightness(1.05) drop-shadow(0 15px 12px rgba(223, 166, 50, 0.2));
     }
 }
 
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.popup-box {
+    background: #0a1a2a;
+    border: 3px solid #dfa632;
+    padding: 30px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(252, 255, 177, 0.7);
+    position: relative;
+    animation: popupFade 0.3s ease;
+}
+
+.popup-box h2 {
+    color: #dfa632;
+    margin-bottom: 15px;
+}
+
+.popup-box p {
+    color: #cbdadb;
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+
+.popup-box button {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    padding: 12px 20px;
+    border: none;
+    background: #dfa632;
+    color: black;
+    transition: 0.2s;
+}
+
+.popup-box button:hover {
+    background: #fff6b3;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #fbffc4;
+    font-size: 14px;
+}
+
+.close-btn:hover {
+    color: #ffffff;
+}
+
+@keyframes popupFade {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+* {
+    cursor: none !important;
+}

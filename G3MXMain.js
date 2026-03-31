@@ -102,16 +102,36 @@ clearTimeout(popupTimer);
 closeBtn.addEventListener("click", closePopup);
 okBtn.addEventListener("click", closePopup);
 
-const logoutBtn = document.querySelector(".logout-btn");
+const profileBtn = document.getElementById("headerProfileBtn");
+const profileDropdown = document.getElementById("headerProfileDropdown");
+const logoutBtnMain = document.getElementById("logoutBtnMain");
 const logoutPopup = document.getElementById("logoutPopup");
 
 const closeLogout = document.getElementById("closeLogout");
 const confirmLogout = document.getElementById("confirmLogout");
 const cancelLogout = document.getElementById("cancelLogout");
 
-logoutBtn.addEventListener("click", () => {
-    logoutPopup.classList.add("active");
+if (profileBtn) {
+    profileBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        profileDropdown.classList.toggle("show");
+    });
+}
+
+window.addEventListener("click", (e) => {
+    if (profileDropdown && profileDropdown.classList.contains("show")) {
+        if (!e.target.closest(".profile-menu-container")) {
+            profileDropdown.classList.remove("show");
+        }
+    }
 });
+
+if (logoutBtnMain) {
+    logoutBtnMain.addEventListener("click", () => {
+        profileDropdown.classList.remove("show");
+        logoutPopup.classList.add("active");
+    });
+}
 
 function closeLogoutPopup() {
     logoutPopup.classList.remove("active");
@@ -120,9 +140,46 @@ function closeLogoutPopup() {
 closeLogout.addEventListener("click", closeLogoutPopup);
 cancelLogout.addEventListener("click", closeLogoutPopup);
 
-confirmLogout.addEventListener("click", () => {
-    firebase.auth().signOut().then(() => {
-        window.location.href = "login.html";
+if (confirmLogout) {
+    confirmLogout.addEventListener("click", () => {
+        firebase.auth().signOut().then(() => {
+            console.log("Main Menu: User logged out successfully.");
+            // Redirect will be handled by onAuthStateChanged in the HTML
+        }).catch((error) => {
+            console.error("Main Menu: Logout failed", error);
+            alert("Error logging out! Please try again.");
+        });
     });
-});
+}
+
+// --- Side Nav Toggle (Mobile) ---
+const sideNavToggle = document.getElementById("sideNavToggle");
+const sideNav = document.getElementById("sideNav");
+
+if (sideNavToggle && sideNav) {
+    sideNavToggle.addEventListener("click", () => {
+        sideNav.classList.toggle("active");
+        // Change icon based on state
+        const icon = sideNavToggle.querySelector("i");
+        if (sideNav.classList.contains("active")) {
+            icon.classList.remove("fa-bars");
+            icon.classList.add("fa-times");
+        } else {
+            icon.classList.remove("fa-times");
+            icon.classList.add("fa-bars");
+        }
+    });
+
+    // Close menu when clicking outside
+    window.addEventListener("click", (e) => {
+        if (sideNav.classList.contains("active")) {
+            if (!e.target.closest(".side-left") && !e.target.closest(".side-nav-toggle")) {
+                sideNav.classList.remove("active");
+                const icon = sideNavToggle.querySelector("i");
+                icon.classList.remove("fa-times");
+                icon.classList.add("fa-bars");
+            }
+        }
+    });
+}
 

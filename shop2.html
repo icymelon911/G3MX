@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>G3MX — Avatar Shop</title>
   <link rel="stylesheet" href="profile.css">
+  <link rel="icon" href="images/shop_logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Pixelify+Sans:wght@400;600&display=swap"
     rel="stylesheet">
   <style>
@@ -23,7 +24,7 @@
     }
 
     .shop-title {
-      font-size: 2rem;
+      font-size: 3rem;
       color: var(--ck-gold);
       text-align: center;
       text-shadow: 2px 2px 0 #000;
@@ -108,21 +109,21 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 1.6rem;
+      font-size: 2rem;
       color: var(--ck-gold);
       text-shadow: 2px 2px 0 #000;
     }
 
     .gem-display img {
-      width: 20px;
-      height: 20px;
+      width: 25px;
+      height: 25px;
       image-rendering: pixelated;
       vertical-align: middle;
     }
 
     #equippedLabel {
-      font-size: 1.1rem;
-      color: var(--ck-text-dim);
+      font-size: 1.3rem;
+      color: white;
       text-shadow: 1px 1px 0 #000;
       letter-spacing: 1px;
       line-height: 1.6;
@@ -181,7 +182,7 @@
     }
 
     .item-name {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: var(--ck-text-main);
       text-align: center;
       text-shadow: 2px 2px 0 #000;
@@ -192,7 +193,7 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       color: var(--ck-gold);
     }
 
@@ -213,7 +214,6 @@
       border: 4px solid var(--ck-border-dark);
       border-top-color: #e58255;
       border-left-color: #e58255;
-      cursor: pointer;
       text-transform: uppercase;
       text-shadow: 2px 2px 0 #000;
       box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.6);
@@ -304,6 +304,7 @@
       z-index: 10;
     }
   </style>
+  <link rel="stylesheet" href="TargetCursor.css">
 </head>
 
 <body>
@@ -319,7 +320,7 @@
     <!-- Avatar preview -->
     <div class="avatar-section">
       <div class="avatar-ring">
-        <img id="userAvatar" class="base-bot" src="https://api.dicebear.com/7.x/bottts/svg?seed=g3mx">
+        <img id="userAvatar" class="base-bot" src="images/steam.png">
         <img id="avatarFrame" class="cosmetic-layer">
         <img id="avatarHat" class="cosmetic-layer">
         <img id="avatarGlasses" class="cosmetic-layer">
@@ -339,6 +340,17 @@
   </div>
 
   <div id="toast-container"></div>
+
+    <div id="logoutPopup">
+        <div class="popup-box logout-box">
+            <button id="closeLogout">✖</button>
+            <p>Are you sure you want to Log Out?</p>
+            <div class="logout-actions">
+                <button id="confirmLogout">Yes, Log Out</button>
+                <button id="cancelLogout">No, I'm staying</button>
+            </div>
+        </div>
+    </div>
 
   <script>
     (function () {
@@ -372,20 +384,44 @@
     };
 
     const cosmetics = [
-      { name: "Gold Frame", type: "frame", price: 1, image: "images/goldframe.png" },
-      { name: "Green Frame", type: "frame", price: 1, image: "images/green frame.png" },
-      { name: "Wizard Hat", type: "hat", price: 5, image: "images/wizard hat.png" },
-      { name: "Cool Shades", type: "glasses", price: 3, image: "images/sunglasses.png" },
-      { name: "Construction Hat", type: "hat", price: 3, image: "images/construction hat.png" },
-      { name: "Nerd Glasses", type: "glasses", price: 3, image: "images/nerd.png" }
+      { name: "Gold Frame", type: "frame", price: 1000, image: "images/goldframe.png" },
+      { name: "Green Frame", type: "frame", price: 1000, image: "images/green frame.png" },
+      { name: "Stone Frame", type: "frame", price: 1000, image: "images/core_frame.png" },
+      { name: "Fire Frame", type: "frame", price: 1000, image: "images/fire_frame.png" },
+      { name: "Wizard Hat", type: "hat", price: 500, image: "images/wizard hat.png" },
+      { name: "Cool Shades", type: "glasses", price: 300, image: "images/sunglasses.png" },
+      { name: "Construction Hat", type: "hat", price: 500, image: "images/construction hat.png" },
+      { name: "Nerd Glasses", type: "glasses", price: 300, image: "images/nerd.png" }
     ];
 
     // Logout
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      if (confirm("Log out?")) {
-        auth.signOut().then(() => window.location.href = "index.html");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const logoutPopup = document.getElementById("logoutPopup");
+    const confirmLogout = document.getElementById("confirmLogout");
+    const cancelLogout = document.getElementById("cancelLogout");
+    const closeLogout = document.getElementById("closeLogout");
+
+    if (logoutBtn && logoutPopup) {
+      logoutBtn.addEventListener("click", () => {
+        logoutPopup.classList.add("active");
+      });
+
+      const closePopup = () => logoutPopup.classList.remove("active");
+
+      if (closeLogout) closeLogout.addEventListener("click", closePopup);
+      if (cancelLogout) cancelLogout.addEventListener("click", closePopup);
+
+      if (confirmLogout) {
+        confirmLogout.addEventListener("click", () => {
+          auth.signOut().then(() => {
+            window.location.href = "login.html";
+          }).catch(e => {
+            console.error("Logout error:", e);
+            alert("Error logging out!");
+          });
+        });
       }
-    });
+    }
 
     async function pullFromFirebase() {
       if (!currentUserId) return;
@@ -425,8 +461,8 @@
     }
 
     function updateUI() {
-      document.getElementById("gemCount").textContent = userState.gems;
-      if (userState.profilePic) {
+      document.getElementById("gemCount").textContent = userState.gems.toLocaleString();
+      if (userState.profilePic && userState.profilePic !== "undefined" && userState.profilePic !== "null" && userState.profilePic.trim() !== "") {
         document.getElementById("userAvatar").src = userState.profilePic;
       }
       applyVisuals();
@@ -468,9 +504,25 @@
             userState.ownedItems.push(item.name);
             userState.equipped[item.type] = item.name;
             showToast("Purchased & Equipped!");
+            // Log to purchaseHistory subcollection
+            db.collection("users").doc(currentUserId).collection("purchaseHistory").add({
+              purchasedAt: firebase.firestore.Timestamp.now(),
+              itemName: item.name,
+              cost: item.price
+            }).catch(e => console.warn("Shop: Could not log purchaseHistory —", e.message));
+            // Track equip count for Merchant Ledger chart
+            db.collection("users").doc(currentUserId).collection("cosmetics").doc(item.name).set({
+              name: item.name,
+              timesEquipped: firebase.firestore.FieldValue.increment(1)
+            }, { merge: true }).catch(e => console.warn("Shop: Could not track equip —", e.message));
           } else {
             userState.equipped[item.type] = item.name;
             showToast("Equipped!");
+            // Track equip count for Merchant Ledger chart
+            db.collection("users").doc(currentUserId).collection("cosmetics").doc(item.name).set({
+              name: item.name,
+              timesEquipped: firebase.firestore.FieldValue.increment(1)
+            }, { merge: true }).catch(e => console.warn("Shop: Could not track equip —", e.message));
           }
           await pushToFirebase();
           updateUI();
@@ -509,6 +561,8 @@
       else { window.location.href = "index.html"; }
     });
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="target-cursor-vanilla.js"></script>
 </body>
 
 </html>

@@ -1,30 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GemX | Student Profile</title>
-    <link rel="stylesheet" href="profile.css">
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Pixelify+Sans:wght@400;600&display=swap"
-        rel="stylesheet">
-    <style>
-        canvas#snowflakes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .profile-container,
-        #toastNotification {
-            position: relative;
-            z-index: 10;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>G3MX | Profile</title>
+    <link rel="stylesheet" href="profile.css" />
+    <link rel="icon" href="images/profile_logo.png" sizes="32x32" />
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="TargetCursor.css" />
 </head>
 
 <body>
@@ -32,19 +16,44 @@
     <a href="G3MXMain.html" class="back-btn">Back</a>
     <button id="logoutBtn" class="logout-btn">Log Out</button>
 
+    <div id="logoutPopup">
+        <div class="popup-box logout-box">
+            <button id="closeLogout">✖</button>
+            <p>Are you sure you want to Log Out?</p>
+            <div class="logout-actions">
+                <button id="confirmLogout">Yes, Log Out</button>
+                <button id="cancelLogout">No, I'm staying</button>
+            </div>
+        </div>
+    </div>
+
     <main class="profile-container">
         <header class="profile-header">
-            <div class="avatar-placeholder" id="mainHeaderAvatar"
-                style="background-color: #3498db; position: relative; overflow: visible;">
-                <div class="header-emoji" id="mainHeaderFace" style="display: none;">😊</div>
-                <img id="header-custom" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;"
-                    alt="Custom Avatar">
+            <div class="avatar-placeholder" id="mainHeaderAvatar" style="
+            background-color: #3498db;
+            position: relative;
+            overflow: visible;
+          ">
+                <div class="header-emoji" id="mainHeaderFace" style="display: none">
+                    😊
+                </div>
+                <img id="header-custom" src="" style="width: 100%; height: 100%; object-fit: cover; display: none"
+                    alt="Custom Avatar" />
                 <img id="profileFrame" class="profile-cosmetic-layer"
-                    style="z-index:10; width:126px; height:126px; top:-18px;">
-                <img id="profileHat" class="profile-cosmetic-layer"
-                    style="z-index:30; width:108px; height:108px; top:-67px; clip-path:inset(0% 0% 25% 0%);">
-                <img id="profileGlasses" class="profile-cosmetic-layer"
-                    style="z-index:25; width:90px; top:13px; clip-path:inset(10% 0% 10% 0%);">
+                    style="z-index: 10; width: 126px; height: 126px; top: -18px" />
+                <img id="profileHat" class="profile-cosmetic-layer" style="
+              z-index: 30;
+              width: 108px;
+              height: 108px;
+              top: -67px;
+              clip-path: inset(0% 0% 25% 0%);
+            " />
+                <img id="profileGlasses" class="profile-cosmetic-layer" style="
+              z-index: 25;
+              width: 90px;
+              top: 13px;
+              clip-path: inset(10% 0% 10% 0%);
+            " />
             </div>
             <div class="user-info">
                 <h1 id="displayUsername">Loading...</h1>
@@ -53,7 +62,9 @@
         </header>
 
         <nav class="profile-tabs">
-            <button class="tab-btn active" data-target="overview-tab">Learning Overview</button>
+            <button class="tab-btn active" data-target="overview-tab">
+                Learning Overview
+            </button>
             <button class="tab-btn" data-target="settings-tab">Edit Profile</button>
         </nav>
 
@@ -67,18 +78,29 @@
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon gem-icon"><img src="images/Gem.png" style="width: 70%; height: 70%;"></div>
+                    <div class="stat-icon gem-icon">
+                        <img src="images/Gem.png" style="width: 60%; height: 60%" />
+                    </div>
                     <div class="stat-info">
                         <h3>Total GEMs</h3>
                         <p id="userGems">0</p>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon quiz-icon"><img src="images/Leaderboard.png"></div>
+                    <div class="stat-icon quiz-icon">
+                        <img src="images/crown.png" />
+                    </div>
                     <div class="stat-info">
                         <h3>Leaderboard Rank</h3>
-                        <p id="userRank">Unranked</p>
+                        <p id="userRank">Loading</p>
                     </div>
+                </div>
+            </div>
+
+            <div class="profile-content-block">
+                <h2>Achievements</h2>
+                <div class="achievements-grid" id="achievementsGrid">
+                    <!-- Populated dynamically by profile.js -->
                 </div>
             </div>
 
@@ -106,67 +128,21 @@
                 </div>
             </div>
 
-            <!-- <div class="profile-content-block">
-                <h2>Your Badges</h2>
-                <div class="achievements-grid">
-                    <div id="badge-fast-starter" class="badge-card locked">
-                        <div class="badge-icon">🚀</div>
-                        <h4>Fast Starter</h4>
-                        <p>Finished the first module</p>
-                    </div>
-
-                    <div id="badge-streak-master" class="badge-card locked">
-                        <div class="badge-icon">🔥</div>
-                        <h4>Streak Master</h4>
-                        <p>7-day learning streak</p>
-                    </div>
-
-                    <div id="badge-top-10" class="badge-card locked">
-                        <div class="badge-icon">🏆</div>
-                        <h4>Top 10%</h4>
-                        <p>Reach the top leaderboard</p>
-                    </div>
-                </div>
-            </div> -->
-
-            <!-- <div class="profile-content-block">
-                <h2>Recent Activity</h2>
-                <ul class="activity-list">
-                    <li class="activity-item">
-                        <div class="activity-icon complete">✅</div>
-                        <div class="activity-details">
-                            <h4>Passed Quiz: Fundamentals</h4>
-                            <small>2 hours ago • +50 XP</small>
-                        </div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon access">📖</div>
-                        <div class="activity-details">
-                            <h4>Accessed Course: Web Design</h4>
-                            <small>Yesterday • In Progress</small>
-                        </div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon milestone">⭐</div>
-                        <div class="activity-details">
-                            <h4>Leveled Up! Reached Level 5</h4>
-                            <small>3 days ago</small>
-                        </div>
-                    </li>
-                </ul>
-            </div> -->
-
             <div class="profile-content-block">
                 <h2>Player Analytics</h2>
                 <div class="charts-grid">
                     <!-- 90-Day Activity Heatmap -->
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h3 class="chart-title"><span id="heatmapTitle">90-Day</span> Activity</h3>
+                            <h3 class="chart-title">
+                                <span id="heatmapTitle">90-Day</span> Activity
+                            </h3>
                             <div class="heatmap-filters">
                                 <button class="heatmap-filter-btn" data-days="7">7D</button>
                                 <button class="heatmap-filter-btn" data-days="30">1M</button>
-                                <button class="heatmap-filter-btn active" data-days="90">3M</button>
+                                <button class="heatmap-filter-btn active" data-days="90">
+                                    3M
+                                </button>
                             </div>
                         </div>
                         <div class="heatmap-legend">
@@ -188,20 +164,19 @@
                     </div>
                     <!-- Skill Radar Chart -->
                     <div class="chart-card">
-                        <h3 class="chart-title">Skill Proficiency</h3>
+                        <h3 class="chart-title">Coder Class</h3>
                         <div class="radar-container">
                             <canvas id="skillRadarChart"></canvas>
                         </div>
                     </div>
 
-                    <!-- Loot History Bar Chart (GEMs per Chapter) -->
+                    <!-- Merchant Ledger Bar Chart (Cosmetics purchased over time) -->
                     <div class="chart-card">
-                        <h3 class="chart-title">Loot History</h3>
+                        <h3 class="chart-title">Merchant Ledger</h3>
                         <div class="bar-container">
-                            <canvas id="lootHistoryChart"></canvas>
+                            <canvas id="merchantLedgerChart"></canvas>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -211,40 +186,61 @@
             <form id="editProfileForm">
                 <div class="form-group">
                     <label>Profile Picture</label>
-                    <div class="avatar-preview-container" style="text-align: center; margin-bottom: 1rem;">
-                        <img id="profileImagePreview" src="https://placehold.co/150x150?text=No+Image"
-                            style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #3498db;">
+                    <div class="avatar-preview-container" style="text-align: center; margin-bottom: 1rem">
+                        <img id="profileImagePreview" src="https://placehold.co/150x150?text=No+Image" style="
+                  width: 150px;
+                  height: 150px;
+                  border-radius: 50%;
+                  object-fit: cover;
+                  border: 4px solid #3498db;
+                " />
                     </div>
 
                     <div class="file-upload-wrapper">
-                        <input type="file" id="imageUploadInput" accept="image/png, image/jpeg">
-                        <label for="imageUploadInput" class="file-upload-btn">
+                        <input type="file" id="imageUploadInput" accept="image/png, image/jpeg" />
+                        <label for="imageUploadInput" class="file-upload-btn cursor-target">
                             ⚔ Choose Image
                         </label>
                         <span class="file-upload-name" id="fileUploadName">No file chosen</span>
                     </div>
-                    <small style="display: block; text-align: center; margin-top: 5px; color: var(--ck-text-dim);">Max
-                        file size: 1MB &nbsp;|&nbsp; PNG / JPG only</small>
+                    <small style="
+                display: block;
+                text-align: center;
+                margin-top: 5px;
+                color: var(--ck-text-dim);
+              ">Max file size: 1MB &nbsp;|&nbsp; PNG / JPG only</small>
                 </div>
 
-                <hr style="margin: 2rem 0; border: 1px solid #ecf0f1;">
+                <hr style="margin: 2rem 0; border: 1px solid #ecf0f1" />
 
                 <div class="form-group">
                     <label for="usernameInput">Display Name</label>
-                    <input type="text" id="usernameInput" placeholder="example123" required>
+                    <input type="text" id="usernameInput" placeholder="example123" required />
                 </div>
                 <div class="form-group">
                     <label for="emailInput">Email Address</label>
-                    <input type="email" id="emailInput" placeholder="example123@gmail.com" required>
+                    <input type="email" id="emailInput" placeholder="example123@gmail.com" required />
                 </div>
-                <div class="form-group" id="passwordSection" style="display: none;">
+                <div class="form-group" id="passwordSection" style="display: none">
                     <label for="currentPasswordInput">Current Password</label>
-                    <input type="password" id="currentPasswordInput" placeholder="Enter your current password">
-                    <label for="passwordInput" style="margin-top: 0.75rem;">New Password</label>
-                    <input type="password" id="passwordInput" placeholder="Enter new password (min 6 chars)">
+                    <div class="password-wrapper">
+                        <input type="password" id="currentPasswordInput" placeholder="Enter your current password" />
+                        <button type="button" class="eye-toggle" id="toggleCurrentPw" title="Show password">
+                            👁️‍🗨️
+                        </button>
+                    </div>
+                    <label for="passwordInput" style="margin-top: 0.75rem">New Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="passwordInput" placeholder="Enter new password (min 6 chars)" />
+                        <button type="button" class="eye-toggle" id="toggleNewPw" title="Show password">
+                            👁️‍🗨️
+                        </button>
+                    </div>
                 </div>
                 <button type="button" id="togglePasswordSection" class="change-pwd-btn"
-                    style="margin-bottom: 1rem; width: 100%;">Change Password</button>
+                    style="margin-bottom: 1rem; width: 100%">
+                    Change Password
+                </button>
 
                 <button type="submit" class="save-btn">Save Changes</button>
             </form>
@@ -260,12 +256,29 @@
         (function () {
             const c = document.getElementById("snowflakes");
             const ctx = c.getContext("2d");
-            c.width = window.innerWidth; c.height = window.innerHeight;
+            c.width = window.innerWidth;
+            c.height = window.innerHeight;
             const flakes = [];
-            for (let i = 0; i < 220; i++) flakes.push({ x: Math.random() * c.width, y: Math.random() * c.height, r: Math.random() * 1.5, s: Math.random() * 0.5 });
+            for (let i = 0; i < 220; i++)
+                flakes.push({
+                    x: Math.random() * c.width,
+                    y: Math.random() * c.height,
+                    r: Math.random() * 1.5,
+                    s: Math.random() * 0.5,
+                });
             (function draw() {
-                ctx.clearRect(0, 0, c.width, c.height); ctx.fillStyle = "#ffffff";
-                flakes.forEach(f => { ctx.fillRect(Math.round(f.x), Math.round(f.y), Math.ceil(f.r * 2), Math.ceil(f.r * 2)); f.y += f.s; if (f.y > c.height) f.y = 0; });
+                ctx.clearRect(0, 0, c.width, c.height);
+                ctx.fillStyle = "#ffffff";
+                flakes.forEach((f) => {
+                    ctx.fillRect(
+                        Math.round(f.x),
+                        Math.round(f.y),
+                        Math.ceil(f.r * 2),
+                        Math.ceil(f.r * 2),
+                    );
+                    f.y += f.s;
+                    if (f.y > c.height) f.y = 0;
+                });
                 requestAnimationFrame(draw);
             })();
         })();
@@ -277,6 +290,24 @@
     <script src="firebase-config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="profile.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="target-cursor-vanilla.js"></script>
+    <script>
+        // Eye toggle for profile password fields
+        function setupEyeToggle(btnId, inputId) {
+            const btn = document.getElementById(btnId);
+            const input = document.getElementById(inputId);
+            if (!btn || !input) return;
+            btn.addEventListener("click", () => {
+                const isPassword = input.type === "password";
+                input.type = isPassword ? "text" : "password";
+                btn.textContent = isPassword ? "🙈" : "👁️‍🗨️";
+                btn.title = isPassword ? "Hide password" : "Show password";
+            });
+        }
+        setupEyeToggle("toggleCurrentPw", "currentPasswordInput");
+        setupEyeToggle("toggleNewPw", "passwordInput");
+    </script>
 </body>
 
 </html>
