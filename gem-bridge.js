@@ -99,8 +99,8 @@
       }).catch(function (err) {
         if (err.code === "not-found") {
           userRef.set({ profileData: { stats: { gems: amount } } }, { merge: true })
-            .then(function () { 
-              console.log("GemBridge: +" + amount + " gems saved (new doc)."); 
+            .then(function () {
+              console.log("GemBridge: +" + amount + " gems saved (new doc).");
               var currentQ = parseInt(localStorage.getItem('pending_gems') || '0');
               localStorage.setItem('pending_gems', Math.max(0, currentQ - amount));
             })
@@ -154,16 +154,12 @@
         .catch(function (err) { console.error("GemBridge: Failed to set gems:", err); });
     };
 
-    // ----------------------------------------------------------
-    // window.exitToMenu()
-    // Call when player exits. Optionally pass a final gem total.
-    //
-    //   JavaScriptBridge.eval("window.exitToMenu()")
-    //   JavaScriptBridge.eval("window.exitToMenu(" + str(total_gems) + ")")
-    // ----------------------------------------------------------
+
     window.exitToMenu = function (sessionTotal) {
       var total = parseInt(sessionTotal) || 0;
 
+      // Legacy gamePlays logging removed — activity is now tracked on 'Start' in MainMenu.html
+      // to ensure consistency and prevent double-counting.
       function goBack() { window.location.href = "MainMenu.html"; }
 
       if (total > 0) {

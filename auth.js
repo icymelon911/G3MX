@@ -2,6 +2,61 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// ==========================================
+// 🎨 THEMED ALERT TOAST (Auth Pages)
+// ==========================================
+function showAuthAlert(message, type = 'error') {
+  const existing = document.getElementById('authAlertToast');
+  if (existing) existing.remove();
+
+  const icons = { error: '⚠️', success: '✅', warning: '⚔️' };
+  const colors = {
+    error: { border: '#d14747', bg: 'rgba(163, 50, 50, 0.95)', glow: 'rgba(209, 71, 71, 0.5)' },
+    success: { border: '#38d9a9', bg: 'rgba(28, 82, 65, 0.95)', glow: 'rgba(56, 217, 169, 0.5)' },
+    warning: { border: '#dfa632', bg: 'rgba(120, 88, 24, 0.95)', glow: 'rgba(223, 166, 50, 0.5)' },
+  };
+  const c = colors[type] || colors.error;
+
+  const toast = document.createElement('div');
+  toast.id = 'authAlertToast';
+  toast.innerHTML = `<span style="font-size:1.6rem;">${icons[type] || '⚠️'}</span><span>${message}</span>`;
+  Object.assign(toast.style, {
+    position: 'fixed', top: '24px', left: '50%', transform: 'translateX(-50%) translateY(-120px)',
+    background: c.bg, border: `4px solid ${c.border}`,
+    boxShadow: `8px 8px 0px rgba(0,0,0,0.7), 0 0 20px ${c.glow}`,
+    padding: '1rem 2rem', display: 'flex', alignItems: 'center', gap: '0.8rem',
+    zIndex: '9999', fontFamily: "'VT323', monospace", fontSize: '1.4rem',
+    color: '#e8dee0', textShadow: '2px 2px 0px #000', letterSpacing: '1px',
+    borderRadius: '6px',
+    transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease',
+    opacity: '0', maxWidth: '90vw',
+  });
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(() => {
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    toast.style.opacity = '1';
+  });
+
+  setTimeout(() => {
+    toast.style.transform = 'translateX(-50%) translateY(-120px)';
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 400);
+  }, 4000);
+}
+// ==========================================
+// 🔒 AUTO-LOGOUT ON AUTH PAGES
+// ==========================================
+// If a user navigates to login or signup, clear any
+// existing session so they can't "go back" to stay logged in.
+// This runs once on page load — long before the login form is submitted.
+(function () {
+  const page = window.location.pathname.split("/").pop();
+  if (page === "login.html" || page === "signup.html") {
+    auth.signOut().catch(function () { /* ignore if already signed out */ });
+  }
+})();
+
 // --- DAILY LOGIN STREAK LOGIC ---
 function getTodayDateString() {
   const now = new Date();
@@ -20,6 +75,15 @@ function isYesterday(dateA, dateB) {
   const b = new Date(dateB + "T00:00:00+08:00");
   const diffMs = b - a;
   return diffMs === 86400000; // exactly 24 hours
+}
+
+function validatePasswordCriteria(password) {
+  return {
+    minLength: password.length >= 6,
+    uppercase: /[A-Z]/.test(password),
+    number: /\d/.test(password),
+    special: /[^A-Za-z0-9]/.test(password),
+  };
 }
 
 async function recordDailyLogin(uid) {
@@ -70,17 +134,28 @@ if (signupForm) {
     const username = document.getElementById("signupUsername").value;
 
     if (username.length > 12) {
-      alert("❌ Your Hero Name is too long! (Max 12 characters)");
+      showAuthAlert("Your Hero Name is too long! (Max 12 characters)", "warning");
       return;
     }
 
     if (username.length < 6) {
-      alert("❌ Your Hero Name is too short! (Min 6 characters)");
+      showAuthAlert("Your Hero Name is too short! (Min 6 characters)", "warning");
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("❌ Passwords do not match! Please check again.");
+      showAuthAlert("Passwords do not match! Please check again.", "error");
+      return;
+    }
+
+    const criteria = validatePasswordCriteria(password);
+    if (!criteria.minLength || !criteria.uppercase || !criteria.number || !criteria.special) {
+      const missing = [];
+      if (!criteria.minLength) missing.push("at least 6 characters");
+      if (!criteria.uppercase) missing.push("an uppercase letter");
+      if (!criteria.number) missing.push("a number");
+      if (!criteria.special) missing.push("a special character");
+      showAuthAlert(`Password must contain ${missing.join(", ")}.`, "error");
       return;
     }
 
@@ -90,7 +165,7 @@ if (signupForm) {
       const snapshot = await usernameDocRef.get();
 
       if (snapshot.exists) {
-        alert("❌ This Hero Name has already been claimed by another player!");
+        showAuthAlert("This Hero Name has already been claimed by another player!", "error");
         return;
       }
 
@@ -100,10 +175,12 @@ if (signupForm) {
       await db.collection("usernames").doc(usernameLower).set({ uid: user.uid });
 
       await db.collection("users").doc(user.uid).set({
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         profileData: {
           displayName: username,
           email: email,
           equippedFrame: "none",
+          profileImageUrl: "images/steam.png",
           stats: {
             level: 1,
             xp: 0,
@@ -118,14 +195,18 @@ if (signupForm) {
       // Record first daily login on signup (starts streak at 1)
       await recordDailyLogin(user.uid);
 
-      alert("✅ Character created! Welcome to G3MX.");
-      window.location.href = "G3MXMain.html"; // #MAINMENU.html ian need to chg
+      showAuthAlert("Character created! Welcome to G3MX.", "success");
+      setTimeout(() => { window.location.href = "G3MXMain.html"; }, 1500);
 
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
-        alert("❌ This email is already registered in the guild. Try logging in!");
+        showAuthAlert("This email is already registered in the guild. Try logging in!", "error");
+      } else if (error.code === 'auth/weak-password') {
+        showAuthAlert("Password is too weak. It must be at least 6 characters.", "error");
+      } else if (error.code === 'auth/invalid-email') {
+        showAuthAlert("Please enter a valid email address.", "error");
       } else {
-        alert("Signup failed: " + error.message);
+        showAuthAlert(`Signup failed: ${error.message}`, "error");
       }
     }
   });
@@ -161,7 +242,7 @@ if (loginForm) {
         window.location.href = "G3MXMain.html"; // #MAINMENU.html ian need to chg
       }
     } catch (error) {
-      alert("Login failed: " + error.message);
+      showAuthAlert("Login failed: Invalid email or password.", "error");
     }
   });
 }

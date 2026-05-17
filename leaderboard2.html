@@ -4,13 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>G3MX — Leaderboard</title>
+  <title>G3MX | Leaderboard</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap"
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="images/leaderboard_logo.png" class="favicon">
+
   <style>
     * {
       box-sizing: border-box;
@@ -18,16 +20,20 @@
       padding: 0;
     }
 
+    .favicon {
+      image-rendering: pixelated;
+      background-size: 120%;
+    }
+
     body {
       font-family: 'Press Start 2P', cursive;
       background-image:
         radial-gradient(circle at center, rgba(18, 14, 13, 0.4) 0%, rgba(18, 14, 13, 0.95) 85%),
-        url("images/core-keeper-bg.png");
+        url("images/core2.png");
       background-size: cover;
       background-color: #0c0b08;
       color: #e8dee0;
       image-rendering: pixelated;
-      cursor: pointer;
       min-height: 100vh;
     }
 
@@ -88,7 +94,6 @@
       border-left-color: #e58255;
       box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
       image-rendering: pixelated;
-      cursor: pointer;
       transition: background 0.1s;
     }
 
@@ -121,7 +126,6 @@
       text-shadow: 0 1px 0 #0f0c0b, 0 2px 0 #0f0c0b, 0 3px 0 #0f0c0b, 0 4px 0 #0f0c0b,
         0 5px 8px rgba(0, 0, 0, 0.6), 0 0 15px rgba(223, 166, 50, 0.2);
       transform: perspective(400px) rotateX(18deg);
-      cursor: pointer;
     }
 
     .logout-btn {
@@ -141,7 +145,6 @@
       border-top-color: #d14747;
       border-left-color: #d14747;
       box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
-      cursor: pointer;
       transition: background 0.1s;
     }
 
@@ -182,7 +185,6 @@
       text-transform: uppercase;
       text-decoration: none;
       text-shadow: 2px 2px 0px #000;
-      cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -291,7 +293,7 @@
     }
 
     .header-box h1 {
-      font-size: 22px;
+      font-size: 25px;
       color: #dfa632;
       text-shadow: 3px 3px 0px #000;
       letter-spacing: 3px;
@@ -312,9 +314,9 @@
       background: #120e0d;
       padding: 18px 20px;
       border-bottom: 4px solid #0f0c0b;
-      color: #8a6b2f;
+      color: #ddad4c;
       text-align: left;
-      font-size: 10px;
+      font-size: 13px;
       letter-spacing: 2px;
     }
 
@@ -400,12 +402,49 @@
       }
     }
 
+    #logoutPopup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      z-index: 9999;
+    }
+
+    #logoutPopup.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .logout-box {
+      width: 420px;
+      padding: 30px 25px 20px;
+      background: #2a2220;
+      border: 4px solid #0f0c0b;
+      border-bottom-color: #52443f;
+      border-right-color: #52443f;
+      box-shadow:
+        inset 4px 4px 10px rgba(0, 0, 0, 0.5),
+        8px 8px 0px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      position: relative;
+      image-rendering: pixelated;
+    }
+
     .logout-box p {
-      font-size: 12px;
-      line-height: 1.9;
-      margin-bottom: 30px;
-      color: #e8dee0;
-      text-shadow: 2px 2px 0 #000;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      color: white;
+      text-shadow: 2px 2px 0px #000;
+      font-family: "Jersey 15", sans-serif;
     }
 
     .logout-actions {
@@ -417,21 +456,21 @@
     .logout-actions button {
       flex: 1;
       padding: 10px;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 10px;
+      font-family: "Jersey 15", sans-serif;
+      font-size: 1.5rem;
       background: #c2653e;
-      border: 4px solid #0f0c0b;
+      border: 3px solid #0f0c0b;
       border-top-color: #e58255;
       border-left-color: #e58255;
       color: white;
-      cursor: pointer;
       text-shadow: 2px 2px 0px #000;
       text-transform: uppercase;
       box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
-      transition: 0.1s;
+      transition: all 0.1s;
     }
 
     .logout-actions button:hover {
+      color: #fff;
       background: #d97b52;
       transform: scale(1.05);
     }
@@ -443,10 +482,60 @@
       background: none;
       border: none;
       color: #94817a;
-      font-size: 18px;
-      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* ===== PAGINATION ===== */
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .page-btn {
+      background: #1c1615;
+      border: 4px solid #0f0c0b;
+      border-bottom-color: #52443f;
+      border-right-color: #52443f;
+      color: #dfa632;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      padding: 10px 15px;
+      text-transform: uppercase;
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+      transition: all 0.1s;
+    }
+
+    .page-btn:hover {
+      background: #2a2220;
+      border-color: #dfa632;
+      color: #e8dee0;
+    }
+
+    .page-btn:active {
+      transform: translateY(2px) translateX(2px);
+      box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
+    }
+
+    .page-btn:disabled {
+      background: #120e0d;
+      color: #52443f;
+      border-color: #0f0c0b;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .page-info {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px;
+      color: #94817a;
+      letter-spacing: 1px;
     }
   </style>
+  <link rel="stylesheet" href="TargetCursor.css">
 </head>
 
 <body>
@@ -474,6 +563,12 @@
       </thead>
       <tbody id="leaderboard-body"></tbody>
     </table>
+
+    <div class="pagination-controls">
+      <button id="prevBtn" class="page-btn" disabled>Prev</button>
+      <span id="pageInfo" class="page-info">Page 1 / 1</span>
+      <button id="nextBtn" class="page-btn" disabled>Next</button>
+    </div>
   </div>
 
   <!-- LOGOUT POPUP -->
@@ -483,12 +578,21 @@
       <p>Are you sure you want to Log Out?</p>
       <div class="logout-actions">
         <button onclick="confirmLogout()">Yes, Log Out</button>
-        <button onclick="closeLogoutPopup()">No, Stay</button>
+        <button onclick="closeLogoutPopup()">No, I'm staying</button>
       </div>
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
   <script>
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
     // Stars
     const canvas = document.getElementById("stars");
     const sCtx = canvas.getContext("2d");
@@ -504,19 +608,44 @@
     // Logout popup
     function openLogoutPopup() { document.getElementById("logoutPopup").classList.add("active"); }
     function closeLogoutPopup() { document.getElementById("logoutPopup").classList.remove("active"); }
-    function confirmLogout() { window.location.href = "login.html"; }
+    function confirmLogout() {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      }).catch((error) => {
+        console.error("Logout Error:", error);
+        alert("Error logging out!");
+      });
+    }
 
-    async function fetchLeaderboard() {
+    let allPlayers = [];
+    let currentPage = 1;
+    const playersPerPage = 10;
+    const maxPlayers = 50;
+
+    function renderLeaderboardPage() {
       const tableBody = document.getElementById("leaderboard-body");
-      const players = [
-        { name: "YOU", gems: 0, isMe: true, photo: "" }
-      ];
       tableBody.innerHTML = "";
-      players.forEach((p, i) => {
-        const avatarSrc = p.photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${p.name}`;
+
+      const totalPages = Math.ceil(Math.min(allPlayers.length, maxPlayers) / playersPerPage);
+      if (totalPages === 0) {
+        tableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>No players found.</td></tr>";
+        document.getElementById("pageInfo").textContent = "Page 1 / 1";
+        return;
+      }
+
+      const startIndex = (currentPage - 1) * playersPerPage;
+      const endIndex = Math.min(startIndex + playersPerPage, allPlayers.length, maxPlayers);
+      const pagePlayers = allPlayers.slice(startIndex, endIndex);
+
+      pagePlayers.forEach((p, idx) => {
+        const overallRank = startIndex + idx + 1;
+        let avatarSrc = "images/steam.png";
+        if (p.photo && p.photo !== "undefined" && p.photo !== "null" && p.photo.trim() !== "") {
+          avatarSrc = p.photo;
+        }
         tableBody.innerHTML += `
       <tr class="${p.isMe ? 'row-user' : ''}">
-        <td>${i + 1}</td>
+        <td>${overallRank}</td>
         <td>
           <div class="player-cell">
             <img src="${avatarSrc}" class="mini-avatar">
@@ -524,13 +653,76 @@
           </div>
         </td>
         <td style="text-align:right; color:#dfa632;">
-          <img src="images/gem.png" class="gem-icon"> ${p.gems}
+          <img src="images/gem.png" class="gem-icon"> ${p.gems.toLocaleString()}
         </td>
       </tr>`;
+      });
+
+      document.getElementById("pageInfo").textContent = `Page ${currentPage} / ${totalPages}`;
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+    }
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderLeaderboardPage();
+      }
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      const totalPages = Math.ceil(Math.min(allPlayers.length, maxPlayers) / playersPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderLeaderboardPage();
+      }
+    });
+
+    async function fetchLeaderboard() {
+      const tableBody = document.getElementById("leaderboard-body");
+      tableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>Loading Leaderboard...</td></tr>";
+
+      auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+          window.location.href = "login.html";
+          return;
+        }
+
+        try {
+          const snapshot = await db.collection("users").get();
+          allPlayers = [];
+
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data && data.profileData) {
+              const profile = data.profileData;
+              const stats = profile.stats || {};
+              allPlayers.push({
+                id: doc.id,
+                name: profile.displayName || "Unknown Player",
+                gems: stats.gems || 0,
+                isMe: doc.id === user.uid,
+                photo: profile.profileImageUrl || ""
+              });
+            }
+          });
+
+          // Sort descending by gems (highest gems first)
+          allPlayers.sort((a, b) => b.gems - a.gems);
+
+          currentPage = 1;
+          renderLeaderboardPage();
+
+        } catch (error) {
+          console.error("Error fetching leaderboard:", error);
+          tableBody.innerHTML = "<tr><td colspan='3' style='text-align:center; color:#d14747;'>Failed to load leaderboard.</td></tr>";
+        }
       });
     }
     fetchLeaderboard();
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="target-cursor-vanilla.js"></script>
 </body>
 
 </html>

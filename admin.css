@@ -9,11 +9,20 @@
   --ck-copper: #c2653e;
   --ck-gold: #dfa632;
   --ck-crystal-glow: #38d9a9;
+  --main-color: #dfa632;
+  --main-glow: rgba(223, 166, 50, 0.6);
+  --main-glow-soft: rgba(223, 166, 50, 0.3);
 }
 
 body {
   background-color: var(--ck-bg-deep);
-  background-image: radial-gradient(circle at center, rgba(18, 14, 13, 0.4) 0%, rgba(18, 14, 13, 0.95) 85%), url("assets/core-keeper-bg.png");
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(18, 14, 13, 0.4) 0%,
+      rgba(18, 14, 13, 0.95) 85%
+    ),
+    url("assets/core-keeper-bg.png");
   font-family: "VT323", monospace;
   color: var(--ck-text-main);
   display: flex;
@@ -40,7 +49,6 @@ body {
   border-top-color: #d14747;
   border-left-color: #d14747;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
-  cursor: pointer;
   transition: background 0.1s;
 }
 
@@ -77,57 +85,112 @@ body {
 }
 
 .admin-header h1 {
-  color: var(--ck-gold);
-  font-size: 4rem;
-  margin: 0;
-  text-shadow: 2px 2px 0px #000;
+  font-size: 75px;
+  margin-top: 0;
+  margin-left: 0;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #dfa632;
+  text-shadow:
+    0 1px 0 #fff4a3,
+    0 2px 0 #fff4a3,
+    0 3px 0 #fff4a3,
+    0 4px 0 #fff4a3,
+    0 5px 8px rgba(0, 0, 0, 0.6),
+    0 0 8px var(--main-color),
+    0 0 15px var(--main-color),
+    0 0 30px var(--main-glow);
+  transform: perspective(400px);
 }
 
-/* --- REUSED STAT CARDS --- */
-.stats-grid {
+/* 🏛️ ADMIN STATS GRID: Summary Row */
+.admin-stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-.stat-card {
-  background: var(--ck-slot-bg);
-  padding: 1rem;
-  border: 4px solid var(--ck-border-dark);
-  border-bottom-color: var(--ck-border-light);
-  border-right-color: var(--ck-border-light);
+/* 🏺 THE STAT TABLET: Core Keeper themed stone tablet */
+.stat-tablet {
+  min-width: 320px;
+  background: linear-gradient(135deg, #1c1615 0%, #110d0c 100%);
+  border: 4px solid #0f0c0b;
+  border-top-color: #52443f;
+  border-left-color: #52443f;
+  padding: 1.25rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    6px 6px 0px rgba(0, 0, 0, 0.5),
+    inset 0 0 20px rgba(0, 0, 0, 0.6);
 }
 
-.stat-icon {
-  font-size: 2.5rem;
-  width: 64px;
-  height: 64px;
+.stat-tablet__icon {
+  font-size: 2.2rem;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--ck-bg-deep);
-  border: 4px solid var(--ck-border-dark);
-  border-bottom-color: var(--ck-border-light);
-  border-right-color: var(--ck-border-light);
+  background: #0d1117;
+  border: 3px solid #0f0c0b;
+  border-bottom-color: #52443f;
+  border-right-color: #52443f;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }
 
-.stat-info h3 {
+.stat-tablet__info {
+  z-index: 2;
+}
+
+.stat-tablet__label {
   margin: 0;
-  color: var(--ck-text-dim);
+  font-family: "Pixelify Sans", monospace;
+  font-size: 1.1rem;
+  color: #94817a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.stat-info p {
-  margin: 0;
-  font-size: 1.8rem;
-  color: var(--ck-text-main);
+.stat-tablet__value {
+  margin: 2px 0 0;
+  font-family: "Jersey 15", sans-serif;
+  font-size: 2.5rem;
+  line-height: 1;
+  text-shadow: 2px 2px 0px #000;
 }
 
-.admin-header p {
-  font-size: 1.5rem;
+.stat-tablet__value--streak {
+  font-size: 1.6rem;
+}
+
+.stat-tablet__value small {
+  font-size: 1.1rem;
+  color: #e8dee0;
+  opacity: 0.8;
+}
+
+/* Recessed glow effect */
+.stat-tablet__glow {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  filter: blur(30px);
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* --- THE RETRO TABLE --- */
@@ -194,7 +257,6 @@ body {
   border: 4px solid var(--ck-border-dark);
   border-top-color: var(--ck-border-light);
   border-left-color: var(--ck-border-light);
-  cursor: pointer;
   text-transform: uppercase;
 }
 
@@ -221,7 +283,6 @@ body {
   border-left-color: #e58255;
 }
 
-
 /* ═══════════════════════════════════════════════════════════ */
 /*  ⚔️  ANALYTICS DUNGEON — 3-Chart Grid System              */
 /*  Layout: Full-width top row + 50/50 bottom row             */
@@ -241,13 +302,7 @@ body {
 
 /* ── Stone Panel Container ── */
 .chart-panel {
-  background:
-    linear-gradient(
-      168deg,
-      #1c1615 0%,
-      #140f0e 40%,
-      #110d0c 100%
-    );
+  background: linear-gradient(168deg, #1c1615 0%, #140f0e 40%, #110d0c 100%);
   border: 4px solid var(--ck-border-dark);
   border-top-color: var(--ck-border-light);
   border-left-color: var(--ck-border-light);
@@ -290,9 +345,17 @@ body {
 }
 
 @keyframes oreVeinShimmer {
-  0%   { opacity: 0.35; }
-  50%  { opacity: 0.65; }
-  100% { opacity: 0.35; }
+  0% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 0.65;
+  }
+
+  100% {
+    opacity: 0.35;
+  }
 }
 
 /* Dirt / scanline texture overlay */
@@ -300,14 +363,13 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.035) 2px,
-      rgba(0, 0, 0, 0.035) 3px
-    );
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.035) 2px,
+    rgba(0, 0, 0, 0.035) 3px
+  );
   pointer-events: none;
   z-index: 1;
 }
@@ -340,13 +402,19 @@ body {
 }
 
 @keyframes iconPulse {
-  0%, 100% { box-shadow: inset 0 0 8px rgba(56, 217, 169, 0.15); }
-  50%      { box-shadow: inset 0 0 18px rgba(56, 217, 169, 0.45); }
+  0%,
+  100% {
+    box-shadow: inset 0 0 8px rgba(56, 217, 169, 0.15);
+  }
+
+  50% {
+    box-shadow: inset 0 0 18px rgba(56, 217, 169, 0.45);
+  }
 }
 
 .chart-panel__title {
   margin: 0;
-  font-family: 'Pixelify Sans', 'VT323', monospace;
+  font-family: "Pixelify Sans", "VT323", monospace;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--ck-gold);
@@ -358,10 +426,46 @@ body {
 
 .chart-panel__subtitle {
   margin: 2px 0 0;
-  font-family: 'Pixelify Sans', 'VT323', monospace;
+  font-family: "Pixelify Sans", "VT323", monospace;
   font-size: 0.9rem;
   color: var(--ck-text-dim);
   letter-spacing: 0.5px;
+}
+
+/* ── UI Controls: Filter Buttons ── */
+.chart-filter-group {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+  /* Push to the right side of the header */
+}
+
+.filter-btn {
+  background: var(--ck-slot-bg);
+  color: var(--ck-text-dim);
+  font-family: "Pixelify Sans", "VT323", monospace;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid var(--ck-border-dark);
+  border-top-color: var(--ck-border-light);
+  border-left-color: var(--ck-border-light);
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+}
+
+.filter-btn:hover {
+  background: var(--ck-bg-deep);
+  color: var(--ck-text-main);
+  border-top-color: var(--ck-text-dim);
+  border-left-color: var(--ck-text-dim);
+}
+
+.filter-btn.active {
+  background: var(--ck-bg-deep);
+  color: var(--ck-crystal-glow);
+  border-top-color: var(--ck-crystal-glow);
+  border-left-color: var(--ck-crystal-glow);
+  box-shadow: inset 0 0 10px rgba(56, 217, 169, 0.2);
 }
 
 /* ── Canvas Wrapper ── */
@@ -402,22 +506,33 @@ body {
 }
 
 .chart-panel__footer span {
-  font-family: 'Pixelify Sans', 'VT323', monospace;
+  font-family: "Pixelify Sans", "VT323", monospace;
   font-size: 0.95rem;
   color: var(--ck-text-dim);
   letter-spacing: 0.5px;
 }
 
-.chart-panel__gem {
+.gem-icon {
   animation: gemFlicker 3s ease-in-out infinite alternate;
+  width: 25px;
 }
 
 @keyframes gemFlicker {
-  0%   { opacity: 0.5; filter: brightness(0.8); }
-  50%  { opacity: 1;   filter: brightness(1.4); }
-  100% { opacity: 0.6; filter: brightness(1.0); }
-}
+  0% {
+    opacity: 0.5;
+    filter: brightness(0.8);
+  }
 
+  50% {
+    opacity: 1;
+    filter: brightness(1.4);
+  }
+
+  100% {
+    opacity: 0.6;
+    filter: brightness(1);
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════ */
 /*  📱 Responsive: collapse to single column on smaller       */
@@ -427,6 +542,7 @@ body {
   .analytics-grid {
     grid-template-columns: 1fr;
   }
+
   .chart-panel--wide {
     grid-column: 1;
   }
@@ -436,19 +552,350 @@ body {
   .stats-grid {
     grid-template-columns: 1fr;
   }
+
   .chart-panel__title {
     font-size: 1.1rem;
   }
+
   .chart-panel__canvas-wrap {
     padding: 0.75rem;
     height: 220px;
   }
+
   .chart-panel--wide .chart-panel__canvas-wrap {
     height: 220px;
   }
 }
 
-
 .roster-section {
   font-size: 1.5rem;
-}
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/*  📜 RETRO SCRIBE BUTTON — 16-Bit Ore-Styled Export Button  */
+/* ═══════════════════════════════════════════════════════════ */
+.retro-btn-scribe {
+  background-color: var(--ck-copper);
+  color: #0d1117;
+  font-family: "Pixelify Sans", "VT323", monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 10px 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  outline: none;
+  position: relative;
+  white-space: nowrap;
+
+  /* Chunky 16-bit beveled border using layered box-shadows */
+  box-shadow:
+    inset -4px -4px 0px 0px #8c4123,
+    inset 4px 4px 0px 0px var(--ck-gold),
+    0 0 0 4px var(--ck-border-dark),
+    0 0 0 6px var(--ck-copper),
+    0 8px 0 6px #0d1117;
+
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease,
+    background-color 0.15s ease;
+}
+
+/* Hover: Glowing gold ore effect */
+.retro-btn-scribe:hover {
+  background-color: var(--ck-gold);
+  box-shadow:
+    inset -4px -4px 0px 0px var(--ck-copper),
+    inset 4px 4px 0px 0px #ffeaa7,
+    0 0 0 4px var(--ck-border-dark),
+    0 0 0 6px var(--ck-gold),
+    0 8px 15px 6px rgba(223, 166, 50, 0.4);
+}
+
+/* Active: Pressed-down into the stone */
+.retro-btn-scribe:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset -4px -4px 0px 0px #8c4123,
+    inset 4px 4px 0px 0px var(--ck-gold),
+    0 0 0 4px var(--ck-border-dark),
+    0 0 0 6px var(--ck-copper),
+    0 4px 0 6px #0d1117;
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/*  ⚒️  RELIC FORGE — Economy Balancing Panel                 */
+/* ═══════════════════════════════════════════════════════════ */
+
+.forge-panel {
+  background: linear-gradient(168deg, #120e0d 0%, #0e0a09 60%, #0b0807 100%);
+  border: 4px solid var(--ck-border-dark);
+  border-top-color: var(--ck-border-light);
+  border-left-color: var(--ck-border-light);
+  box-shadow:
+    6px 6px 0px rgba(0, 0, 0, 0.6),
+    inset 0 0 60px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(82, 68, 63, 0.3);
+  margin-top: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated teal ore vein across the top */
+.forge-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--ck-crystal-glow) 20%,
+    var(--ck-gold) 50%,
+    var(--ck-copper) 80%,
+    transparent 100%
+  );
+  opacity: 0.6;
+  animation: oreVeinShimmer 5s ease-in-out infinite alternate;
+  z-index: 3;
+}
+
+.forge-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 3px solid var(--ck-border-dark);
+  background: rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+.forge-panel__icon {
+  font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  background: var(--ck-bg-deep);
+  border: 3px solid var(--ck-border-dark);
+  border-bottom-color: var(--ck-border-light);
+  border-right-color: var(--ck-border-light);
+  animation: iconPulse 4s ease-in-out infinite;
+}
+
+.forge-panel__title {
+  margin: 0;
+  font-family: "Pixelify Sans", "VT323", monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ck-crystal-glow);
+  text-shadow:
+    0 0 12px rgba(56, 217, 169, 0.5),
+    2px 2px 0px #000;
+  letter-spacing: 1px;
+}
+
+.forge-panel__subtitle {
+  margin: 2px 0 0;
+  font-family: "Pixelify Sans", "VT323", monospace;
+  font-size: 0.9rem;
+  color: var(--ck-text-dim);
+  letter-spacing: 0.5px;
+}
+
+/* ── Individual achievement row ── */
+.forge-panel__body {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  z-index: 2;
+}
+
+.forge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--ck-border-dark);
+  border-top-color: rgba(82, 68, 63, 0.4);
+  padding: 0.7rem 1rem;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.forge-row:hover {
+  background: rgba(56, 217, 169, 0.04);
+  border-color: rgba(56, 217, 169, 0.25);
+}
+
+.forge-row__info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.forge-row__icon {
+  font-size: 1.5rem;
+  width: 36px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.forge-row__name {
+  margin: 0;
+  font-family: "Jersey 15", "VT323", monospace;
+  font-size: 1.3rem;
+  color: var(--ck-gold);
+  text-shadow: 1px 1px 0px #000;
+  letter-spacing: 0.5px;
+}
+
+.forge-row__desc {
+  margin: 2px 0 0;
+  font-family: "Pixelify Sans", monospace;
+  font-size: 0.8rem;
+  color: var(--ck-text-dim);
+}
+
+.forge-row__input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.forge-row__gem-label {
+  font-family: "Pixelify Sans", monospace;
+  font-size: 0.85rem;
+  color: var(--ck-text-dim);
+  white-space: nowrap;
+}
+
+.forge-row__gem-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  margin-bottom: -5px;
+  animation: gemFlicker 3s ease-in-out infinite alternate;
+}
+
+/* ── The number input field ── */
+.forge-input {
+  width: 100px;
+  background: var(--ck-bg-deep);
+  color: var(--ck-crystal-glow);
+  font-family: "Jersey 15", "VT323", monospace;
+  font-size: 1.4rem;
+  text-align: center;
+  letter-spacing: 1px;
+  padding: 0.4rem 0.5rem;
+  border: 3px solid var(--ck-border-dark);
+  border-top-color: var(--ck-border-light);
+  border-left-color: var(--ck-border-light);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  -moz-appearance: textfield;
+}
+
+.forge-input::-webkit-inner-spin-button,
+.forge-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.forge-input:focus {
+  border-color: var(--ck-crystal-glow);
+  box-shadow:
+    inset 0 0 10px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(56, 217, 169, 0.35);
+}
+
+/* ── Footer: Save button ── */
+.forge-panel__footer {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-top: 3px solid var(--ck-border-dark);
+  background: rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 2;
+}
+
+.forge-save-btn {
+  background: var(--ck-crystal-glow);
+  color: #0d1117;
+  font-family: "Jersey 15", "VT323", monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0.6rem 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  box-shadow:
+    inset -4px -4px 0px 0px #1d9b76,
+    inset 4px 4px 0px 0px #7fffd4,
+    0 0 0 3px var(--ck-border-dark),
+    0 0 0 5px var(--ck-crystal-glow),
+    0 6px 0 5px #0d1117;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease,
+    background-color 0.15s ease;
+}
+
+.forge-save-btn:hover {
+  background: #5ee8c4;
+  box-shadow:
+    inset -4px -4px 0px 0px #1d9b76,
+    inset 4px 4px 0px 0px #b2fff0,
+    0 0 0 3px var(--ck-border-dark),
+    0 0 0 5px var(--ck-crystal-glow),
+    0 6px 20px 5px rgba(56, 217, 169, 0.4);
+}
+
+.forge-save-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset -4px -4px 0px 0px #1d9b76,
+    inset 4px 4px 0px 0px #7fffd4,
+    0 0 0 3px var(--ck-border-dark),
+    0 0 0 5px var(--ck-crystal-glow),
+    0 2px 0 5px #0d1117;
+}
+
+.forge-hint {
+  margin: 0;
+  font-family: "Pixelify Sans", monospace;
+  font-size: 0.85rem;
+  color: var(--ck-text-dim);
+  font-style: italic;
+}
+
+@media (max-width: 680px) {
+  .forge-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .forge-row__input-wrap {
+    align-self: flex-end;
+  }
+}

@@ -1,26 +1,34 @@
 :root {
-  --ck-bg-deep: #120e0d; /* Deep cave darkness */
-  --ck-panel-bg: #2a2220; /* Dirt/Stone background */
-  --ck-border-light: #52443f; /* Highlighted edge */
-  --ck-border-dark: #0f0c0b; /* Shadowed edge */
-  --ck-slot-bg: #1c1615; /* Inventory slot background */
-  --ck-text-main: #e8dee0; /* Parchment white */
-  --ck-text-dim: #94817a; /* Dimmed stone text */
-  --ck-copper: #c2653e; /* Buttons / Accents */
+  --ck-bg-deep: #120e0d;
+  /* Deep cave darkness */
+  --ck-panel-bg: #2a2220;
+  /* Dirt/Stone background */
+  --ck-border-light: #52443f;
+  /* Highlighted edge */
+  --ck-border-dark: #0f0c0b;
+  /* Shadowed edge */
+  --ck-slot-bg: #1c1615;
+  /* Inventory slot background */
+  --ck-text-main: #e8dee0;
+  /* Parchment white */
+  --ck-text-dim: #94817a;
+  /* Dimmed stone text */
+  --ck-copper: #c2653e;
+  /* Buttons / Accents */
   --ck-copper-hover: #d97b52;
-  --ck-gold: #dfa632; /* Level / Achievements */
-  --ck-crystal-glow: #38d9a9; /* Core / GEM glow */
+  --ck-gold: #dfa632;
+  /* Level / Achievements */
+  --ck-crystal-glow: #38d9a9;
+  /* Core / GEM glow */
 }
 
 body {
   background-color: var(--ck-bg-deep);
   background-image:
-    radial-gradient(
-      circle at center,
+    radial-gradient(circle at center,
       rgba(18, 14, 13, 0.4) 0%,
-      rgba(18, 14, 13, 0.95) 85%
-    ),
-    url("assets/core-keeper-bg.png");
+      rgba(18, 14, 13, 0.95) 85%),
+    url("images/core2.png");
   background-repeat: repeat;
   image-rendering: pixelated;
   font-family: "Jersey 15", sans-serif;
@@ -52,7 +60,6 @@ body {
   border-left-color: #e58255;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
   image-rendering: pixelated;
-  cursor: pointer;
   transition: background 0.1s;
 }
 
@@ -85,7 +92,6 @@ body {
   border-top-color: #d14747;
   border-left-color: #d14747;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
-  cursor: pointer;
   transition: background 0.1s;
 }
 
@@ -110,7 +116,6 @@ body {
   border: 4px solid var(--ck-border-dark);
   border-top-color: #5aaee8;
   border-left-color: #5aaee8;
-  cursor: pointer;
   text-transform: uppercase;
   text-shadow: 2px 2px 0px #000;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
@@ -167,7 +172,8 @@ h4 {
 .avatar-placeholder {
   width: 90px;
   height: 90px;
-  background-color: var(--ck-slot-bg) !important; /* Overrides inline style */
+  background-color: var(--ck-slot-bg) !important;
+  /* Overrides inline style */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,7 +196,8 @@ h4 {
 
 .header-emoji {
   font-size: 50px;
-  filter: drop-shadow(2px 2px 0px #000); /* Pixel shadow on emoji */
+  filter: drop-shadow(2px 2px 0px #000);
+  /* Pixel shadow on emoji */
 }
 
 .user-info h1 {
@@ -203,7 +210,8 @@ h4 {
 .user-info p {
   font-size: 1.2rem;
   color: var(--ck-text-dim);
-  letter-spacing: 1px; /* Subtle spacing for the email */
+  letter-spacing: 1px;
+  /* Subtle spacing for the email */
 }
 
 /* --- TABS (Like stone tablets) --- */
@@ -221,7 +229,6 @@ h4 {
   font-family: "Jersey 15", sans-serif;
   font-size: 1.5rem;
   text-transform: uppercase;
-  cursor: pointer;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
 }
 
@@ -236,6 +243,7 @@ h4 {
 .tab-content {
   display: none;
 }
+
 .tab-content.active {
   display: block;
 }
@@ -294,6 +302,10 @@ h4 {
   filter: drop-shadow(2px 2px 0px #000);
 }
 
+.stat-info {
+  font-size: 1.2rem;
+}
+
 /* Specific glowing ore effects inside the slots */
 .streak-icon {
   /* Copper/Fire glow */
@@ -301,6 +313,7 @@ h4 {
     inset 0 0 15px rgba(223, 107, 32, 0.4),
     inset 4px 4px 8px rgba(0, 0, 0, 0.8);
 }
+
 .gem-sprite {
   /* Adjust these to match the exact width/height of ONE gem in your image */
   width: 16px;
@@ -318,12 +331,15 @@ h4 {
 .gem-level-1 {
   background-position: 0px 0px;
 }
+
 .gem-level-2 {
   background-position: -16px 0px;
 }
+
 .gem-level-3 {
   background-position: -32px 0px;
 }
+
 .gem-level-4 {
   background-position: -48px 0px;
 }
@@ -418,7 +434,7 @@ h4 {
 
 .milestone-reward {
   font-size: 1rem;
-  color: var(--ck-text-dim);
+  color: white;
   text-shadow: 1px 1px 0px #000;
 }
 
@@ -453,7 +469,6 @@ h4 {
   /* Glow effect when hovering over a rare item */
   box-shadow: 0 0 20px rgba(223, 166, 50, 0.2);
   border-color: var(--ck-gold);
-  cursor: pointer;
 }
 
 .badge-icon {
@@ -466,11 +481,9 @@ h4 {
   justify-content: center;
 
   /* The glowing spotlight pedestal the item sits on */
-  background: radial-gradient(
-    circle at center,
-    rgba(223, 166, 50, 0.2) 0%,
-    transparent 60%
-  );
+  background: radial-gradient(circle at center,
+      rgba(223, 166, 50, 0.2) 0%,
+      transparent 60%);
   border-bottom: 4px solid var(--ck-border-dark);
   border-radius: 50%;
 
@@ -481,10 +494,12 @@ h4 {
 
 /* Makes the relics slowly bob up and down */
 @keyframes floatItem {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-6px);
   }
@@ -558,7 +573,6 @@ h4 {
   border-top-color: var(--ck-border-light);
   border-left-color: var(--ck-border-light);
   font-size: 1.5rem;
-  cursor: pointer;
   color: #fff;
 }
 
@@ -587,6 +601,36 @@ h4 {
   box-sizing: border-box;
 }
 
+/* --- PASSWORD WRAPPER (Eye Toggle) --- */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.password-wrapper input {
+  margin-bottom: 0;
+  padding-right: 52px;
+}
+
+.eye-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--ck-text-dim);
+  font-size: 1.3rem;
+  padding: 4px 6px;
+  line-height: 1;
+  transition: text-shadow 0.2s ease;
+}
+
+.eye-toggle:hover {
+  text-shadow: 0 0 10px rgba(56, 217, 169, 0.6);
+}
+
 .save-btn {
   background: var(--ck-copper);
   color: white;
@@ -596,7 +640,6 @@ h4 {
   border: 4px solid var(--ck-border-dark);
   border-top-color: #e58255;
   border-left-color: #e58255;
-  cursor: pointer;
   text-transform: uppercase;
   text-shadow: 2px 2px 0px #000;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
@@ -622,7 +665,6 @@ h4 {
   border: 4px solid var(--ck-border-dark);
   border-top-color: #d14747;
   border-left-color: #d14747;
-  cursor: pointer;
   text-transform: uppercase;
   text-shadow: 2px 2px 0px #000;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
@@ -663,6 +705,7 @@ h4 {
   transform: translateY(0);
   opacity: 1;
 }
+
 .toast.hidden {
   display: none;
 }
@@ -735,7 +778,6 @@ h4 {
   font-size: 0.85rem;
   padding: 4px 10px;
   border: 2px solid var(--ck-border-dark);
-  cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.15s ease;
@@ -791,7 +833,6 @@ h4 {
   height: 14px;
   border-radius: 2px;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-  cursor: pointer;
   position: relative;
 }
 
@@ -866,8 +907,15 @@ h4 {
 }
 
 @keyframes crystalPulse {
-  0%, 100% { box-shadow: inset 0 0 6px rgba(56,217,169,0.5), 0 0 8px rgba(56,217,169,0.4); }
-  50% { box-shadow: inset 0 0 8px rgba(56,217,169,0.7), 0 0 14px rgba(56,217,169,0.5); }
+
+  0%,
+  100% {
+    box-shadow: inset 0 0 6px rgba(56, 217, 169, 0.5), 0 0 8px rgba(56, 217, 169, 0.4);
+  }
+
+  50% {
+    box-shadow: inset 0 0 8px rgba(56, 217, 169, 0.7), 0 0 14px rgba(56, 217, 169, 0.5);
+  }
 }
 
 /* Legend */
@@ -892,19 +940,39 @@ h4 {
   border-radius: 2px;
 }
 
-.legend-cell[data-tier="0"] { background: #1a1512; border: 1px solid #0f0c0b; }
-.legend-cell[data-tier="1"] { background: #3a3530; border: 1px solid #4a4540; }
-.legend-cell[data-tier="2"] { background: #c2653e; border: 1px solid #d97b52; }
-.legend-cell[data-tier="3"] { background: #dfa632; border: 1px solid #f0be44; }
-.legend-cell[data-tier="4"] { background: var(--ck-crystal-glow); border: 1px solid #5ee8c4; box-shadow: 0 0 6px rgba(56,217,169,0.3); }
+.legend-cell[data-tier="0"] {
+  background: #1a1512;
+  border: 1px solid #0f0c0b;
+}
+
+.legend-cell[data-tier="1"] {
+  background: #3a3530;
+  border: 1px solid #4a4540;
+}
+
+.legend-cell[data-tier="2"] {
+  background: #c2653e;
+  border: 1px solid #d97b52;
+}
+
+.legend-cell[data-tier="3"] {
+  background: #dfa632;
+  border: 1px solid #f0be44;
+}
+
+.legend-cell[data-tier="4"] {
+  background: var(--ck-crystal-glow);
+  border: 1px solid #5ee8c4;
+  box-shadow: 0 0 6px rgba(56, 217, 169, 0.3);
+}
 
 /* --- RADAR CHART --- */
 .radar-container {
   position: relative;
   width: 100%;
-  max-width: 360px;
+  max-width: 450px;
+  /* Reduced from 500 for better balance */
   margin: 0 auto;
-  aspect-ratio: 1;
 }
 
 .radar-container canvas {
@@ -951,7 +1019,6 @@ h4 {
   text-transform: uppercase;
   text-shadow: 2px 2px 0px #000;
   letter-spacing: 2px;
-  cursor: pointer;
   transition: background 0.1s;
   white-space: nowrap;
 }
@@ -989,8 +1056,287 @@ h4 {
   }
 
   /* Heatmap spans 100% of the top row */
-  .charts-grid > .chart-card:first-child {
+  .charts-grid>.chart-card:first-child {
     grid-column: 1 / -1;
   }
 }
 
+/* ============================================ */
+/* --- ACHIEVEMENTS / RELICS GRID ---           */
+/* ============================================ */
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* --- BASE CARD (Stone Pedestal) --- */
+.achievement-card {
+  background: var(--ck-slot-bg);
+  border: 3px solid var(--ck-border-dark);
+  border-top-color: var(--ck-border-light);
+  border-left-color: var(--ck-border-light);
+  padding: 1rem 0.75rem 0.85rem;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow:
+    inset 2px 2px 6px rgba(0, 0, 0, 0.5),
+    4px 4px 0px rgba(0, 0, 0, 0.4);
+  image-rendering: pixelated;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* --- LOCKED STATE --- */
+.achievement-card.locked .achievement-icon {
+  font-size: 2.6rem;
+  display: block;
+  filter: grayscale(100%) brightness(0.35);
+  opacity: 0.5;
+}
+
+.achievement-card.locked .achievement-name {
+  font-family: 'Jersey 15', sans-serif;
+  font-size: 1.2rem;
+  color: var(--ck-text-dim);
+  letter-spacing: 1px;
+  text-shadow: none;
+  line-height: 1.2;
+}
+
+.achievement-card.locked .achievement-desc {
+  font-family: 'Pixelify Sans', monospace;
+  font-size: 0.78rem;
+  color: #52443f;
+  line-height: 1.3;
+}
+
+.achievement-card.locked .achievement-gem-cost {
+  opacity: 0.35;
+  filter: grayscale(100%);
+}
+
+/* --- UNLOCKED ANIMATIONS --- */
+@keyframes relicFloat {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes goldPulse {
+  0% {
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5), 0 0 8px #dfa632, 4px 4px 0px rgba(0, 0, 0, 0.4);
+  }
+
+  50% {
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5), 0 0 22px #dfa632, 0 0 40px rgba(223, 166, 50, 0.25), 4px 4px 0px rgba(0, 0, 0, 0.4);
+  }
+
+  100% {
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5), 0 0 8px #dfa632, 4px 4px 0px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* --- UNLOCKED STATE --- */
+.achievement-card.unlocked {
+  border-color: var(--ck-gold);
+  border-top-color: #f5c84a;
+  border-left-color: #f5c84a;
+  animation: goldPulse 2.8s ease-in-out infinite;
+}
+
+.achievement-card.unlocked .achievement-icon {
+  font-size: 2.9rem;
+  display: inline-block;
+  filter: drop-shadow(0 0 8px #dfa632) drop-shadow(0 0 3px #ffde78);
+  animation: relicFloat 3s ease-in-out infinite;
+}
+
+.achievement-card.unlocked .achievement-name {
+  font-family: 'Jersey 15', sans-serif;
+  font-size: 1.2rem;
+  color: var(--ck-gold);
+  text-shadow: 0 0 10px rgba(223, 166, 50, 0.65), 2px 2px 0 #000;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+.achievement-card.unlocked .achievement-desc {
+  font-family: 'Pixelify Sans', monospace;
+  font-size: 0.9rem;
+  color: white;
+  line-height: 1.3;
+}
+
+/* "UNLOCKED" stamp top-right corner */
+.achievement-card.unlocked::after {
+  content: "UNLOCKED";
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  font-family: 'Pixelify Sans', monospace;
+  font-size: 0.6rem;
+  color: var(--ck-gold);
+  letter-spacing: 1px;
+  opacity: 0.7;
+  text-shadow: 0 0 6px rgba(223, 166, 50, 0.5);
+}
+
+/* --- GEM COST BADGE --- */
+.achievement-gem-cost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: rgba(12, 9, 8, 0.7);
+  border: 2px solid var(--ck-border-dark);
+  padding: 2px 7px;
+}
+
+.achievement-gem-cost span {
+  font-family: 'Jersey 15', sans-serif;
+  font-size: 1.5rem;
+  color: var(--ck-text-dim);
+  line-height: 1;
+}
+
+.achievement-card.unlocked .achievement-gem-cost span {
+  color: var(--ck-crystal-glow);
+  text-shadow: 0 0 6px rgba(56, 217, 169, 0.5);
+}
+
+.achievement-card.unlocked .achievement-gem-cost {
+  border-color: rgba(56, 217, 169, 0.4);
+}
+
+.ach-gem-icon {
+  width: 18px;
+  height: 18px;
+  image-rendering: pixelated;
+}
+
+canvas#snowflakes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.profile-container,
+#toastNotification {
+  position: relative;
+  z-index: 10;
+}
+
+/* Responsive: 2-col on small, 3-col on medium, 5-col on wide */
+@media (min-width: 640px) {
+  .achievements-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .achievements-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* --- LOGOUT POPUP (Standardized) --- */
+#logoutPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 9999;
+}
+
+#logoutPopup.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.logout-box {
+  width: 420px;
+  padding: 30px 25px 20px;
+  background: #2a2220;
+  border: 4px solid #0f0c0b;
+  border-bottom-color: #52443f;
+  border-right-color: #52443f;
+  box-shadow:
+    inset 4px 4px 10px rgba(0, 0, 0, 0.5),
+    8px 8px 0px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  position: relative;
+  image-rendering: pixelated;
+}
+
+.logout-box p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  color: white;
+  text-shadow: 2px 2px 0px #000;
+  font-family: "Jersey 15", sans-serif;
+}
+
+.logout-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.logout-actions button {
+  flex: 1;
+  padding: 10px;
+  font-family: "Jersey 15", sans-serif;
+  font-size: 1.5rem;
+  background: #c2653e;
+  border: 3px solid #0f0c0b;
+  border-top-color: #e58255;
+  border-left-color: #e58255;
+  color: white;
+  text-shadow: 2px 2px 0px #000;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+  transition: all 0.1s;
+}
+
+.logout-actions button:hover {
+  color: #fff;
+  background: #d97b52;
+  transform: scale(1.05);
+}
+
+#closeLogout {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #94817a;
+  font-size: 16px;
+}

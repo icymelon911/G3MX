@@ -1,3 +1,7 @@
+* {
+  cursor: none;
+}
+
 .target-cursor-wrapper {
   position: fixed;
   top: 0;

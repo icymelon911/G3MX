@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Menu- Game Areas</title>
     <link rel="stylesheet" href="MenuStyle.css">
+    <link rel="icon" href="images/course_icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="TargetCursor.css">
 </head>
 
 <body>
@@ -15,6 +17,9 @@
     <audio id="bgMusic" autoplay loop>
         <source src="assets/bg-music.mp3" type="audio/mpeg">
     </audio>
+
+    <canvas id="snowflakes"></canvas>
+    <canvas id="stars"></canvas>
 
     <canvas id="stars"></canvas>
 
@@ -26,7 +31,7 @@
 
     <div class="island-container">
 
-        <div class="island desert" onclick="window.location.href = 'game/index.html'">
+        <div class="island desert" onclick="enterChapterWithTracking('chapter1', 'Chapter 1: Data Types', 'game/index.html')">
             <img src="images/desert_island.png" class="island-img">
 
             <div class="island-text">
@@ -35,7 +40,7 @@
             </div>
         </div>
 
-        <div class="island forest" onclick="window.location.href='G3MX_Level2.html'">
+        <div class="island forest" onclick="enterChapterWithTracking('chapter2', 'Chapter 2: Loops & If Else', 'G3MX_Level2.html')">
             <img src="images/forest_island.png" class="island-img">
 
             <div class="island-text">
@@ -44,7 +49,7 @@
             </div>
         </div>
 
-        <div class="island cave" onclick="enterChapter(3)">
+        <div class="island cave" onclick="showUnavailablePopup()">
             <img src="images/cave_island.png" class="island-img">
 
             <div class="island-text">
@@ -53,7 +58,7 @@
             </div>
         </div>
 
-        <div class="island castle" onclick="enterChapter(4)">
+        <div class="island castle" onclick="showUnavailablePopup()">
             <img src="images/castle_island.png" class="island-img">
 
             <div class="island-text">
@@ -64,9 +69,46 @@
 
     </div>
 
+    <div id="unavailablePopup" class="popup-overlay">
+        <div class="popup-box">
+            <span class="close-btn cursor-target" onclick="closePopup()">✖</span>
+
+            <h2>Unavailable</h2>
+            <p>This chapter is currently unavailable...<br>Please try again on a later date...</p>
+
+            <button class="cursor-target" onclick="closePopup()">I Understand</button>
+        </div>
+    </div>
+
     <div class="fog"></div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="auth-guard.js"></script>
+    <script>
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        async function enterChapterWithTracking(id, name, url) {
+            // Start tracking for heatmap
+            if (typeof trackChapterPlay === 'function') {
+                await trackChapterPlay(id, name);
+            }
+            // Record play count for affinity radar chart
+            if (typeof recordChapterPlay === 'function') {
+                await recordChapterPlay(id);
+            }
+            // Navigate
+            window.location.href = url;
+        }
+    </script>
     <script src="MenuStuff.js"></script>
+    <script src="activity-tracker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="target-cursor-vanilla.js"></script>
 </body>
 
 </html>
